@@ -136,6 +136,20 @@ recode_dosprt <- function(x) {
   ifelse(x >= 0 & x <= 7, x, NA_real_)
 }
 
+# Зріст у см. ESS R11 змінна `height` — самозвіт.
+# ESS виставляє NA (999) коли розрахований BMI поза [16, 40] —
+# виключає сильно худих/товстих. У нас лишається ~96% респондентів.
+recode_height <- function(x) {
+  x <- as.numeric(x)
+  ifelse(x >= 100 & x <= 250, x, NA_real_)
+}
+
+# Вага у кг. ESS R11 змінна `weighta`. Та ж BMI-фільтрація.
+recode_weight <- function(x) {
+  x <- as.numeric(x)
+  ifelse(x >= 30 & x <= 300, x, NA_real_)
+}
+
 # Мова вдома. ESS lnghom1: string ISO 639-3 (3-літерний код).
 # R10 використовує lowercase ("ukr","rus"), R11 — UPPERCASE ("UKR","RUS").
 # Нормалізуємо через tolower, потім категоризуємо: ukr / rus / other.

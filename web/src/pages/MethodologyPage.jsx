@@ -17,24 +17,19 @@ export default function MethodologyPage({ data }) {
           В основі — 2581 інтерв'ю з опитування{' '}
           <a href="https://www.europeansocialsurvey.org/" target="_blank" rel="noreferrer">ESS Ukraine</a>{' '}
           (поле 2024). Це репрезентативна вибірка дорослих: соціологи запитували про освіту,
-          дохід, шлюб, мови, погляди, спосіб життя — все, що тут можна вибрати як фільтр.
-          Зріст рахуємо параметрично з даних{' '}
-          <a href="https://ncdrisc.org/" target="_blank" rel="noreferrer">NCD-RisC</a>{' '}
-          (вимірювали мільйони дорослих по всьому світу), чисельність когорт — з{' '}
+          дохід, шлюб, мови, погляди, спосіб життя, зріст і вагу — все, що тут можна
+          вибрати як фільтр. Чисельність когорт для перетворення частки в абсолютну
+          кількість — з{' '}
           <a href="https://www.demography.org.ua/" target="_blank" rel="noreferrer">Інст. демографії</a>.
         </p>
       </section>
 
       <section>
         <h2>Дані</h2>
-        <h3>ESS — основне джерело joint-розподілу</h3>
+        <h3>ESS — основне джерело</h3>
         <SourceCard data={methodology.ess} />
-        <h3>Зріст — NCD Risk Factor Collaboration</h3>
-        <SourceCard data={methodology.height} />
         <h3>Чисельність когорт — Інститут демографії</h3>
         <SourceCard data={methodology.cohorts} />
-        <h3>Дохідні децилі — Держстат</h3>
-        <SourceCard data={methodology.income} />
       </section>
 
       <section>
@@ -51,15 +46,14 @@ export default function MethodologyPage({ data }) {
         <h2>Алгоритм</h2>
         <pre className="formula">{`1. (стать, віковий діапазон) → N_base з cohorts
 2. (дохід у грн) → дециль через income_deciles
-3. ESS joint-частка:
+3. ESS joint-частка (зріст уже у складі ESS):
      window = respondents[stать, вікове вікно]
      denom  = Σ pspwght[window]
-     match  = window що задовольняють ESS-критерії
+     match  = window що задовольняють УСІ активні критерії
      numer  = Σ pspwght[match]
      joint  = numer / denom
-4. P(зріст ≥ h) — Φ((h − μ) / σ) per cohort, weighted
-5. Підсумок = joint × p_height
-6. CI 95% — Wilson score interval на effective sample size
+4. Підсумок = joint × N_base
+5. CI 95% — Wilson score interval на effective sample size
    (Kish: n_eff = (Σw)² / Σw²) — враховує дисперсію ваг`}</pre>
       </section>
 
@@ -103,8 +97,8 @@ const RELIABILITY_ROWS = [
     'Людина сама каже «чоловік» чи «жінка». Відмов майже нема.'],
   ['Вік',                    'high',
     'Запитують рік народження. Точність висока.'],
-  ['Зріст',                  'medium',
-    'ESS зросту не питає. Беремо середню цифру з міжнародного дослідження для українців твого року народження. Тому це характеристика покоління, не окремої людини.'],
+  ['Зріст',                  'high',
+    'ESS R11 питає зріст напряму, у см. Відповіли 96% респондентів. ESS виставляє NA коли BMI поза [16, 40] — тому дуже худих і дуже повних у вибірці немає.'],
   ['Освіта (бакети)',        'high',
     'Три великі групи. У кожній десятки людей. Числа стабільні.'],
   ['Дохід (дециль)',         'high',

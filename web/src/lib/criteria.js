@@ -16,6 +16,7 @@ export function buildCriteria(state) {
     c.eiscedSet = EDU_BUCKET_SETS[state.education];
   }
   if (state.incomeDecileMin != null) c.hinctnta = state.incomeDecileMin;
+  if (state.heightMin != null) c.heightMin = state.heightMin;
   if (state.flags.smokesNo)     c.smokes = 0;
   if (state.flags.moderateAlc)  c.alcMax = 1;
   if (state.flags.noKidsHome)   c.kidsHome = 0;
@@ -38,6 +39,7 @@ export function buildCriteria(state) {
 export function satisfiesAll(r, c) {
   if (c.eiscedSet != null && (r.eisced == null || !c.eiscedSet.has(r.eisced))) return false;
   if (c.hinctnta != null && (r.hinctnta == null || r.hinctnta < c.hinctnta)) return false;
+  if (c.heightMin != null && (r.height == null || r.height < c.heightMin)) return false;
   if (c.smokes != null && r.smokes !== c.smokes) return false;
   if (c.alcMax != null && (r.alc == null || r.alc > c.alcMax)) return false;
   if (c.kidsHome != null && r.kidsHome !== c.kidsHome) return false;
@@ -63,6 +65,8 @@ export function criterionLabel(key, state) {
     }
     case 'hinctnta':
       return `Дохід ≥ ${state.incomeDecileMin}-го децилю`;
+    case 'heightMin':
+      return `Зріст ≥ ${state.heightMin} см`;
     case 'smokes':
       return 'Не курить';
     case 'alcMax':

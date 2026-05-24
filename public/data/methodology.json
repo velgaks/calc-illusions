@@ -34,7 +34,9 @@
       "rlgdgr": "rlgdgr",
       "lrscale": "lrscale",
       "dosprt": "dosprt",
-      "lnghom1": "lnghom1"
+      "lnghom1": "lnghom1",
+      "height": "height",
+      "weight": "weighta"
     },
     "canonical_present": [
       "kidsHome",
@@ -43,10 +45,12 @@
       "rlgdgr",
       "lrscale",
       "dosprt",
-      "lnghom1"
+      "lnghom1",
+      "height",
+      "weight"
     ],
     "canonical_missing": [],
-    "updated_at": "2026-05-24T17:01:46Z"
+    "updated_at": "2026-05-24T17:34:07Z"
   },
   "height": {
     "source": "NCD-RisC, 'A century of trends in adult human height' (eLife 2016) + Lancet 2020 extension. Інтерпольовано на 5-річні когорти народження для України.",

@@ -88,13 +88,19 @@ for (let i = 0; i < N_MOCK; i++) {
   const lang_p = rnd();
   const lnghom1 = lang_p < 0.6 ? 'ukr' : lang_p < 0.9 ? 'rus' : 'other';
 
+  // Зріст / вага — синтетика для dev. Реальні з ESS R11 height/weighta.
+  const heightMu = gndr === 1 ? 178 + (50 - agea) * 0.04 : 164 + (50 - agea) * 0.04;
+  const height = clamp(Math.round(gaussian(heightMu, gndr === 1 ? 7 : 6.3)), 140, 200);
+  const weightMu = gndr === 1 ? 80 : 65;
+  const weight = clamp(Math.round(gaussian(weightMu, 12)), 40, 130);
+
   // pspwght: близько 1, обрізаний від екстремумів
   const pspwght = clamp(gaussian(1.0, 0.3), 0.2, 2.5);
 
   respondents.push({
     id: i + 1,
     gndr, agea, eisced, hinctnta, marsts, chldhm, smokes, alc,
-    rlgdgr, lrscale, dosprt, lnghom1,
+    rlgdgr, lrscale, dosprt, lnghom1, height, weight,
     pspwght: round(pspwght)
   });
 }

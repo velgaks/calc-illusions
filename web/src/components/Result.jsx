@@ -87,18 +87,13 @@ export default function Result({ result, data, state }) {
 
       {showFormula && (
         <div className="result-formula">
-          <p className="formula-label">{uk.result.formulaLabel}:</p>
-          <div className="formula-grid">
-            <span>ESS joint share</span>
-            <code>{formatShare(result.jointShare)}</code>
-            <span>× зріст</span>
-            <code>{formatShare(result.heightFactor)}</code>
-            <span className="formula-eq">= підсумок</span>
-            <code className="formula-eq"><strong>{formatShare(result.shareFinal)}</strong></code>
-          </div>
+          <p className="formula-label">
+            Усе з одного джерела — ESS R11 Ukraine, зважено за <code>pspwght</code>:
+          </p>
           <p className="formula-meta">
-            n у статево-віковому вікні ESS: <strong>{result.nWindow}</strong>,
-            з них задовольняють критеріям: <strong>{result.nMatch}</strong>
+            n у статево-віковому вікні: <strong>{result.nWindow}</strong>,
+            з них задовольняють усі активні критерії: <strong>{result.nMatch}</strong>.
+            CI — Wilson на effective sample size (Kish n_eff).
           </p>
         </div>
       )}

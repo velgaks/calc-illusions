@@ -169,6 +169,8 @@ respondents <- raw %>%
     lrscale   = log_var("lrscale", pick_first(raw, c("lrscale"), recode_lrscale)),
     dosprt    = log_var("dosprt",  pick_first(raw, c("dosprt"),  recode_dosprt)),
     lnghom1   = log_var("lnghom1", pick_first(raw, c("lnghom1"), recode_lnghom1)),
+    height    = log_var("height",  pick_first(raw, c("height"),  recode_height)),
+    weight    = log_var("weight",  pick_first(raw, c("weighta"), recode_weight)),
     pspwght   = pspwght,
     anweight  = if ("anweight" %in% names(raw)) anweight else NA_real_
   ) %>%

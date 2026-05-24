@@ -66,9 +66,7 @@ export default function App() {
       <footer className="app-footer">
         <small>
           Дані: <a href="https://www.europeansocialsurvey.org/" target="_blank" rel="noreferrer">ESS</a> ·{' '}
-          <a href="https://ncdrisc.org/" target="_blank" rel="noreferrer">NCD-RisC</a> ·{' '}
-          <a href="https://www.demography.org.ua/" target="_blank" rel="noreferrer">Інст. демографії</a> ·{' '}
-          <a href="https://www.ukrstat.gov.ua/" target="_blank" rel="noreferrer">Держстат</a>
+          <a href="https://www.demography.org.ua/" target="_blank" rel="noreferrer">Інст. демографії</a>
           {' · '}Код: MIT
         </small>
       </footer>

@@ -4,7 +4,6 @@ export default function SourceBadge({ data }) {
   const { methodology } = data;
   const ess = methodology?.ess ?? {};
   const cohorts = methodology?.cohorts ?? {};
-  const height = methodology?.height ?? {};
 
   return (
     <div className="source-badge">
@@ -18,11 +17,6 @@ export default function SourceBadge({ data }) {
       <span>
         Когорти: {shortenSource(cohorts.source)}
         {cohorts.estimate_date && `, ${cohorts.estimate_date}`}
-      </span>
-      <span className="source-badge-sep">·</span>
-      <span>
-        Зріст: NCD-RisC
-        {height.publication_year && `, ${height.publication_year}`}
       </span>
       <span className="source-badge-sep">·</span>
       <Link to="/methodology" className="methodology-link">повна методологія →</Link>
