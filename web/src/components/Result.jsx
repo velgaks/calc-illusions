@@ -53,20 +53,41 @@ export default function Result({ result, data, state }) {
         </p>
       )}
 
-      <div className="result-big">
-        <div className="big-share">{formatShare(result.shareFinal)}</div>
-        <div className="big-share-ci">
-          {uk.result.ci}: {formatShare(result.ci.low)}–{formatShare(result.ci.high)}
-        </div>
-      </div>
-
-      <div className="result-count">
-        ≈ <strong>{formatCount(result.countFinal)}</strong> людей{' '}
-        <span className="muted">{uk.result.ofTotal} {formatCount(result.nBase)}</span>
-        <div className="count-ci">
-          {uk.result.ci}: {formatCount(result.countCi.low)} – {formatCount(result.countCi.high)}
-        </div>
-      </div>
+      {result.shareFinal === 0 && result.ci.high > 0 ? (
+        // Точкова = 0, але CI допускає ненульові. Робимо upper bound головним —
+        // це чесна відповідь на «скільки максимум таких може бути».
+        <>
+          <div className="result-big">
+            <div className="big-share big-share-upper">до {formatShare(result.ci.high)}</div>
+            <div className="big-share-ci">
+              у вибірці точкова оцінка 0% · {uk.result.ci}: 0%–{formatShare(result.ci.high)}
+            </div>
+          </div>
+          <div className="result-count">
+            ≈ до <strong>{formatCount(result.countCi.high)}</strong> людей{' '}
+            <span className="muted">{uk.result.ofTotal} {formatCount(result.nBase)}</span>
+            <div className="count-ci">
+              {uk.result.ci}: 0 – {formatCount(result.countCi.high)}
+            </div>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="result-big">
+            <div className="big-share">{formatShare(result.shareFinal)}</div>
+            <div className="big-share-ci">
+              {uk.result.ci}: {formatShare(result.ci.low)}–{formatShare(result.ci.high)}
+            </div>
+          </div>
+          <div className="result-count">
+            ≈ <strong>{formatCount(result.countFinal)}</strong> людей{' '}
+            <span className="muted">{uk.result.ofTotal} {formatCount(result.nBase)}</span>
+            <div className="count-ci">
+              {uk.result.ci}: {formatCount(result.countCi.low)} – {formatCount(result.countCi.high)}
+            </div>
+          </div>
+        </>
+      )}
 
       <p className="result-suffix">{uk.result.suffix}</p>
 

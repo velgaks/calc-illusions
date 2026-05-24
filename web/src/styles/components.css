@@ -371,6 +371,11 @@
   color: var(--accent);
   font-variant-numeric: tabular-nums;
 }
+.big-share.big-share-upper {
+  /* трохи м'якше — це upper bound, не точкова оцінка */
+  font-size: clamp(2rem, 5vw, 3rem);
+  color: var(--accent-hover);
+}
 .big-share-ci {
   font-size: 0.85rem;
   color: var(--text-muted);
