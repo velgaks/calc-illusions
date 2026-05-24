@@ -40,5 +40,7 @@ yarn-error.log*
 *.tmp
 *.bak
 
-# Claude Code per-project state — skills встановлюються локально, не комітимо
-.claude/skills/
+# Claude Code per-project state — комітимо лише launch.json,
+# решта (skills, settings, auto-installed prompts) — локальна.
+.claude/*
+!.claude/launch.json
