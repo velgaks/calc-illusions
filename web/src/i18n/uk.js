@@ -16,24 +16,21 @@ export const uk = {
     ageTo: 'до',
     heightMin: 'Зріст від, см',
     heightDisable: 'не важливо',
-    incomeMin: 'Дохід від, грн/міс',
-    incomeDisable: 'не важливо',
-    educationMin: 'Освіта не нижче',
-    educationLevels: [
-      'не важливо',
-      'ISCED 1 — початкова',
-      'ISCED 2 — базова середня',
-      'ISCED 3 — повна середня',
-      'ISCED 4 — post-secondary non-tertiary',
-      'ISCED 5 — короткий цикл вищої',
-      'ISCED 6 — бакалавр',
-      'ISCED 7 — магістр і вище'
-    ],
+    incomeDecile: 'Дохід від децилю',
+    incomeDecileDisable: 'не важливо',
+    incomeDecileHint: 'дециль ESS = на одного члена домогосподарства, орієнтовно ',
+    educationMin: 'Освіта',
+    educationBuckets: {
+      any: 'Не важливо',
+      basic: 'Базова',
+      vocational: 'Профтех',
+      higher: 'Вища'
+    },
     flags: {
       smokesNo: 'Не курить',
       moderateAlc: 'П\'є помірно або взагалі',
-      noKidsHome: 'Без дітей <18 у домогосподарстві',
-      married: 'У шлюбі або партнерстві'
+      noKidsHome: 'Немає дітей',
+      notMarried: 'Не у шлюбі або партнерстві'
     },
     choices: {
       any: 'Не важливо',

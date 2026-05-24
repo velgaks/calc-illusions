@@ -1,18 +1,27 @@
 // criteria.js — побудова списку активних ESS-критеріїв і перевірка
 // respondent → satisfies-all. Спільне ядро для calculator, bootstrap, decomposition.
 
+// Бакети освіти → набір валідних eisced-кодів.
+const EDU_BUCKET_SETS = {
+  basic:      new Set([1, 2, 3]),
+  vocational: new Set([4]),
+  higher:     new Set([5, 6, 7])
+};
+
 // state → плаский об'єкт з ключами тільки для АКТИВНИХ критеріїв.
 // Це дозволяє декомпозиції тривіально робити leave-one-out через `delete`.
-export function buildCriteria(state, incomeDecileMin) {
+export function buildCriteria(state) {
   const c = {};
-  if (state.educationMin != null) c.eisced = state.educationMin;
-  if (incomeDecileMin != null) c.hinctnta = incomeDecileMin;
-  if (state.flags.smokesNo) c.smokes = 0;
-  if (state.flags.moderateAlc) c.alcMax = 1;     // 0=ніколи або 1=рідко
-  if (state.flags.noKidsHome) c.kidsHome = 0;
-  if (state.flags.married) c.marsts = 1;
+  if (state.education && EDU_BUCKET_SETS[state.education]) {
+    c.eiscedSet = EDU_BUCKET_SETS[state.education];
+  }
+  if (state.incomeDecileMin != null) c.hinctnta = state.incomeDecileMin;
+  if (state.flags.smokesNo)     c.smokes = 0;
+  if (state.flags.moderateAlc)  c.alcMax = 1;
+  if (state.flags.noKidsHome)   c.kidsHome = 0;
+  if (state.flags.notMarried)   c.marsts = 0;   // ІНВЕРСІЯ: 0 = не у шлюбі/партнерстві
 
-  // Tri-state filters (null = не важливо)
+  // Tri-state filters
   if (state.politics === 'left')  c.lrscaleMax = 4;
   if (state.politics === 'right') c.lrscaleMin = 6;
   if (state.sporty === 'yes')     c.dosprtMin = 3;
@@ -27,7 +36,7 @@ export function buildCriteria(state, incomeDecileMin) {
 // Дивись recode.R: невалідні/відмови → NA. Тут трактуємо NA як "не задовольняє"
 // (consistent decision; фіксуємо в METHODOLOGY).
 export function satisfiesAll(r, c) {
-  if (c.eisced != null && (r.eisced == null || r.eisced < c.eisced)) return false;
+  if (c.eiscedSet != null && (r.eisced == null || !c.eiscedSet.has(r.eisced))) return false;
   if (c.hinctnta != null && (r.hinctnta == null || r.hinctnta < c.hinctnta)) return false;
   if (c.smokes != null && r.smokes !== c.smokes) return false;
   if (c.alcMax != null && (r.alc == null || r.alc > c.alcMax)) return false;
@@ -48,18 +57,20 @@ export function satisfiesAll(r, c) {
 // Людино-читабельна назва критерію для UI декомпозиції.
 export function criterionLabel(key, state) {
   switch (key) {
-    case 'eisced':
-      return `Освіта ≥ ISCED ${state.educationMin}`;
+    case 'eiscedSet': {
+      const m = { basic: 'базова', vocational: 'профтех', higher: 'вища' };
+      return `Освіта: ${m[state.education] ?? state.education}`;
+    }
     case 'hinctnta':
-      return `Дохід ≥ ${(state.incomeMin ?? 0).toLocaleString('uk-UA')} грн/міс`;
+      return `Дохід ≥ ${state.incomeDecileMin}-го децилю`;
     case 'smokes':
       return 'Не курить';
     case 'alcMax':
       return 'Помірно алкоголь';
     case 'kidsHome':
-      return 'Без дітей <18 у домогосподарстві';
+      return 'Немає дітей';
     case 'marsts':
-      return 'У шлюбі або партнерстві';
+      return 'Не у шлюбі або партнерстві';
     case 'lrscaleMax':
       return 'Політично лівий (0–4)';
     case 'lrscaleMin':

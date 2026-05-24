@@ -5,7 +5,7 @@ const AGE_MAX = 80;
 const HEIGHT_MIN = 140;
 const HEIGHT_MAX = 210;
 
-export default function Controls({ state, onChange }) {
+export default function Controls({ state, onChange, data }) {
   return (
     <form className="controls" onSubmit={e => e.preventDefault()}>
       {/* Sex */}
@@ -83,45 +83,57 @@ export default function Controls({ state, onChange }) {
         </div>
       </fieldset>
 
-      {/* Income */}
+      {/* Income — ESS decile slider */}
       <fieldset className="control-group">
         <legend>
-          {uk.controls.incomeMin}
+          {uk.controls.incomeDecile}
           <span className="legend-val">
-            {state.incomeMin == null ? uk.controls.incomeDisable : state.incomeMin.toLocaleString('uk-UA')}
+            {state.incomeDecileMin == null
+              ? uk.controls.incomeDecileDisable
+              : `≥ ${state.incomeDecileMin}-й`}
           </span>
         </legend>
-        <div className="optional-range income">
+        <div className="optional-range">
           <input
-            type="number"
-            min="0"
-            step="500"
-            value={state.incomeMin ?? ''}
-            placeholder="не важливо"
-            onChange={e => {
-              const v = e.target.value === '' ? null : Math.max(0, parseInt(e.target.value, 10) || 0);
-              onChange({ incomeMin: v });
-            }}
+            type="range"
+            min="1" max="10" step="1"
+            value={state.incomeDecileMin ?? 5}
+            disabled={state.incomeDecileMin == null}
+            onChange={e => onChange({ incomeDecileMin: parseInt(e.target.value, 10) })}
           />
-          <span className="suffix">грн/міс</span>
+          <button
+            type="button"
+            className="toggle-mini"
+            onClick={() => onChange({
+              incomeDecileMin: state.incomeDecileMin == null ? 5 : null
+            })}
+          >
+            {state.incomeDecileMin == null ? 'увімкнути' : 'скинути'}
+          </button>
         </div>
+        {state.incomeDecileMin != null && data?.external?.income_deciles?.bounds_uah && (
+          <p className="control-hint">
+            {uk.controls.incomeDecileHint}
+            <strong>
+              {formatUah(decileLowerBoundUah(state.incomeDecileMin, data.external))}
+            </strong>
+            {' '}грн/міс на члена ДГ
+          </p>
+        )}
       </fieldset>
 
-      {/* Education */}
-      <fieldset className="control-group">
-        <legend>{uk.controls.educationMin}</legend>
-        <select
-          value={state.educationMin ?? ''}
-          onChange={e => {
-            const v = e.target.value === '' ? null : parseInt(e.target.value, 10);
-            onChange({ educationMin: v });
-          }}
-        >
-          {uk.controls.educationLevels.map((label, i) => (
-            <option key={i} value={i === 0 ? '' : i}>{label}</option>
-          ))}
-        </select>
-      </fieldset>
+      {/* Education — 3 buckets */}
+      <ChoiceGroup
+        label={uk.controls.educationMin}
+        value={state.education}
+        options={[
+          { value: null,         label: uk.controls.educationBuckets.any },
+          { value: 'basic',      label: uk.controls.educationBuckets.basic },
+          { value: 'vocational', label: uk.controls.educationBuckets.vocational },
+          { value: 'higher',     label: uk.controls.educationBuckets.higher }
+        ]}
+        onChange={v => onChange({ education: v })}
+      />
 
       {/* Flags */}
       <fieldset className="control-group">
@@ -192,6 +204,18 @@ export default function Controls({ state, onChange }) {
       />
     </form>
   );
+}
+
+// Нижня межа N-го децилю в грн = верхня межа (N-1)-го децилю.
+// bounds_uah[i] = верхня межа децилю (i+1). Для децилю 1 нижня = 0.
+function decileLowerBoundUah(decileN, external) {
+  if (decileN <= 1) return 0;
+  return external.income_deciles.bounds_uah[decileN - 2];
+}
+function formatUah(n) {
+  if (n == null) return '—';
+  if (n >= 1000) return Math.round(n / 100) / 10 + ' тис.';
+  return String(n);
 }
 
 function ChoiceGroup({ label, value, options, onChange }) {

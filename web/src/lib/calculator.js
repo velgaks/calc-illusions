@@ -10,7 +10,6 @@
 
 import { buildCriteria, satisfiesAll } from './criteria.js';
 import { computeHeightFactor } from './heightModel.js';
-import { uahToMinDecile } from './incomeBuckets.js';
 import { bootstrapShareCi } from './bootstrap.js';
 
 const LOW_N_THRESHOLD = 30;
@@ -22,16 +21,13 @@ export function computeAll(state, data) {
   // 1. Базова чисельність когорти за статтю і віковим вікном
   const nBase = sumCohortPopulation(state, external);
 
-  // 2. UAH → мінімальний дециль
-  const incomeDecileMin = uahToMinDecile(state.incomeMin, external);
-
-  // 3. Joint share з ESS
+  // 2. Joint share з ESS (дохідний дециль уже у state, без перерахунку з UAH)
   const respList = respondents.respondents;
   const win = respList.filter(
     r => r.gndr === sexCode && r.agea >= state.ageMin && r.agea <= state.ageMax
   );
   const denom = win.reduce((a, r) => a + r.pspwght, 0);
-  const criteria = buildCriteria(state, incomeDecileMin);
+  const criteria = buildCriteria(state);
   const matched = win.filter(r => satisfiesAll(r, criteria));
   const numer = matched.reduce((a, r) => a + r.pspwght, 0);
   const jointShare = denom > 0 ? numer / denom : 0;
@@ -69,7 +65,7 @@ export function computeAll(state, data) {
     nWindow: win.length,
     nMatch: matched.length,
     nBase,
-    incomeDecileMin,
+    incomeDecileMin: state.incomeDecileMin,
     warning,
     isMock: Boolean(respondents.mock || external.mock)
   };

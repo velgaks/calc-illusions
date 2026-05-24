@@ -4,10 +4,10 @@ import { uk } from '../i18n/uk.js';
 
 const TOP_N = 5;
 
-export default function Decomposition({ result, state, data }) {
+export default function Decomposition({ state, data }) {
   const items = useMemo(
-    () => decompose(state, data, result.incomeDecileMin),
-    [state, data, result.incomeDecileMin]
+    () => decompose(state, data),
+    [state, data]
   );
 
   if (items.length === 0) return null;

@@ -6,7 +6,7 @@
 
 import { buildCriteria, satisfiesAll, criterionLabel } from './criteria.js';
 
-export function decompose(state, data, incomeDecileMin) {
+export function decompose(state, data) {
   const respList = data.respondents.respondents;
   const sexCode = state.sex === 'M' ? 1 : 2;
   const win = respList.filter(
@@ -15,7 +15,7 @@ export function decompose(state, data, incomeDecileMin) {
   const denom = win.reduce((a, r) => a + r.pspwght, 0);
   if (denom <= 0) return [];
 
-  const full = buildCriteria(state, incomeDecileMin);
+  const full = buildCriteria(state);
   const keys = Object.keys(full);
   if (keys.length === 0) return [];
 

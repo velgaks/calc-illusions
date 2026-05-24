@@ -30,6 +30,16 @@ export default function MethodologyPage({ data }) {
       </section>
 
       <section>
+        <h2>Надійність фільтрів</h2>
+        <p>
+          Не всі критерії однаково точні. Нижче — самоповідомлена оцінка для
+          кожного фільтра: що в ESS прямий чесний показник, що з паростком сумніву,
+          а що варто читати з посмішкою.
+        </p>
+        <ReliabilityTable />
+      </section>
+
+      <section>
         <h2>Алгоритм</h2>
         <pre className="formula">{`1. (стать, віковий діапазон) → N_base з cohorts
 2. (дохід у грн) → дециль через income_deciles
@@ -78,6 +88,47 @@ export default function MethodologyPage({ data }) {
         </p>
       </section>
     </article>
+  );
+}
+
+const RELIABILITY_ROWS = [
+  ['Стать',                  'high',   'ESS питає напряму, 0% NA'],
+  ['Вік',                    'high',   'Рік народження → точний вік, 0% NA'],
+  ['Зріст',                  'medium', 'Не з ESS — параметричний з NCD-RisC. Normal-модель per cohort'],
+  ['Освіта (бакети)',        'high',   '~0.2% NA. Бакети дають великий запас n у кожній клітинці'],
+  ['Дохід (дециль)',         'high',   'Прямий ESS-показник. ~18% відмов — обчислюємо на non-NA'],
+  ['Не у шлюбі/партнерстві', 'high',   'Об\'єднано marsts + rshpsts, коректно враховує ESS routing'],
+  ['Немає дітей',            'high',   'Виведено з yrbrn2..13 (роки народження членів ДГ), ~95% покриття'],
+  ['Не курить',              'high',   '~0.3% NA. Невелика soc-desirability bias'],
+  ['Помірний алкоголь',      'medium', 'Само-звіт частоти. Систематичне заниження споживання типове'],
+  ['Релігійність',           'medium', '0-10 шкала. Культурна варіація що значить «релігійний»'],
+  ['Політика лів-прав',      'low',    'Одновимірна lrscale погано маппиться на UA-реальність (мультидимензіональну)'],
+  ['Спорт',                  'medium', 'Само-визначення «активність 30+ хв», ~6% NA'],
+  ['Мова вдома',             'high',   'Само-звіт основної мови, ~0% NA']
+];
+
+function ReliabilityTable() {
+  return (
+    <table className="reliability-table">
+      <thead>
+        <tr>
+          <th>Фільтр</th>
+          <th>Надійність</th>
+          <th>Каверат</th>
+        </tr>
+      </thead>
+      <tbody>
+        {RELIABILITY_ROWS.map(([name, level, caveat]) => (
+          <tr key={name}>
+            <td>{name}</td>
+            <td><span className={`reliability-badge reliability-${level}`}>{
+              level === 'high' ? 'висока' : level === 'medium' ? 'середня' : 'низька'
+            }</span></td>
+            <td className="reliability-caveat">{caveat}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
 }
 

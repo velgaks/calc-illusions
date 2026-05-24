@@ -8,22 +8,26 @@ export const DEFAULT_STATE = Object.freeze({
   ageMin: 25,
   ageMax: 35,
   heightMin: null,
-  incomeMin: null,
-  educationMin: null,
-  politics: null,    // null | 'left' | 'right'
-  sporty: null,      // null | 'yes' | 'no'
-  religious: null,   // null | 'yes' | 'no'
-  language: null,    // null | 'ukr' | 'rus' | 'other'
+  incomeDecileMin: null,         // null | 1..10 (мінімальний дециль ESS hinctnta)
+  education: null,               // null | 'basic' | 'vocational' | 'higher'
+  politics: null,                // null | 'left' | 'right'
+  sporty: null,                  // null | 'yes' | 'no'
+  religious: null,               // null | 'yes' | 'no'
+  language: null,                // null | 'ukr' | 'rus' | 'other'
   flags: Object.freeze({
     smokesNo: false,
     moderateAlc: false,
     noKidsHome: false,
-    married: false
+    notMarried: false
   })
 });
 
-const FLAG_CHARS = { smokesNo: 's', moderateAlc: 'a', noKidsHome: 'k', married: 'm' };
+// Прим. URL flag-char 'u' = unmarried (для notMarried). Раніше 'm' = married;
+// інверсія семантики → новий char щоб не плутати при шерингу старих URL.
+const FLAG_CHARS = { smokesNo: 's', moderateAlc: 'a', noKidsHome: 'k', notMarried: 'u' };
 const LANG_VALUES = new Set(['ukr', 'rus', 'other']);
+const EDU_VALUES = { b: 'basic', v: 'vocational', h: 'higher' };
+const EDU_INV = { basic: 'b', vocational: 'v', higher: 'h' };
 
 export function parseSearch(searchString) {
   if (!searchString || searchString === '?') return cloneDefault();
@@ -52,11 +56,11 @@ export function parseSearch(searchString) {
   const h = parseIntInRange(sp.get('h'), 100, 250);
   if (h != null) state.heightMin = h;
 
-  const i = parseIntInRange(sp.get('i'), 0, 10_000_000);
-  if (i != null) state.incomeMin = i;
+  const d = parseIntInRange(sp.get('d'), 1, 10);
+  if (d != null) state.incomeDecileMin = d;
 
-  const e = parseIntInRange(sp.get('e'), 1, 7);
-  if (e != null) state.educationMin = e;
+  const e = sp.get('e');
+  if (e && EDU_VALUES[e]) state.education = EDU_VALUES[e];
 
   const f = sp.get('f');
   if (f) {
@@ -90,8 +94,8 @@ export function toSearch(state) {
     sp.set('a', `${state.ageMin}-${state.ageMax}`);
   }
   if (state.heightMin != null) sp.set('h', String(state.heightMin));
-  if (state.incomeMin != null) sp.set('i', String(state.incomeMin));
-  if (state.educationMin != null) sp.set('e', String(state.educationMin));
+  if (state.incomeDecileMin != null) sp.set('d', String(state.incomeDecileMin));
+  if (state.education && EDU_INV[state.education]) sp.set('e', EDU_INV[state.education]);
 
   const flagChars = [];
   for (const [key, ch] of Object.entries(FLAG_CHARS)) {
