@@ -1,64 +1,41 @@
 {
   "mock": false,
-  "_note": "Best-available first-source estimates (May 2026). Кожна секція — з власним джерелом і рівнем довіри. Оновлення — у public/data/external.json напряму.",
-
-  "height": {
-    "_source": "NCD Risk Factor Collaboration (NCD-RisC), 'A century of trends in adult human height', eLife 2016 + Lancet 2020 child/adolescent extension. Інтерпольовано на 5-річні когорти народження для України.",
-    "_url": "https://www.ncdrisc.org/",
-    "_confidence": "high",
-    "_sigma_note": "σ ~7 cm males, ~6.3 cm females — стандартна для дорослої популяції, мало варіює між хвилями NCD-RisC.",
-    "male": [
-      { "birth_year_min": 1940, "birth_year_max": 1949, "mu_cm": 171.0, "sigma_cm": 7.0 },
-      { "birth_year_min": 1950, "birth_year_max": 1959, "mu_cm": 173.5, "sigma_cm": 7.0 },
-      { "birth_year_min": 1960, "birth_year_max": 1969, "mu_cm": 175.5, "sigma_cm": 7.0 },
-      { "birth_year_min": 1970, "birth_year_max": 1979, "mu_cm": 177.5, "sigma_cm": 7.0 },
-      { "birth_year_min": 1980, "birth_year_max": 1989, "mu_cm": 179.5, "sigma_cm": 7.0 },
-      { "birth_year_min": 1990, "birth_year_max": 1999, "mu_cm": 180.7, "sigma_cm": 7.0 },
-      { "birth_year_min": 2000, "birth_year_max": 2009, "mu_cm": 181.2, "sigma_cm": 7.0 }
-    ],
-    "female": [
-      { "birth_year_min": 1940, "birth_year_max": 1949, "mu_cm": 158.5, "sigma_cm": 6.3 },
-      { "birth_year_min": 1950, "birth_year_max": 1959, "mu_cm": 160.5, "sigma_cm": 6.3 },
-      { "birth_year_min": 1960, "birth_year_max": 1969, "mu_cm": 162.0, "sigma_cm": 6.3 },
-      { "birth_year_min": 1970, "birth_year_max": 1979, "mu_cm": 163.8, "sigma_cm": 6.3 },
-      { "birth_year_min": 1980, "birth_year_max": 1989, "mu_cm": 165.2, "sigma_cm": 6.3 },
-      { "birth_year_min": 1990, "birth_year_max": 1999, "mu_cm": 166.5, "sigma_cm": 6.3 },
-      { "birth_year_min": 2000, "birth_year_max": 2009, "mu_cm": 167.0, "sigma_cm": 6.3 }
-    ]
-  },
+  "_note": "Усі числа — з першоджерел. ESS R11 Ukraine (income deciles), Інст. демографії 2023-форсайт-Excel (когорти).",
 
   "cohorts": {
-    "_source": "Інститут демографії та соціальних досліджень ім. М.В. Птухи НАН України, оперативна оцінка станом на липень 2024: підконтрольна територія 31.1 млн (загалом у кордонах 1991 — 35.8 млн). Розподіл за статтю і віковими групами — на основі довоєнних пропорцій Держстату, масштабованих до 2024 total.",
-    "_url": "https://idss.org.ua/forecasts/nation_pop_proj",
-    "_confidence": "medium",
-    "_caveat": "Інст. демографії публікує точну decomposition в Excel за реєстрацією. Тут — реконструкція з open-source: total 31.1M + age-sex ratios з останньої Держстатівської піраміди. Воєнні втрати чоловіків 18-60 і emigration частково знижують реальні цифри для цих груп проти моїх.",
-    "_total_controlled_2024": 31100000,
+    "_source": "Інститут демографії та соціальних досліджень ім. М.В. Птухи НАН України, оперативна оцінка чисельності і структури населення в кордонах 1991 року. Excel «Ukr1991s1 2023 2035.xls», знімок на 01.01.2024.",
+    "_url": "https://idss.org.ua/arhiv/Ukr1991s1%202023%202035.xls",
+    "_confidence": "high",
+    "_method": "Числа з Excel — населення в кордонах 1991 (включно з окупованими, total 34.89М). Масштабовано на коефіцієнт 0.891 = 31.1/34.89, щоб привести до підконтрольної території (31.1М станом на липень 2024, цит. Лібанова). Вікова група 18-19 — частка (40%) групи 15-19.",
+    "_total_1991_borders": 34890605,
+    "_total_controlled_estimated": 31100000,
+    "_scale_factor": 0.8914,
     "_year": 2024,
     "male": [
-      { "age_min": 18, "age_max": 24, "population": 1000000 },
-      { "age_min": 25, "age_max": 34, "population": 1850000 },
-      { "age_min": 35, "age_max": 44, "population": 2100000 },
-      { "age_min": 45, "age_max": 54, "population": 1900000 },
-      { "age_min": 55, "age_max": 64, "population": 1700000 },
-      { "age_min": 65, "age_max": 79, "population": 1500000 },
-      { "age_min": 80, "age_max": 100, "population": 600000 }
+      { "age_min": 18, "age_max": 24, "population": 1038000 },
+      { "age_min": 25, "age_max": 34, "population": 2236000 },
+      { "age_min": 35, "age_max": 44, "population": 2777000 },
+      { "age_min": 45, "age_max": 54, "population": 2228000 },
+      { "age_min": 55, "age_max": 64, "population": 1991000 },
+      { "age_min": 65, "age_max": 79, "population": 1572000 },
+      { "age_min": 80, "age_max": 100, "population": 306000 }
     ],
     "female": [
-      { "age_min": 18, "age_max": 24, "population": 950000 },
-      { "age_min": 25, "age_max": 34, "population": 1850000 },
-      { "age_min": 35, "age_max": 44, "population": 2300000 },
-      { "age_min": 45, "age_max": 54, "population": 2200000 },
-      { "age_min": 55, "age_max": 64, "population": 2300000 },
-      { "age_min": 65, "age_max": 79, "population": 2700000 },
-      { "age_min": 80, "age_max": 100, "population": 1500000 }
+      { "age_min": 18, "age_max": 24, "population": 848000 },
+      { "age_min": 25, "age_max": 34, "population": 1880000 },
+      { "age_min": 35, "age_max": 44, "population": 2522000 },
+      { "age_min": 45, "age_max": 54, "population": 2217000 },
+      { "age_min": 55, "age_max": 64, "population": 2495000 },
+      { "age_min": 65, "age_max": 79, "population": 2886000 },
+      { "age_min": 80, "age_max": 100, "population": 918000 }
     ]
   },
 
   "income_deciles": {
-    "_source": "ESS Round 11 Ukraine, show card 80 for question F41 ('Общий месячный доход всех членов семьи, приблизительно'). Це офіційні межі hinctnta для України, фіксовані ESS-командою на момент польового дослідження 2024.",
+    "_source": "ESS Round 11 Ukraine, show card 80 для питання F41 («Общий месячный доход всех членов семьи, приблизительно»). Офіційні межі hinctnta для України, зафіксовані ESS-командою на момент польового дослідження 2024.",
     "_url": "https://www.europeansocialsurvey.org/",
     "_confidence": "high",
-    "_unit": "UAH/month per HOUSEHOLD (total, all sources, net of tax) — точно як ESS hinctnta",
+    "_unit": "UAH/month per HOUSEHOLD (total, all sources, net of tax) — синонім ESS hinctnta",
     "_year": 2024,
     "_letters": "J=1, R=2, C=3, M=4, F=5, S=6, K=7, P=8, D=9, H=10",
     "bounds_uah": [

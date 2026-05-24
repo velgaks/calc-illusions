@@ -10,21 +10,10 @@
     "weight_var": "anweight",
     "fieldwork_year": 2024,
     "variables_present": [
-      "gndr",
-      "agea",
-      "eisced",
-      "hinctnta",
-      "pspwght",
-      "anweight",
-      "rlgdgr",
-      "lrscale",
-      "dosprt",
-      "lnghom1",
-      "marsts",
-      "rshpsts",
-      "chldhhe",
-      "cgtsmok",
-      "alcfreq"
+      "gndr", "agea", "eisced", "hinctnta", "pspwght", "anweight",
+      "rlgdgr", "lrscale", "dosprt", "lnghom1",
+      "marsts", "rshpsts", "chldhhe", "cgtsmok", "alcfreq",
+      "height", "weighta"
     ],
     "variables_missing": [],
     "variable_sources": {
@@ -39,39 +28,19 @@
       "weight": "weighta"
     },
     "canonical_present": [
-      "kidsHome",
-      "smokes",
-      "alc",
-      "rlgdgr",
-      "lrscale",
-      "dosprt",
-      "lnghom1",
-      "height",
-      "weight"
+      "kidsHome", "smokes", "alc", "rlgdgr", "lrscale", "dosprt",
+      "lnghom1", "height", "weight"
     ],
     "canonical_missing": [],
     "updated_at": "2026-05-24T17:34:07Z"
   },
-  "height": {
-    "source": "NCD-RisC, 'A century of trends in adult human height' (eLife 2016) + Lancet 2020 extension. Інтерпольовано на 5-річні когорти народження для України.",
-    "url": "https://www.ncdrisc.org/",
-    "publication_year": 2016,
-    "confidence": "high",
-    "license": "CC BY 4.0"
-  },
   "cohorts": {
-    "source": "Інститут демографії ім. М.В. Птухи, оцінка наявного населення підконтрольної території станом на 2024.",
-    "url": "https://www.demography.org.ua/",
-    "estimate_date": 2024,
-    "confidence": "medium",
-    "territory": "підконтрольна територія України",
-    "caveat": "Точні цифри потребують публічного оновлення Інст. демографії після перепису."
-  },
-  "income": {
-    "source": "Держстат, Обстеження умов життя домогосподарств (ОУЖД), оцінки 2024.",
-    "url": "https://www.ukrstat.gov.ua/",
-    "year": 2024,
-    "confidence": "medium",
-    "unit": "UAH/month per household member"
+    "source": "Інститут демографії та соціальних досліджень ім. М.В. Птухи НАН України, Excel 'Ukr1991s1 2023 2035.xls' (знімок 01.01.2024). Числа в кордонах 1991 (34.89М), масштабовано на 0.891 до підконтрольної території (~31.1М, цит. Лібанова на липень 2024).",
+    "url": "https://idss.org.ua/arhiv/Ukr1991s1%202023%202035.xls",
+    "estimate_date": "01.01.2024",
+    "confidence": "high",
+    "territory": "Україна, підконтрольна територія (масштабовано з 1991-borders)",
+    "scale_factor": 0.8914,
+    "caveat": "Excel містить дані в кордонах 1991. Точна decomposition для підконтрольної території публічно недоступна, тому застосували єдиний скалюючий коефіцієнт. Похибка по окремих когортах ±5-10% залежно від географії військових втрат і emigration."
   }
 }
