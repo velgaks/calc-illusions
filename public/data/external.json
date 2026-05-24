@@ -28,27 +28,29 @@
   },
 
   "cohorts": {
-    "_source": "Інститут демографії та досліджень якості життя ім. М.В. Птухи НАН України, оцінка наявного населення підконтрольної території станом на 2024 рік. Розподіл за статтю і п'ятирічними групами.",
-    "_url": "https://www.demography.org.ua/",
+    "_source": "Інститут демографії та соціальних досліджень ім. М.В. Птухи НАН України, оперативна оцінка станом на липень 2024: підконтрольна територія 31.1 млн (загалом у кордонах 1991 — 35.8 млн). Розподіл за статтю і віковими групами — на основі довоєнних пропорцій Держстату, масштабованих до 2024 total.",
+    "_url": "https://idss.org.ua/forecasts/nation_pop_proj",
     "_confidence": "medium",
-    "_caveat": "Точні цифри потребують публічного оновлення Інст. демографії після перепису. War-related displacement ускладнює оцінку. Сумарна ~30.5 млн відповідає публічно цитованим оцінкам наявного населення підконтрольної території.",
-    "_target_total": 30500000,
+    "_caveat": "Інст. демографії публікує точну decomposition в Excel за реєстрацією. Тут — реконструкція з open-source: total 31.1M + age-sex ratios з останньої Держстатівської піраміди. Воєнні втрати чоловіків 18-60 і emigration частково знижують реальні цифри для цих груп проти моїх.",
+    "_total_controlled_2024": 31100000,
     "_year": 2024,
     "male": [
-      { "age_min": 18, "age_max": 24, "population": 720000 },
-      { "age_min": 25, "age_max": 34, "population": 1700000 },
-      { "age_min": 35, "age_max": 44, "population": 1900000 },
-      { "age_min": 45, "age_max": 54, "population": 1750000 },
-      { "age_min": 55, "age_max": 64, "population": 1600000 },
-      { "age_min": 65, "age_max": 100, "population": 1450000 }
+      { "age_min": 18, "age_max": 24, "population": 1000000 },
+      { "age_min": 25, "age_max": 34, "population": 1850000 },
+      { "age_min": 35, "age_max": 44, "population": 2100000 },
+      { "age_min": 45, "age_max": 54, "population": 1900000 },
+      { "age_min": 55, "age_max": 64, "population": 1700000 },
+      { "age_min": 65, "age_max": 79, "population": 1500000 },
+      { "age_min": 80, "age_max": 100, "population": 600000 }
     ],
     "female": [
-      { "age_min": 18, "age_max": 24, "population": 700000 },
-      { "age_min": 25, "age_max": 34, "population": 1700000 },
-      { "age_min": 35, "age_max": 44, "population": 2050000 },
-      { "age_min": 45, "age_max": 54, "population": 2050000 },
-      { "age_min": 55, "age_max": 64, "population": 2100000 },
-      { "age_min": 65, "age_max": 100, "population": 2780000 }
+      { "age_min": 18, "age_max": 24, "population": 950000 },
+      { "age_min": 25, "age_max": 34, "population": 1850000 },
+      { "age_min": 35, "age_max": 44, "population": 2300000 },
+      { "age_min": 45, "age_max": 54, "population": 2200000 },
+      { "age_min": 55, "age_max": 64, "population": 2300000 },
+      { "age_min": 65, "age_max": 79, "population": 2700000 },
+      { "age_min": 80, "age_max": 100, "population": 1500000 }
     ]
   },
 
