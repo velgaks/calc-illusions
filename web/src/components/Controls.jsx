@@ -104,7 +104,7 @@ export default function Controls({ state, onChange, data }) {
             <strong>
               {formatUah(decileLowerBoundUah(state.incomeDecileMin, data.external))}
             </strong>
-            {' '}грн/міс на члена ДГ
+            {' '}грн/міс на все домогосподарство
           </p>
         )}
       </fieldset>

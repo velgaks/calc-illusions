@@ -18,7 +18,7 @@ export const uk = {
     heightDisable: 'не важливо',
     incomeDecile: 'Дохід від децилю',
     incomeDecileDisable: 'не важливо',
-    incomeDecileHint: 'дециль ESS = на одного члена домогосподарства, орієнтовно ',
+    incomeDecileHint: 'ESS питає сукупний дохід усього домогосподарства, орієнтовно від ',
     educationMin: 'Освіта',
     educationBuckets: {
       any: 'Не важливо',
