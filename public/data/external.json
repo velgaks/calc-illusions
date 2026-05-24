@@ -53,16 +53,14 @@
   },
 
   "income_deciles": {
-    "_source": "Eyeballed extrapolation. Anchored on Держстат 2024 average monthly net wage (21,473 UAH gross → ~16,800 UAH net per Forbes/Держстат Q2 2024) + log-normal distribution shape. Real ОУЖД tables for 2024 not published — war interrupted survey program; last published year is 2021.",
-    "_url_real_data_pending": "https://www.ukrstat.gov.ua/druk/publicat/kat_u/publdomogosp_u.htm",
-    "_url_authoritative_when_obtained": "https://www.europeansocialsurvey.org/ (R11 Ukraine National Technical Summary contains exact hinctnta UAH boundaries — behind registration)",
-    "_confidence": "low — these are estimates, not measured boundaries",
-    "_unit": "UAH/month per HOUSEHOLD (total, all sources, net of tax) — matches ESS hinctnta question",
-    "_year_estimated": 2024,
-    "_caveat": "ВАЖЛИВО: точні межі децилів для 2024 публічно недоступні. Числа тут — приблизна екстраполяція з 2021 ОУЖД + інфляція + анкер на середню нетто-зп. Порядок величин правильний, конкретні цифри можуть бути ±20-30%. Filter logic (matching decile-to-decile) НЕ страждає — ESS присвоює деци правильно. Невпевненість тільки у тултіпі «дециль = X грн».",
-    "_todo": "Завантажити ESS R11 NTS і замінити на точні UAH-межі.",
+    "_source": "ESS Round 11 Ukraine, show card 80 for question F41 ('Общий месячный доход всех членов семьи, приблизительно'). Це офіційні межі hinctnta для України, фіксовані ESS-командою на момент польового дослідження 2024.",
+    "_url": "https://www.europeansocialsurvey.org/",
+    "_confidence": "high",
+    "_unit": "UAH/month per HOUSEHOLD (total, all sources, net of tax) — точно як ESS hinctnta",
+    "_year": 2024,
+    "_letters": "J=1, R=2, C=3, M=4, F=5, S=6, K=7, P=8, D=9, H=10",
     "bounds_uah": [
-      7000, 10000, 13000, 17000, 21000, 27000, 35000, 48000, 70000, null
+      10800, 15500, 18400, 23100, 26200, 29100, 33700, 36300, 42100, null
     ]
   }
 }
