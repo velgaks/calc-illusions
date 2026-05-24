@@ -43,8 +43,8 @@ export default function HomePage({ data }) {
       <header className="home-hero">
         <h1>{uk.appTagline}</h1>
         <p className="home-sub">
-          Не перемноження часток як на calc.prosto.best.
-          Joint-розподіл з ESS — те ж саме питання, але без обману.
+          Реальна частка з мікроданих ESS Ukraine (n = 2581, поле 2024) —
+          а не множення окремих ймовірностей, яке вигадує неіснуючу унікальність.
         </p>
       </header>
 

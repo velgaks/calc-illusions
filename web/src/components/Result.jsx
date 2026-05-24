@@ -2,19 +2,7 @@ import { useState } from 'react';
 import { uk } from '../i18n/uk.js';
 import SourceBadge from './SourceBadge.jsx';
 import Pictogram from './Pictogram.jsx';
-
-// Чи активний хоч один справжній фільтр (sex/age не рахуються — вони базові).
-function hasActiveFilters(state) {
-  if (state.heightMin != null) return true;
-  if (state.incomeDecileMin != null) return true;
-  if (state.education != null) return true;
-  if (state.politics != null) return true;
-  if (state.sporty != null) return true;
-  if (state.religious != null) return true;
-  if (state.language != null) return true;
-  for (const v of Object.values(state.flags)) if (v) return true;
-  return false;
-}
+import { describeState, hasActiveFilters } from '../lib/describeState.js';
 
 export default function Result({ result, data, state }) {
   const [showFormula, setShowFormula] = useState(false);
@@ -51,7 +39,7 @@ export default function Result({ result, data, state }) {
 
   return (
     <div className="result">
-      <p className="result-pretitle">{uk.result.pretitle}</p>
+      <p className="result-summary">{describeState(state)}</p>
 
       <Pictogram share={result.shareFinal} sex={state.sex} />
 

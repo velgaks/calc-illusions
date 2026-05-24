@@ -348,6 +348,17 @@
   font-size: 0.875rem;
 }
 
+.result-summary {
+  margin: 0 0 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--bg-elev);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  color: var(--text);
+  line-height: 1.4;
+}
+
 .result-big {
   display: flex;
   flex-direction: column;
