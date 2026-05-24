@@ -22,9 +22,9 @@ export const uk = {
     educationMin: 'Освіта',
     educationBuckets: {
       any: 'Не важливо',
-      basic: 'Базова',
-      vocational: 'Профтех',
-      higher: 'Вища'
+      basic: 'Школа',
+      vocational: 'Профтех / коледж',
+      higher: 'Вища (бак+)'
     },
     flags: {
       smokesNo: 'Не курить',

@@ -17,9 +17,9 @@ function adj(state, masc, fem) {
 }
 
 const EDU = {
-  basic:      'базова освіта',
-  vocational: 'профтех',
-  higher:     'вища освіта'
+  basic:      'школа',
+  vocational: 'профтех / коледж',
+  higher:     'вища освіта (бак+)'
 };
 
 export function describeState(state) {

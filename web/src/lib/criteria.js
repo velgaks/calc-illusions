@@ -2,10 +2,16 @@
 // respondent → satisfies-all. Спільне ядро для calculator, bootstrap, decomposition.
 
 // Бакети освіти → набір валідних eisced-кодів.
+// Бакети узгоджені з українським побутовим вжитком + UNESCO tertiary:
+//   basic      = ISCED 1-3 (школа)
+//   vocational = ISCED 4-5 (профтех, молодший спеціаліст, коледж)
+//   higher     = ISCED 6-7 (бакалавр+, магістр+)
+// Колишній варіант (5-7 як «вища») давав 65.9% серед 25+, що завищує
+// проти World Bank tertiary ~50% і повсякденного значення «вища освіта».
 const EDU_BUCKET_SETS = {
   basic:      new Set([1, 2, 3]),
-  vocational: new Set([4]),
-  higher:     new Set([5, 6, 7])
+  vocational: new Set([4, 5]),
+  higher:     new Set([6, 7])
 };
 
 // state → плаский об'єкт з ключами тільки для АКТИВНИХ критеріїв.
@@ -60,7 +66,7 @@ export function satisfiesAll(r, c) {
 export function criterionLabel(key, state) {
   switch (key) {
     case 'eiscedSet': {
-      const m = { basic: 'базова', vocational: 'профтех', higher: 'вища' };
+      const m = { basic: 'школа', vocational: 'профтех/коледж', higher: 'вища (бак+)' };
       return `Освіта: ${m[state.education] ?? state.education}`;
     }
     case 'hinctnta':

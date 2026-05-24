@@ -1,52 +1,39 @@
-# Перевіряємо точну комбінацію з UI напряму на raw ESS R11.
-# Фільтри зі скріншоту:
-#   Чол 33-47, зріст >= 180, дохід >= 8 дец., вища (eisced 5-7),
-#   не курить, помірний алк, спортивний (dosprt >= 3),
-#   релігійний (rlgdgr >= 5), україномовний
-
-suppressPackageStartupMessages(library(haven))
-suppressPackageStartupMessages(library(dplyr))
-
+suppressPackageStartupMessages({ library(haven); library(dplyr) })
 d <- read_sav("data/raw/ESS11e04_1-subset.sav")
-
-apply_filter <- function(df, expr, label) {
-  before <- nrow(df)
-  before_w <- sum(df$pspwght, na.rm = TRUE)
-  out <- df %>% filter(!!rlang::parse_expr(expr))
-  after <- nrow(out)
-  after_w <- sum(out$pspwght, na.rm = TRUE)
-  cat(sprintf("%-45s | n: %4d → %4d (-%3d)  | wsum: %6.1f → %6.1f\n",
-              label, before, after, before - after, before_w, after_w))
-  out
+wshare <- function(cond, w) {
+  ok <- !is.na(cond) & !is.na(w)
+  sum(w[ok] * as.numeric(cond[ok])) / sum(w[ok])
 }
 
-cat("=== Прогресивне звуження ===\n")
-cat(sprintf("%-45s | %15s | %16s\n", "Filter", "n drop", "weighted sum"))
-cat(strrep("-", 90), "\n")
+cat("== Уточнення підозрілих маргіналів ==\n\n")
 
-w <- d
-w <- apply_filter(w, "gndr == 1",                                "Чол.")
-w <- apply_filter(w, "agea >= 33 & agea <= 47",                  "Вік 33-47")
-w <- apply_filter(w, "!is.na(height) & height >= 180",           "Зріст >= 180")
-w <- apply_filter(w, "!is.na(hinctnta) & hinctnta >= 8",         "Дохід >= 8 дец.")
-w <- apply_filter(w, "!is.na(eisced) & eisced >= 5",             "Вища (ISCED 5-7)")
-w <- apply_filter(w, "!is.na(cgtsmok) & cgtsmok %in% c(4,5,6)",  "Не курить")
-w <- apply_filter(w, "!is.na(alcfreq) & alcfreq %in% c(4,5,6,7)","П'є помірно або менше")
-w <- apply_filter(w, "!is.na(dosprt) & dosprt >= 3",             "Спортивний (>= 3 дні/тиждень)")
-w <- apply_filter(w, "!is.na(rlgdgr) & rlgdgr >= 5",             "Релігійний (>= 5)")
-w <- apply_filter(w, "!is.na(lnghom1) & toupper(lnghom1) == 'UKR'", "Україномовний")
-
-cat("\n=== Фінал ===\n")
-cat("Респондентів, що пройшли усі фільтри:", nrow(w), "\n")
-if (nrow(w) > 0) {
-  print(w %>% select(idno, agea, eisced, hinctnta, height, cgtsmok,
-                     alcfreq, dosprt, rlgdgr, lnghom1, pspwght))
+# Куріння — повна декомпозиція
+m_smk <- d %>% filter(gndr == 1, agea >= 18, !is.na(cgtsmok))
+cat("Чоловіки 18+, розподіл cgtsmok:\n")
+for (code in 1:6) {
+  share <- wshare(m_smk$cgtsmok == code, m_smk$pspwght)
+  labels <- c("1=daily 10+", "2=daily <10", "3=not every day", "4=quit", "5=tried few times", "6=never")
+  cat(sprintf("  %-20s %.1f%%\n", labels[code], share*100))
 }
+cat("  --- агрегати ---\n")
+cat(sprintf("  daily (1+2):           %.1f%% ← WHO 'current daily' definition\n",
+            wshare(m_smk$cgtsmok %in% c(1,2), m_smk$pspwght)*100))
+cat(sprintf("  current (1+2+3):       %.1f%% ← наше 'смокс' зараз\n",
+            wshare(m_smk$cgtsmok %in% c(1,2,3), m_smk$pspwght)*100))
+cat(sprintf("  ever-smoked (1-4):     %.1f%%\n",
+            wshare(m_smk$cgtsmok %in% c(1,2,3,4), m_smk$pspwght)*100))
 
-# Загальна базова чисельність М 33-47 за нашими external.json:
-cat("\nЯкщо хоч 1 знайдений → екстраполяція:\n")
-total_window <- d %>% filter(gndr == 1, agea >= 33, agea <= 47)
-share_unweighted <- nrow(w) / nrow(total_window)
-share_weighted <- if (nrow(w) > 0) sum(w$pspwght) / sum(total_window$pspwght) else 0
-cat(sprintf("  Window n=%d, matched=%d → unweighted %.2f%%, weighted %.2f%%\n",
-            nrow(total_window), nrow(w), share_unweighted*100, share_weighted*100))
+# Освіта — за рівнем
+adults <- d %>% filter(agea >= 25, !is.na(eisced))
+cat("\nДорослі 25+, ISCED:\n")
+for (lev in 1:7) {
+  share <- wshare(adults$eisced == lev, adults$pspwght)
+  cat(sprintf("  ISCED %d: %.1f%%\n", lev, share*100))
+}
+cat("  --- агрегати ---\n")
+cat(sprintf("  ISCED 5-7 (наше «вища»):  %.1f%% ← включно з молодший спеціаліст\n",
+            wshare(adults$eisced %in% c(5,6,7), adults$pspwght)*100))
+cat(sprintf("  ISCED 6-7 (bachelor+):    %.1f%% ← стандартне 'tertiary' UNESCO\n",
+            wshare(adults$eisced %in% c(6,7), adults$pspwght)*100))
+cat(sprintf("  ISCED 7 (master+):        %.1f%%\n",
+            wshare(adults$eisced == 7, adults$pspwght)*100))
