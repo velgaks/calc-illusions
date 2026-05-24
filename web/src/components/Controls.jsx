@@ -33,28 +33,15 @@ export default function Controls({ state, onChange, data }) {
           {uk.controls.ageRange}
           <span className="legend-val">{state.ageMin}–{state.ageMax}</span>
         </legend>
-        <div className="dual-range">
-          <input
-            type="range"
-            min={AGE_MIN} max={AGE_MAX}
-            value={state.ageMin}
-            onChange={e => {
-              const v = parseInt(e.target.value, 10);
-              onChange({ ageMin: Math.min(v, state.ageMax) });
-            }}
-            aria-label={`${uk.controls.ageFrom}`}
-          />
-          <input
-            type="range"
-            min={AGE_MIN} max={AGE_MAX}
-            value={state.ageMax}
-            onChange={e => {
-              const v = parseInt(e.target.value, 10);
-              onChange({ ageMax: Math.max(v, state.ageMin) });
-            }}
-            aria-label={`${uk.controls.ageTo}`}
-          />
-        </div>
+        <DualRange
+          min={AGE_MIN} max={AGE_MAX}
+          valueMin={state.ageMin}
+          valueMax={state.ageMax}
+          onChangeMin={v => onChange({ ageMin: Math.min(v, state.ageMax) })}
+          onChangeMax={v => onChange({ ageMax: Math.max(v, state.ageMin) })}
+          ariaLabelMin={uk.controls.ageFrom}
+          ariaLabelMax={uk.controls.ageTo}
+        />
       </fieldset>
 
       {/* Height */}
@@ -216,6 +203,35 @@ function formatUah(n) {
   if (n == null) return '—';
   if (n >= 1000) return Math.round(n / 100) / 10 + ' тис.';
   return String(n);
+}
+
+// Dual-range з підсвіченим інтервалом між ручками.
+// Базовий <input type=range> не вміє «fill між значеннями», тому накладаємо
+// абсолютно-позиціонований fill-div, а нативний track робимо прозорим.
+function DualRange({ min, max, valueMin, valueMax, onChangeMin, onChangeMax, ariaLabelMin, ariaLabelMax }) {
+  const span = max - min;
+  const leftPct  = ((valueMin - min) / span) * 100;
+  const rightPct = 100 - ((valueMax - min) / span) * 100;
+  return (
+    <div className="dual-range">
+      <div className="dual-range-track" />
+      <div className="dual-range-fill" style={{ left: `${leftPct}%`, right: `${rightPct}%` }} />
+      <input
+        type="range"
+        min={min} max={max}
+        value={valueMin}
+        onChange={e => onChangeMin(parseInt(e.target.value, 10))}
+        aria-label={ariaLabelMin}
+      />
+      <input
+        type="range"
+        min={min} max={max}
+        value={valueMax}
+        onChange={e => onChangeMax(parseInt(e.target.value, 10))}
+        aria-label={ariaLabelMax}
+      />
+    </div>
+  );
 }
 
 function ChoiceGroup({ label, value, options, onChange }) {
