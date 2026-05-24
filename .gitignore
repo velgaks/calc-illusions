@@ -39,3 +39,6 @@ yarn-error.log*
 # Temporary
 *.tmp
 *.bak
+
+# Claude Code per-project state — skills встановлюються локально, не комітимо
+.claude/skills/
