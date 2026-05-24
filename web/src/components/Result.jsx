@@ -46,10 +46,10 @@ export default function Result({ result, data, state }) {
       {result.nMatch === 0 && result.nWindow > 0 && (
         <p className="result-zero-note">
           У ESS-вибірці серед {result.nWindow} {state.sex === 'M' ? 'чоловіків' : 'жінок'}{' '}
-          {state.ageMin}–{state.ageMax} років жоден не пройшов усі фільтри одночасно.
-          Це <strong>не означає, що таких не існує</strong> — лише що вибірка надто мала,
-          щоб їх ловити. Верхня межа CI ({formatShare(result.ci.high)}) — це чесна оцінка
-          того, скільки їх <em>може</em> бути.
+          {state.ageMin}–{state.ageMax} років жоден не пройшов усі фільтри.
+          Це <strong>не значить що таких немає</strong>. Просто вибірка замала
+          щоб ловити рідкісні комбінації. Чесніша відповідь у верхній межі CI ({formatShare(result.ci.high)}):
+          стільки таких <em>може</em> бути на території.
         </p>
       )}
 

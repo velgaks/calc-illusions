@@ -43,8 +43,8 @@ export default function HomePage({ data }) {
       <header className="home-hero">
         <h1>{uk.appTagline}</h1>
         <p className="home-sub">
-          Реальна частка з мікроданих ESS Ukraine (n = 2581, поле 2024) —
-          а не множення окремих ймовірностей, яке вигадує неіснуючу унікальність.
+          Підбираєш ознаки, бачиш скільки таких живе на території.
+          База: 2581 інтерв'ю ESS Ukraine, поле 2024.
         </p>
       </header>
 

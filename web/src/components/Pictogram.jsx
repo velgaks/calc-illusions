@@ -50,7 +50,7 @@ export default function Pictogram({ share, ci }) {
       : <><strong>{filled}</strong> з {TOTAL}</>;
   } else {
     if (ciHigh >= 1) {
-      caption = <><strong>0</strong> з {TOTAL} solid · CI допускає до <strong>{ciHigh}</strong></>;
+      caption = <><strong>0</strong> з {TOTAL}, CI допускає до <strong>{ciHigh}</strong></>;
     } else {
       caption = <>менше <strong>1</strong> з {TOTAL} (≈ {(share * 1000).toFixed(1)} з 1 000)</>;
     }
