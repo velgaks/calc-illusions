@@ -76,7 +76,7 @@ export function criterionLabel(key, state) {
     case 'smokes':
       return 'Не курить';
     case 'alcMax':
-      return 'Помірно алкоголь';
+      return 'Не п\'є або помірно';
     case 'kidsHome':
       return 'Немає своїх дітей <18 вдома';
     case 'marsts':

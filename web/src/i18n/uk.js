@@ -28,7 +28,7 @@ export const uk = {
     },
     flags: {
       smokesNo: 'Не курить',
-      moderateAlc: 'П\'є помірно або взагалі',
+      moderateAlc: 'Не п\'є або п\'є помірно',
       noKidsHome: 'Немає своїх дітей <18 вдома',
       notMarried: 'Не у шлюбі або партнерстві'
     },
