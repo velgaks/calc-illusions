@@ -32,7 +32,7 @@ export function describeState(state) {
   if (state.flags?.notMarried)        parts.push('не у шлюбі');
   if (state.flags?.smokesNo)          parts.push('не курить');
   if (state.flags?.moderateAlc)       parts.push('пʼє помірно');
-  if (state.flags?.noKidsHome)        parts.push('без дітей');
+  if (state.flags?.noKidsHome)        parts.push('без своїх дітей вдома');
 
   if (state.politics === 'left')      parts.push('лівих поглядів');
   if (state.politics === 'right')     parts.push('правих поглядів');

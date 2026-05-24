@@ -124,20 +124,29 @@ log_var <- function(canonical, picked) {
   picked$values
 }
 
-# kidsHome: чи живе зараз з дитиною < 18 років.
-# Виводимо з yrbrn2..yrbrn13 (роки народження членів домогосподарства 2..13).
-# Це КРАЩЕ за chldhhe (який питає "колись жив з дітьми"), бо для partner-search
-# нас цікавить ПОТОЧНА ситуація.
-yrbrn_cols <- intersect(paste0("yrbrn", 2:13), names(raw))
+# kidsHome: чи живе зараз з ВЛАСНОЮ дитиною < 18 років.
+# Виводимо з пари yrbrn{N} + rshipa{N}: рік народження + відношення N-го члена ДГ
+# до респондента (код 2 = син/донька/прийом/пасинок). Це точніше за просте
+# "хтось <18 у ДГ" — не плутає з племінниками, дітьми партнера, молодшими братами.
+yrbrn_cols  <- intersect(paste0("yrbrn", 2:13),  names(raw))
+rship_cols  <- intersect(paste0("rshipa", 2:13), names(raw))
 field_year <- if ("essround" %in% names(raw) && unique(raw$essround) == 11) 2024 else 2020
-if (length(yrbrn_cols) > 0) {
+if (length(yrbrn_cols) > 0 && length(rship_cols) > 0) {
+  raw$kidsHome <- as.integer(vapply(seq_len(nrow(raw)), function(i) {
+    yrs  <- as.numeric(unlist(raw[i, yrbrn_cols]))
+    rels <- as.numeric(unlist(raw[i, rship_cols]))
+    ages <- field_year - yrs
+    any(!is.na(rels) & rels == 2 & !is.na(ages) & ages >= 0 & ages < 18)
+  }, logical(1)))
+  var_sources[["kidsHome"]] <- paste0("rshipa{N}==2 AND yrbrn{N}<18, field_year=", field_year)
+} else if (length(yrbrn_cols) > 0) {
+  # Fallback: будь-хто <18 (менш точно — ловить племінників і дітей партнера)
   raw$kidsHome <- as.integer(apply(raw[, yrbrn_cols, drop = FALSE], 1, function(row) {
     ages <- field_year - as.numeric(row)
     any(!is.na(ages) & ages >= 0 & ages < 18)
   }))
-  var_sources[["kidsHome"]] <- paste0("derived from ", paste(yrbrn_cols, collapse = ","))
+  var_sources[["kidsHome"]] <- paste0("yrbrn{N}<18 (без rship — fallback), field_year=", field_year)
 } else {
-  # Fallback: chldhhe (ever had kids) — менш точний семантично
   raw$kidsHome <- NA_integer_
 }
 
