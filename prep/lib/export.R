@@ -38,12 +38,16 @@ export_respondents <- function(df, precomputed_se, wave, source_file, out_path) 
 # external та інші секції залишаємо як є (там TODO заповнює людина).
 update_methodology <- function(out_path, wave, n_respondents, source_file,
                                 variables_present, variables_missing,
+                                variable_sources = list(),
+                                canonical_present = character(0),
+                                canonical_missing = character(0),
                                 weight_var, fieldwork_year) {
   current <- if (file.exists(out_path)) {
     fromJSON(out_path, simplifyVector = FALSE)
   } else {
     list()
   }
+  current$mock <- FALSE
   current$ess <- list(
     source             = "European Social Survey",
     url                = "https://www.europeansocialsurvey.org/",
@@ -54,6 +58,9 @@ update_methodology <- function(out_path, wave, n_respondents, source_file,
     fieldwork_year     = fieldwork_year,
     variables_present  = as.list(variables_present),
     variables_missing  = as.list(variables_missing),
+    variable_sources   = variable_sources,
+    canonical_present  = as.list(canonical_present),
+    canonical_missing  = as.list(canonical_missing),
     updated_at         = format(Sys.time(), "%Y-%m-%dT%H:%M:%SZ", tz = "UTC")
   )
   write_json(

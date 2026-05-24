@@ -12,6 +12,9 @@
   text-align: center;
   flex-wrap: wrap;
 }
+.mock-banner.mock-banner-partial {
+  background: #d49a1e;  /* amber — менш тривожний за червоний */
+}
 .mock-banner-tag {
   background: rgba(255, 255, 255, 0.25);
   padding: 0.1rem 0.5rem;
@@ -24,6 +27,10 @@
   background: rgba(0, 0, 0, 0.25);
   padding: 0.05rem 0.35rem;
   border-radius: 3px;
+}
+.mock-banner-text a {
+  color: white;
+  text-decoration: underline;
 }
 
 /* ---- Controls ------------------------------------------------------------*/

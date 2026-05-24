@@ -29,3 +29,13 @@ async function fetchJson(url) {
 export function isMockData({ respondents, external, methodology }) {
   return Boolean(respondents?.mock || external?.mock || methodology?.mock);
 }
+
+// Деталізований стан моку для адаптивного банера.
+//   'demo'    — все синтетичне (немає реальних даних взагалі)
+//   'partial' — ESS реальні, але зовнішні множники (зріст / когорти / доходи) — плейсхолдер
+//   null      — все реальне, банер не потрібен
+export function getMockLevel({ respondents, external }) {
+  if (respondents?.mock) return 'demo';
+  if (external?.mock) return 'partial';
+  return null;
+}

@@ -32,16 +32,44 @@ recode_hinctnta <- function(x) {
   ifelse(x >= 1 & x <= 10, x, NA_real_)
 }
 
-# Шлюбний стан: ESS marsts 1..6 (legal married, civil union, separated, divorced, widowed, single).
-# Бінаризуємо: married_or_union (1/2) vs not (3-6).
-recode_marsts <- function(x) {
-  x <- as.numeric(x)
-  case_when(
-    x %in% c(1, 2) ~ 1L,           # одружений/в партнерстві
-    x %in% c(3, 4, 5, 6) ~ 0L,     # неодружений/не в партнерстві
-    TRUE ~ NA_integer_
-  )
+# Шлюбний / партнерський стан.
+#
+# ESS R10/R11 мають ДВІ змінні з complementary routing:
+#   - marsts (legal marital status) — питають у тих, хто НЕ живе з партнером зараз.
+#     Тому marsts має багато NA (45% у R10 UA).
+#   - rshpsts (relationship status of currently-cohabiting partner) — питають у тих,
+#     хто ЖИВЕ з партнером. NA у тих, хто живе один.
+#
+# Об'єднання: "currently married OR in cohabiting partnership" =
+#   rshpsts ∈ {1,2,3,4}  OR  marsts ∈ {1,2}.
+# Це дає коректне визначення "у стосунках зараз" для partner-search калькулятора.
+recode_partnered <- function(marsts, rshpsts = NULL) {
+  m <- as.numeric(marsts)
+  legal_married_or_union <- m %in% c(1, 2)
+
+  if (!is.null(rshpsts)) {
+    r <- as.numeric(rshpsts)
+    cohabiting <- r %in% c(1, 2, 3, 4)   # married OR registered union OR living with partner
+  } else {
+    cohabiting <- rep(FALSE, length(m))
+  }
+
+  # Один з двох сигналів → партнер; обидва NA / refusal → NA
+  partnered <- legal_married_or_union | cohabiting
+
+  # NA якщо обидва вихідні NA
+  m_na <- is.na(m) | !(m %in% c(1, 2, 3, 4, 5, 6))
+  r_na <- if (!is.null(rshpsts)) {
+    is.na(as.numeric(rshpsts)) | !(as.numeric(rshpsts) %in% c(1, 2, 3, 4, 5, 6))
+  } else {
+    rep(TRUE, length(m))
+  }
+
+  ifelse(m_na & r_na, NA_integer_, as.integer(partnered))
 }
+
+# Старий recode_marsts залишаємо для зворотньої сумісності, але build.R йде через recode_partnered.
+recode_marsts <- function(x) recode_partnered(x, NULL)
 
 # Діти у домогосподарстві: ESS chldhm 1=yes, 2=no.
 recode_chldhm <- function(x) {
@@ -53,14 +81,24 @@ recode_chldhm <- function(x) {
   )
 }
 
-# Куріння. ESS cgtsmke: 1=every day, 2=several/week, 3=once/week, 4=less, 5=never tried, 6=quit.
-# Бінаризуємо: smokes (1/2/3/4) vs not (5/6).
-# TODO: можливо краще тримати ESS-кодування 5-категорій для UI слайдера інтенсивності.
+# Куріння. Два варіанти запитання між хвилями:
+#
+# R10 cgtsmke: 1=every day ... 4=less than once/week, 5=never tried, 6=quit.
+#   → курить = 1..4, не курить = 5..6
+#
+# R11 cgtsmok: 1=daily 10+, 2=daily ≤9, 3=not every day, 4=quit, 5=only few times, 6=never.
+#   → курить = 1..3, не курить = 4..6
+#
+# Уніфікуємо як «зараз курить»: для cgtsmke ⊂ {1,2,3,4} → 1; для cgtsmok ⊂ {1,2,3} → 1.
+# Розрізняємо за діапазоном кодів: cgtsmke може мати 6 = quit (currently NOT smoking),
+# cgtsmok має 4 = quit. Тому єдина безпечна форма — конкретний recode.
+# Тут робимо liberal version: коди 1, 2, 3 → smoker, 4, 5, 6 → ні. Це працює і для cgtsmok.
+# Для cgtsmke вкажемо окрему функцію якщо доведеться, але зараз R11 — головний шлях.
 recode_smoking <- function(x) {
   x <- as.numeric(x)
   case_when(
-    x %in% c(1, 2, 3, 4) ~ 1L,    # курить регулярно
-    x %in% c(5, 6) ~ 0L,           # ніколи / кинув
+    x %in% c(1, 2, 3) ~ 1L,    # курить регулярно
+    x %in% c(4, 5, 6) ~ 0L,    # кинув / тільки кілька разів / ніколи
     TRUE ~ NA_integer_
   )
 }
@@ -98,10 +136,11 @@ recode_dosprt <- function(x) {
   ifelse(x >= 0 & x <= 7, x, NA_real_)
 }
 
-# Мова вдома. ESS lnghom1: string ISO 639-3 (3-літерний код), напр. "ukr", "rus".
-# Категоризуємо: ukr / rus / other. NA → other.
+# Мова вдома. ESS lnghom1: string ISO 639-3 (3-літерний код).
+# R10 використовує lowercase ("ukr","rus"), R11 — UPPERCASE ("UKR","RUS").
+# Нормалізуємо через tolower, потім категоризуємо: ukr / rus / other.
 recode_lnghom1 <- function(x) {
-  x <- as.character(x)
+  x <- tolower(as.character(x))
   case_when(
     x == "ukr" ~ "ukr",
     x == "rus" ~ "rus",

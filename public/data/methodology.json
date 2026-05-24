@@ -1,38 +1,63 @@
 {
-  "mock": true,
+  "mock": false,
   "generated_at": "2026-05-24T14:26:40.208Z",
   "ess": {
-    "source": "Synthetic mock — НЕ ESS",
+    "source": "European Social Survey",
     "url": "https://www.europeansocialsurvey.org/",
-    "wave": "mock",
-    "file": "mock",
-    "n_respondents": 500,
-    "weight_var": "pspwght",
-    "fieldwork_year": null,
+    "wave": "ESS11",
+    "file": "ESS11e04_1-subset.sav",
+    "n_respondents": 2581,
+    "weight_var": "anweight",
+    "fieldwork_year": 2024,
     "variables_present": [
       "gndr",
       "agea",
       "eisced",
       "hinctnta",
+      "pspwght",
+      "anweight",
+      "rlgdgr",
+      "lrscale",
+      "dosprt",
+      "lnghom1",
       "marsts",
+      "rshpsts",
+      "chldhhe",
+      "cgtsmok",
+      "alcfreq"
+    ],
+    "variables_missing": [],
+    "variable_sources": {
+      "chldhm": "chldhhe",
+      "smokes": "cgtsmok",
+      "alc": "alcfreq",
+      "rlgdgr": "rlgdgr",
+      "lrscale": "lrscale",
+      "dosprt": "dosprt",
+      "lnghom1": "lnghom1"
+    },
+    "canonical_present": [
       "chldhm",
       "smokes",
       "alc",
-      "pspwght"
+      "rlgdgr",
+      "lrscale",
+      "dosprt",
+      "lnghom1"
     ],
-    "variables_missing": [],
-    "updated_at": "2026-05-24T14:26:40.208Z"
+    "canonical_missing": [],
+    "updated_at": "2026-05-24T15:31:29Z"
   },
   "height": {
     "source": "NCD Risk Factor Collaboration (TODO заповнити)",
     "url": "https://ncdrisc.org/",
-    "publication_year": null,
+    "publication_year": {},
     "license": "CC BY 4.0 (типово для NCD-RisC)"
   },
   "cohorts": {
     "source": "Інститут демографії та досліджень якості життя ім. М.В. Птухи НАН України (TODO)",
     "url": "https://www.demography.org.ua/",
-    "estimate_date": null,
+    "estimate_date": {},
     "territory": "підконтрольна територія України"
   },
   "income": {

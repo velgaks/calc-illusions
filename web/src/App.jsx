@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import HomePage from './pages/HomePage.jsx';
 import MethodologyPage from './pages/MethodologyPage.jsx';
 import MockBanner from './components/MockBanner.jsx';
-import { loadAllData, isMockData } from './data/loader.js';
+import { loadAllData, getMockLevel } from './data/loader.js';
 import { uk } from './i18n/uk.js';
 
 export default function App() {
@@ -43,9 +43,10 @@ export default function App() {
     );
   }
 
+  const mockLevel = getMockLevel(data);
   return (
     <div className="app">
-      {isMockData(data) && <MockBanner />}
+      {mockLevel && <MockBanner level={mockLevel} />}
       <header className="app-header">
         <Link to="/" className="logo">
           <span className="logo-mark">∑</span>

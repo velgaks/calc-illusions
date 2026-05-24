@@ -32,7 +32,7 @@ export const uk = {
     flags: {
       smokesNo: 'Не курить',
       moderateAlc: 'П\'є помірно або взагалі',
-      noKidsHome: 'Без дітей у домогосподарстві',
+      noKidsHome: 'Ніколи не жив з дітьми вдома',
       married: 'У шлюбі або партнерстві'
     },
     choices: {
@@ -78,8 +78,11 @@ export const uk = {
 
 
   mock: {
-    bannerTitle: 'DEMO DATA',
-    bannerBody: 'Дані синтетичні. Це макет для розробки UI. Замінюй через ',
-    bannerCode: 'Rscript prep/build.R'
+    demoTitle: 'DEMO DATA',
+    demoBody: 'Дані синтетичні. Це макет для розробки UI. Замінюй через ',
+    demoCode: 'Rscript prep/build.R',
+    partialTitle: 'ЧАСТКОВО МОК',
+    partialBody: 'ESS — реальна вибірка. Зріст, чисельність когорт і дохідні децилі — поки що плейсхолдер. Деталі — ',
+    partialLink: 'на сторінці методології'
   }
 };

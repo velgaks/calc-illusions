@@ -57,7 +57,7 @@ export function criterionLabel(key, state) {
     case 'alcMax':
       return 'Помірно алкоголь';
     case 'chldhm':
-      return 'Без дітей у домогосподарстві';
+      return 'Ніколи не жив з дітьми вдома';
     case 'marsts':
       return 'У шлюбі або партнерстві';
     case 'lrscaleMax':

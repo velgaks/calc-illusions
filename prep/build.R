@@ -40,23 +40,28 @@ dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 
 # ---- 1. Знайти і прочитати .sav --------------------------------------------
 
-# Пріоритет: повний R11 → R11 country-specific → R10.
-# Користувач може покласти будь-який — підбираємо найкращий доступний.
+# Пріоритет: повний substantive R11 → R10.
+# ESS contact study (cs у назві) — це non-response дані, не респонденти. НЕ використовуємо.
 detect_sav_file <- function(dir) {
   priorities <- c(
-    "ESS11_UA.sav", "ESS11UA.sav", "ESS11ce01_UA.sav",
-    "ESS11csUAe01.sav", "ESS11cs_UA.sav",
-    "ESS10UAe4.sav", "ESS10_UA.sav"
+    # R11 substantive (повний набір)
+    "ESS11_UA.sav", "ESS11UA.sav",
+    "ESS11e04_1-subset.sav", "ESS11e04_UA.sav",
+    "ESS11e03_UA.sav", "ESS11e02_UA.sav", "ESS11e01_UA.sav",
+    # R10 substantive
+    "ESS10UAe4.sav", "ESS10_UA.sav", "ESS10e3.0_UA.sav"
   )
   for (name in priorities) {
     path <- file.path(dir, name)
     if (file.exists(path)) return(path)
   }
-  # Fallback: будь-який .sav у папці
+  # Fallback: будь-який .sav без "cs" / "contact" у назві
   candidates <- list.files(dir, pattern = "\\.sav$", full.names = TRUE)
+  candidates <- candidates[!grepl("cs|contact", basename(candidates), ignore.case = TRUE)]
   if (length(candidates) > 0) return(candidates[1])
-  stop("Не знайдено жодного .sav файлу в ", dir,
-       ". Завантаж ESS з europeansocialsurvey.org → Ukraine, поклади у data/raw/.")
+  stop("Не знайдено substantive .sav файлу в ", dir,
+       ". ESS contact study (cs) не містить респондентських відповідей. ",
+       "Завантаж основний ESS-файл з europeansocialsurvey.org → Ukraine.")
 }
 
 sav_path <- detect_sav_file(raw_dir)
@@ -74,10 +79,13 @@ cat("   wave =", wave, "\n")
 
 required_vars <- c(
   "gndr", "agea", "eisced", "hinctnta",
-  "marsts", "chldhm", "cgtsmke", "alcfreq",
   "pspwght"
 )
-optional_vars <- c("anweight", "rlgdgr", "lrscale", "dosprt", "lnghom1")
+# Змінні з аліасами — перевіряються через pick_first() нижче.
+# Тут лише ті, що не мають альтернативних імен між хвилями.
+optional_vars <- c("anweight", "rlgdgr", "lrscale", "dosprt", "lnghom1",
+                   "marsts", "rshpsts", "chldhm", "chldhhe",
+                   "cgtsmke", "cgtsmok", "alcfreq")
 
 present <- intersect(c(required_vars, optional_vars), names(raw))
 missing_required <- setdiff(required_vars, names(raw))
@@ -99,6 +107,23 @@ if (length(missing_required) > 0) {
 
 # Усі recode_* функції — у lib/recode.R. Кожна повертає вектор чистих кодів
 # або NA для невалідних/відмов. Зберігаємо ESS-семантику кодів де можливо.
+#
+# Деякі змінні мають альтернативні імена між хвилями (chldhm у старих, chldhhe у R10).
+# pick_first() повертає першу доступну зі списку, або NA-вектор.
+pick_first <- function(raw, candidates, recode_fn = identity) {
+  for (nm in candidates) {
+    if (nm %in% names(raw)) return(list(values = recode_fn(raw[[nm]]), source = nm))
+  }
+  list(values = rep(NA, nrow(raw)), source = NA_character_)
+}
+
+# Логуємо який alias підхопився — стане у methodology.json.
+var_sources <- list()
+log_var <- function(canonical, picked) {
+  var_sources[[canonical]] <<- picked$source
+  picked$values
+}
+
 respondents <- raw %>%
   filter(if ("cntry" %in% names(raw)) cntry == "UA" else TRUE) %>%
   transmute(
@@ -107,20 +132,31 @@ respondents <- raw %>%
     agea      = recode_agea(agea),
     eisced    = recode_eisced(eisced),
     hinctnta  = recode_hinctnta(hinctnta),
-    marsts    = recode_marsts(marsts),
-    chldhm    = recode_chldhm(chldhm),
-    smokes    = if ("cgtsmke" %in% names(raw)) recode_smoking(cgtsmke) else NA,
-    alc       = if ("alcfreq" %in% names(raw)) recode_alcohol(alcfreq) else NA,
-    rlgdgr    = if ("rlgdgr"  %in% names(raw)) recode_rlgdgr(rlgdgr)   else NA_real_,
-    lrscale   = if ("lrscale" %in% names(raw)) recode_lrscale(lrscale) else NA_real_,
-    dosprt    = if ("dosprt"  %in% names(raw)) recode_dosprt(dosprt)   else NA_real_,
-    lnghom1   = if ("lnghom1" %in% names(raw)) recode_lnghom1(lnghom1) else NA_character_,
+    marsts    = recode_partnered(
+                  if ("marsts"  %in% names(raw)) marsts  else NA,
+                  if ("rshpsts" %in% names(raw)) rshpsts else NULL
+                ),
+    chldhm    = log_var("chldhm",  pick_first(raw, c("chldhm","chldhhe"), recode_chldhm)),
+    smokes    = log_var("smokes",  pick_first(raw, c("cgtsmke","cgtsmok"), recode_smoking)),
+    alc       = log_var("alc",     pick_first(raw, c("alcfreq"), recode_alcohol)),
+    rlgdgr    = log_var("rlgdgr",  pick_first(raw, c("rlgdgr"),  recode_rlgdgr)),
+    lrscale   = log_var("lrscale", pick_first(raw, c("lrscale"), recode_lrscale)),
+    dosprt    = log_var("dosprt",  pick_first(raw, c("dosprt"),  recode_dosprt)),
+    lnghom1   = log_var("lnghom1", pick_first(raw, c("lnghom1"), recode_lnghom1)),
     pspwght   = pspwght,
     anweight  = if ("anweight" %in% names(raw)) anweight else NA_real_
   ) %>%
   filter(!is.na(gndr), !is.na(agea), !is.na(pspwght)) %>%
   # ESS вибірка для жителів 15+; фронтенд цікавлять дорослі (18+)
   filter(agea >= 18, agea <= 100)
+
+# Які КАНОНІЧНІ змінні не знайшли (по жодному з alias-ів).
+missing_canonical <- names(var_sources)[sapply(var_sources, is.na)]
+present_canonical <- names(var_sources)[!sapply(var_sources, is.na)]
+cat("✓ Canonical vars present:", paste(present_canonical, collapse=", "), "\n")
+if (length(missing_canonical) > 0) {
+  cat("✗ Canonical vars missing:", paste(missing_canonical, collapse=", "), "\n")
+}
 
 cat("✓ Після перекодування і фільтра 18+: n =", nrow(respondents), "\n")
 
@@ -154,14 +190,21 @@ cat("✓ Записано respondents.json (", nrow(respondents), "рядків)
 # ---- 6. Оновлення methodology.json -----------------------------------------
 
 update_methodology(
-  out_path           = file.path(out_dir, "methodology.json"),
-  wave               = wave,
-  n_respondents      = nrow(respondents),
-  source_file        = basename(sav_path),
-  variables_present  = present,
-  variables_missing  = missing_required,
-  weight_var         = if ("anweight" %in% names(raw)) "anweight" else "pspwght",
-  fieldwork_year     = NA  # TODO: дістати з ESS metadata якщо доступно
+  out_path             = file.path(out_dir, "methodology.json"),
+  wave                 = wave,
+  n_respondents        = nrow(respondents),
+  source_file          = basename(sav_path),
+  variables_present    = present,
+  variables_missing    = missing_required,
+  variable_sources     = var_sources,
+  canonical_present    = present_canonical,
+  canonical_missing    = missing_canonical,
+  weight_var           = if ("anweight" %in% names(raw)) "anweight" else "pspwght",
+  fieldwork_year       = if ("essround" %in% names(raw)) {
+                            if (unique(raw$essround) == 10) 2020
+                            else if (unique(raw$essround) == 11) 2024
+                            else NA
+                          } else NA
 )
 cat("✓ Оновлено methodology.json\n")
 
