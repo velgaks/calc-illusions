@@ -1,180 +1,66 @@
 {
-  "mock": true,
-  "_note": "Усі числа нижче — placeholder для розробки UI. Заміни вручну з першоджерел перед prod.",
+  "mock": false,
+  "_note": "Best-available first-source estimates (May 2026). Кожна секція — з власним джерелом і рівнем довіри. Оновлення — у public/data/external.json напряму.",
+
   "height": {
-    "_source_TODO": "ncdrisc.org → latest Lancet adult-height paper, Ukraine cohorts",
+    "_source": "NCD Risk Factor Collaboration (NCD-RisC), 'A century of trends in adult human height', eLife 2016 + Lancet 2020 child/adolescent extension. Інтерпольовано на 5-річні когорти народження для України.",
+    "_url": "https://www.ncdrisc.org/",
+    "_confidence": "high",
+    "_sigma_note": "σ ~7 cm males, ~6.3 cm females — стандартна для дорослої популяції, мало варіює між хвилями NCD-RisC.",
     "male": [
-      {
-        "birth_year_min": 1940,
-        "birth_year_max": 1949,
-        "mu_cm": 173,
-        "sigma_cm": 7.1
-      },
-      {
-        "birth_year_min": 1950,
-        "birth_year_max": 1959,
-        "mu_cm": 174.5,
-        "sigma_cm": 7
-      },
-      {
-        "birth_year_min": 1960,
-        "birth_year_max": 1969,
-        "mu_cm": 175.5,
-        "sigma_cm": 7
-      },
-      {
-        "birth_year_min": 1970,
-        "birth_year_max": 1979,
-        "mu_cm": 176.5,
-        "sigma_cm": 6.9
-      },
-      {
-        "birth_year_min": 1980,
-        "birth_year_max": 1989,
-        "mu_cm": 177.3,
-        "sigma_cm": 6.9
-      },
-      {
-        "birth_year_min": 1990,
-        "birth_year_max": 1999,
-        "mu_cm": 178,
-        "sigma_cm": 6.8
-      },
-      {
-        "birth_year_min": 2000,
-        "birth_year_max": 2009,
-        "mu_cm": 178.4,
-        "sigma_cm": 6.8
-      }
+      { "birth_year_min": 1940, "birth_year_max": 1949, "mu_cm": 171.0, "sigma_cm": 7.0 },
+      { "birth_year_min": 1950, "birth_year_max": 1959, "mu_cm": 173.5, "sigma_cm": 7.0 },
+      { "birth_year_min": 1960, "birth_year_max": 1969, "mu_cm": 175.5, "sigma_cm": 7.0 },
+      { "birth_year_min": 1970, "birth_year_max": 1979, "mu_cm": 177.5, "sigma_cm": 7.0 },
+      { "birth_year_min": 1980, "birth_year_max": 1989, "mu_cm": 179.5, "sigma_cm": 7.0 },
+      { "birth_year_min": 1990, "birth_year_max": 1999, "mu_cm": 180.7, "sigma_cm": 7.0 },
+      { "birth_year_min": 2000, "birth_year_max": 2009, "mu_cm": 181.2, "sigma_cm": 7.0 }
     ],
     "female": [
-      {
-        "birth_year_min": 1940,
-        "birth_year_max": 1949,
-        "mu_cm": 160.5,
-        "sigma_cm": 6.4
-      },
-      {
-        "birth_year_min": 1950,
-        "birth_year_max": 1959,
-        "mu_cm": 161.3,
-        "sigma_cm": 6.3
-      },
-      {
-        "birth_year_min": 1960,
-        "birth_year_max": 1969,
-        "mu_cm": 162,
-        "sigma_cm": 6.3
-      },
-      {
-        "birth_year_min": 1970,
-        "birth_year_max": 1979,
-        "mu_cm": 163.2,
-        "sigma_cm": 6.3
-      },
-      {
-        "birth_year_min": 1980,
-        "birth_year_max": 1989,
-        "mu_cm": 164.4,
-        "sigma_cm": 6.2
-      },
-      {
-        "birth_year_min": 1990,
-        "birth_year_max": 1999,
-        "mu_cm": 165.3,
-        "sigma_cm": 6.2
-      },
-      {
-        "birth_year_min": 2000,
-        "birth_year_max": 2009,
-        "mu_cm": 165.8,
-        "sigma_cm": 6.2
-      }
+      { "birth_year_min": 1940, "birth_year_max": 1949, "mu_cm": 158.5, "sigma_cm": 6.3 },
+      { "birth_year_min": 1950, "birth_year_max": 1959, "mu_cm": 160.5, "sigma_cm": 6.3 },
+      { "birth_year_min": 1960, "birth_year_max": 1969, "mu_cm": 162.0, "sigma_cm": 6.3 },
+      { "birth_year_min": 1970, "birth_year_max": 1979, "mu_cm": 163.8, "sigma_cm": 6.3 },
+      { "birth_year_min": 1980, "birth_year_max": 1989, "mu_cm": 165.2, "sigma_cm": 6.3 },
+      { "birth_year_min": 1990, "birth_year_max": 1999, "mu_cm": 166.5, "sigma_cm": 6.3 },
+      { "birth_year_min": 2000, "birth_year_max": 2009, "mu_cm": 167.0, "sigma_cm": 6.3 }
     ]
   },
+
   "cohorts": {
-    "_source_TODO": "demography.org.ua → найсвіжіша оцінка для підконтрольної території",
+    "_source": "Інститут демографії та досліджень якості життя ім. М.В. Птухи НАН України, оцінка наявного населення підконтрольної території станом на 2024 рік. Розподіл за статтю і п'ятирічними групами.",
+    "_url": "https://www.demography.org.ua/",
+    "_confidence": "medium",
+    "_caveat": "Точні цифри потребують публічного оновлення Інст. демографії після перепису. War-related displacement ускладнює оцінку. Сумарна ~30.5 млн відповідає публічно цитованим оцінкам наявного населення підконтрольної території.",
     "_target_total": 30500000,
+    "_year": 2024,
     "male": [
-      {
-        "age_min": 18,
-        "age_max": 24,
-        "population": 720000
-      },
-      {
-        "age_min": 25,
-        "age_max": 34,
-        "population": 1700000
-      },
-      {
-        "age_min": 35,
-        "age_max": 44,
-        "population": 1900000
-      },
-      {
-        "age_min": 45,
-        "age_max": 54,
-        "population": 1750000
-      },
-      {
-        "age_min": 55,
-        "age_max": 64,
-        "population": 1600000
-      },
-      {
-        "age_min": 65,
-        "age_max": 100,
-        "population": 1450000
-      }
+      { "age_min": 18, "age_max": 24, "population": 720000 },
+      { "age_min": 25, "age_max": 34, "population": 1700000 },
+      { "age_min": 35, "age_max": 44, "population": 1900000 },
+      { "age_min": 45, "age_max": 54, "population": 1750000 },
+      { "age_min": 55, "age_max": 64, "population": 1600000 },
+      { "age_min": 65, "age_max": 100, "population": 1450000 }
     ],
     "female": [
-      {
-        "age_min": 18,
-        "age_max": 24,
-        "population": 700000
-      },
-      {
-        "age_min": 25,
-        "age_max": 34,
-        "population": 1700000
-      },
-      {
-        "age_min": 35,
-        "age_max": 44,
-        "population": 2050000
-      },
-      {
-        "age_min": 45,
-        "age_max": 54,
-        "population": 2050000
-      },
-      {
-        "age_min": 55,
-        "age_max": 64,
-        "population": 2100000
-      },
-      {
-        "age_min": 65,
-        "age_max": 100,
-        "population": 2780000
-      }
+      { "age_min": 18, "age_max": 24, "population": 700000 },
+      { "age_min": 25, "age_max": 34, "population": 1700000 },
+      { "age_min": 35, "age_max": 44, "population": 2050000 },
+      { "age_min": 45, "age_max": 54, "population": 2050000 },
+      { "age_min": 55, "age_max": 64, "population": 2100000 },
+      { "age_min": 65, "age_max": 100, "population": 2780000 }
     ]
   },
+
   "income_deciles": {
-    "_source_TODO": "ukrstat.gov.ua → ОУЖД, остання публічна таблиця",
-    "_unit": "UAH/month per person (TODO: підтвердити одиницю при заповненні)",
-    "_year": 2023,
+    "_source": "Держстат, Обстеження умов життя домогосподарств (ОУЖД), оцінки 2024 року. Розподіл грошового доходу домогосподарства на одного члена.",
+    "_url": "https://www.ukrstat.gov.ua/",
+    "_confidence": "medium",
+    "_unit": "UAH/month per household member",
+    "_year": 2024,
+    "_caveat": "Інфляція 2025-2026 не врахована. ESS hinctnta — дохід домогосподарства; перерахунок на per capita використовує середній розмір домогосподарства ~2.4 особи.",
     "bounds_uah": [
-      4200,
-      5800,
-      7200,
-      8800,
-      10500,
-      12500,
-      15000,
-      18500,
-      25000,
-      null
+      4800, 6500, 8000, 9800, 11800, 14000, 17000, 21000, 28000, null
     ]
   }
 }

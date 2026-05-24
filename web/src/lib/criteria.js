@@ -9,7 +9,7 @@ export function buildCriteria(state, incomeDecileMin) {
   if (incomeDecileMin != null) c.hinctnta = incomeDecileMin;
   if (state.flags.smokesNo) c.smokes = 0;
   if (state.flags.moderateAlc) c.alcMax = 1;     // 0=ніколи або 1=рідко
-  if (state.flags.noKidsHome) c.chldhm = 0;
+  if (state.flags.noKidsHome) c.kidsHome = 0;
   if (state.flags.married) c.marsts = 1;
 
   // Tri-state filters (null = не важливо)
@@ -31,7 +31,7 @@ export function satisfiesAll(r, c) {
   if (c.hinctnta != null && (r.hinctnta == null || r.hinctnta < c.hinctnta)) return false;
   if (c.smokes != null && r.smokes !== c.smokes) return false;
   if (c.alcMax != null && (r.alc == null || r.alc > c.alcMax)) return false;
-  if (c.chldhm != null && r.chldhm !== c.chldhm) return false;
+  if (c.kidsHome != null && r.kidsHome !== c.kidsHome) return false;
   if (c.marsts != null && r.marsts !== c.marsts) return false;
 
   if (c.lrscaleMin != null && (r.lrscale == null || r.lrscale < c.lrscaleMin)) return false;
@@ -56,8 +56,8 @@ export function criterionLabel(key, state) {
       return 'Не курить';
     case 'alcMax':
       return 'Помірно алкоголь';
-    case 'chldhm':
-      return 'Ніколи не жив з дітьми вдома';
+    case 'kidsHome':
+      return 'Без дітей <18 у домогосподарстві';
     case 'marsts':
       return 'У шлюбі або партнерстві';
     case 'lrscaleMax':

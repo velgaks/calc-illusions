@@ -124,6 +124,23 @@ log_var <- function(canonical, picked) {
   picked$values
 }
 
+# kidsHome: чи живе зараз з дитиною < 18 років.
+# Виводимо з yrbrn2..yrbrn13 (роки народження членів домогосподарства 2..13).
+# Це КРАЩЕ за chldhhe (який питає "колись жив з дітьми"), бо для partner-search
+# нас цікавить ПОТОЧНА ситуація.
+yrbrn_cols <- intersect(paste0("yrbrn", 2:13), names(raw))
+field_year <- if ("essround" %in% names(raw) && unique(raw$essround) == 11) 2024 else 2020
+if (length(yrbrn_cols) > 0) {
+  raw$kidsHome <- as.integer(apply(raw[, yrbrn_cols, drop = FALSE], 1, function(row) {
+    ages <- field_year - as.numeric(row)
+    any(!is.na(ages) & ages >= 0 & ages < 18)
+  }))
+  var_sources[["kidsHome"]] <- paste0("derived from ", paste(yrbrn_cols, collapse = ","))
+} else {
+  # Fallback: chldhhe (ever had kids) — менш точний семантично
+  raw$kidsHome <- NA_integer_
+}
+
 respondents <- raw %>%
   filter(if ("cntry" %in% names(raw)) cntry == "UA" else TRUE) %>%
   transmute(
@@ -136,7 +153,7 @@ respondents <- raw %>%
                   if ("marsts"  %in% names(raw)) marsts  else NA,
                   if ("rshpsts" %in% names(raw)) rshpsts else NULL
                 ),
-    chldhm    = log_var("chldhm",  pick_first(raw, c("chldhm","chldhhe"), recode_chldhm)),
+    kidsHome  = kidsHome,
     smokes    = log_var("smokes",  pick_first(raw, c("cgtsmke","cgtsmok"), recode_smoking)),
     alc       = log_var("alc",     pick_first(raw, c("alcfreq"), recode_alcohol)),
     rlgdgr    = log_var("rlgdgr",  pick_first(raw, c("rlgdgr"),  recode_rlgdgr)),

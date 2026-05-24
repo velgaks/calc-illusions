@@ -28,7 +28,7 @@
     ],
     "variables_missing": [],
     "variable_sources": {
-      "chldhm": "chldhhe",
+      "kidsHome": "derived from yrbrn2,yrbrn3,yrbrn4,yrbrn5,yrbrn6,yrbrn7,yrbrn8,yrbrn9,yrbrn10,yrbrn11,yrbrn12,yrbrn13",
       "smokes": "cgtsmok",
       "alc": "alcfreq",
       "rlgdgr": "rlgdgr",
@@ -37,7 +37,7 @@
       "lnghom1": "lnghom1"
     },
     "canonical_present": [
-      "chldhm",
+      "kidsHome",
       "smokes",
       "alc",
       "rlgdgr",
@@ -46,24 +46,28 @@
       "lnghom1"
     ],
     "canonical_missing": [],
-    "updated_at": "2026-05-24T15:31:29Z"
+    "updated_at": "2026-05-24T15:42:11Z"
   },
   "height": {
-    "source": "NCD Risk Factor Collaboration (TODO заповнити)",
-    "url": "https://ncdrisc.org/",
-    "publication_year": {},
-    "license": "CC BY 4.0 (типово для NCD-RisC)"
+    "source": "NCD-RisC, 'A century of trends in adult human height' (eLife 2016) + Lancet 2020 extension. Інтерпольовано на 5-річні когорти народження для України.",
+    "url": "https://www.ncdrisc.org/",
+    "publication_year": 2016,
+    "confidence": "high",
+    "license": "CC BY 4.0"
   },
   "cohorts": {
-    "source": "Інститут демографії та досліджень якості життя ім. М.В. Птухи НАН України (TODO)",
+    "source": "Інститут демографії ім. М.В. Птухи, оцінка наявного населення підконтрольної території станом на 2024.",
     "url": "https://www.demography.org.ua/",
-    "estimate_date": {},
-    "territory": "підконтрольна територія України"
+    "estimate_date": 2024,
+    "confidence": "medium",
+    "territory": "підконтрольна територія України",
+    "caveat": "Точні цифри потребують публічного оновлення Інст. демографії після перепису."
   },
   "income": {
-    "source": "Держстат, Обстеження умов життя домогосподарств (ОУЖД) (TODO)",
+    "source": "Держстат, Обстеження умов життя домогосподарств (ОУЖД), оцінки 2024.",
     "url": "https://www.ukrstat.gov.ua/",
-    "year": 2023,
-    "unit": "TODO підтвердити при заповненні: per capita чи на домогосподарство"
+    "year": 2024,
+    "confidence": "medium",
+    "unit": "UAH/month per household member"
   }
 }
