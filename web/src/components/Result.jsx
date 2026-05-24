@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { uk } from '../i18n/uk.js';
 import SourceBadge from './SourceBadge.jsx';
+import Pictogram from './Pictogram.jsx';
 
 // Чи активний хоч один справжній фільтр (sex/age не рахуються — вони базові).
 function hasActiveFilters(state) {
@@ -51,6 +52,8 @@ export default function Result({ result, data, state }) {
   return (
     <div className="result">
       <p className="result-pretitle">{uk.result.pretitle}</p>
+
+      <Pictogram share={result.shareFinal} sex={state.sex} />
 
       <div className="result-big">
         <div className="big-share">{formatShare(result.shareFinal)}</div>

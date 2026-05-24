@@ -536,6 +536,43 @@
 
 .muted { color: var(--text-muted); }
 
+/* ---- Pictogram (isotype chart) ------------------------------------------*/
+
+.pictogram-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+.pictogram {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 3px;
+  width: 100%;
+  max-width: 280px;
+  padding: 0.25rem 0;
+}
+.person-icon {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 24 / 28;
+  fill: var(--border);
+  transition: fill 0.35s ease;
+}
+.person-icon.is-filled {
+  fill: var(--accent);
+}
+.pictogram-caption {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+.pictogram-sub {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
 /* ---- Reliability table (methodology page) -------------------------------*/
 
 .reliability-table {
