@@ -2,6 +2,19 @@ import { useState } from 'react';
 import { uk } from '../i18n/uk.js';
 import SourceBadge from './SourceBadge.jsx';
 
+// Чи активний хоч один справжній фільтр (sex/age не рахуються — вони базові).
+function hasActiveFilters(state) {
+  if (state.heightMin != null) return true;
+  if (state.incomeDecileMin != null) return true;
+  if (state.education != null) return true;
+  if (state.politics != null) return true;
+  if (state.sporty != null) return true;
+  if (state.religious != null) return true;
+  if (state.language != null) return true;
+  for (const v of Object.values(state.flags)) if (v) return true;
+  return false;
+}
+
 export default function Result({ result, data, state }) {
   const [showFormula, setShowFormula] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -16,6 +29,21 @@ export default function Result({ result, data, state }) {
     return (
       <div className="result result-warn">
         <p>{uk.result.zeroN}</p>
+      </div>
+    );
+  }
+
+  if (!hasActiveFilters(state)) {
+    return (
+      <div className="result result-empty">
+        <p className="result-empty-pretitle">{uk.result.emptyPretitle}</p>
+        <div className="result-empty-base">
+          ≈ <strong>{formatCount(result.nBase)}</strong>{' '}
+          {state.sex === 'M' ? 'чоловіків' : 'жінок'}{' '}
+          {state.ageMin}–{state.ageMax} років
+        </div>
+        <p className="result-empty-hint">{uk.result.emptyHint}</p>
+        <SourceBadge data={data} />
       </div>
     );
   }

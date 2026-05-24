@@ -53,6 +53,8 @@ export const uk = {
   result: {
     pretitle: 'У підконтрольній території',
     suffix: 'людей відповідають твоїм критеріям',
+    emptyPretitle: 'Базова чисельність',
+    emptyHint: '↓ Додай критерії нижче, щоб звузити вибірку',
     ofTotal: 'з',
     ci: '95% CI',
     formula: 'Формула',
