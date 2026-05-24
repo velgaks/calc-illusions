@@ -53,12 +53,14 @@
   },
 
   "income_deciles": {
-    "_source": "Держстат, Обстеження умов життя домогосподарств (ОУЖД), оцінки 2024 року. Розподіл сукупного грошового доходу домогосподарства, всіх джерел, після податків.",
-    "_url": "https://www.ukrstat.gov.ua/",
-    "_confidence": "medium",
-    "_unit": "UAH/month per HOUSEHOLD (total, all sources, net of tax) — ESS hinctnta синонім",
-    "_year": 2024,
-    "_caveat": "Інфляція 2025-2026 не врахована. Орієнтовні межі — точні таблиці Держстат публікує з затримкою.",
+    "_source": "Eyeballed extrapolation. Anchored on Держстат 2024 average monthly net wage (21,473 UAH gross → ~16,800 UAH net per Forbes/Держстат Q2 2024) + log-normal distribution shape. Real ОУЖД tables for 2024 not published — war interrupted survey program; last published year is 2021.",
+    "_url_real_data_pending": "https://www.ukrstat.gov.ua/druk/publicat/kat_u/publdomogosp_u.htm",
+    "_url_authoritative_when_obtained": "https://www.europeansocialsurvey.org/ (R11 Ukraine National Technical Summary contains exact hinctnta UAH boundaries — behind registration)",
+    "_confidence": "low — these are estimates, not measured boundaries",
+    "_unit": "UAH/month per HOUSEHOLD (total, all sources, net of tax) — matches ESS hinctnta question",
+    "_year_estimated": 2024,
+    "_caveat": "ВАЖЛИВО: точні межі децилів для 2024 публічно недоступні. Числа тут — приблизна екстраполяція з 2021 ОУЖД + інфляція + анкер на середню нетто-зп. Порядок величин правильний, конкретні цифри можуть бути ±20-30%. Filter logic (matching decile-to-decile) НЕ страждає — ESS присвоює деци правильно. Невпевненість тільки у тултіпі «дециль = X грн».",
+    "_todo": "Завантажити ESS R11 NTS і замінити на точні UAH-межі.",
     "bounds_uah": [
       7000, 10000, 13000, 17000, 21000, 27000, 35000, 48000, 70000, null
     ]
