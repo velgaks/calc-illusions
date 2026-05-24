@@ -116,11 +116,12 @@ export default function Result({ result, data, state }) {
 
 function formatShare(s) {
   if (s == null || !isFinite(s)) return '—';
-  if (s >= 0.1) return (s * 100).toFixed(1) + '%';
-  if (s >= 0.01) return (s * 100).toFixed(2) + '%';
-  if (s >= 0.001) return (s * 100).toFixed(3) + '%';
   if (s === 0) return '0%';
-  return (s * 100).toExponential(2) + '%';
+  if (s >= 0.1)    return (s * 100).toFixed(1) + '%';
+  if (s >= 0.01)   return (s * 100).toFixed(2) + '%';
+  if (s >= 0.001)  return (s * 100).toFixed(3) + '%';
+  if (s >= 0.0001) return (s * 100).toFixed(4) + '%';
+  return '< 0.01%';
 }
 
 function formatCount(n) {

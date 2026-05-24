@@ -21,25 +21,33 @@ export default function Decomposition({ state, data }) {
       <p className="decomposition-hint">{uk.result.decompositionHint}</p>
 
       <ul className="decomposition-list">
-        {items.slice(0, TOP_N).map(item => (
-          <li key={item.key} className="decomposition-item">
-            <div className="decomposition-bar-row">
-              <div className="decomposition-label">{item.label}</div>
-              <div className="decomposition-value">
-                {formatPct(item.shareWithout)}{' '}
-                <span className="muted">
-                  (+{formatPctDelta(item.delta)})
-                </span>
+        {items.slice(0, TOP_N).map(item => {
+          const isFlat = item.delta < 0.0001;
+          return (
+            <li key={item.key} className={`decomposition-item ${isFlat ? 'is-flat' : ''}`}>
+              <div className="decomposition-bar-row">
+                <div className="decomposition-label">{item.label}</div>
+                <div className="decomposition-value">
+                  {isFlat
+                    ? <span className="decomposition-flat">не звужує</span>
+                    : <>
+                        {formatPct(item.shareWithout)}{' '}
+                        <span className="muted">(+{formatPctDelta(item.delta)})</span>
+                      </>
+                  }
+                </div>
               </div>
-            </div>
-            <div className="decomposition-bar">
-              <div
-                className="decomposition-bar-fill"
-                style={{ width: `${(item.delta / maxDelta) * 100}%` }}
-              />
-            </div>
-          </li>
-        ))}
+              {!isFlat && (
+                <div className="decomposition-bar">
+                  <div
+                    className="decomposition-bar-fill"
+                    style={{ width: `${(item.delta / maxDelta) * 100}%` }}
+                  />
+                </div>
+              )}
+            </li>
+          );
+        })}
       </ul>
     </section>
   );

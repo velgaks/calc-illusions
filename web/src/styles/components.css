@@ -554,6 +554,14 @@
   transition: width 0.25s ease-out;
   border-radius: 3px;
 }
+.decomposition-item.is-flat .decomposition-label {
+  color: var(--text-muted);
+}
+.decomposition-flat {
+  font-size: 0.82rem;
+  color: var(--text-soft);
+  font-style: italic;
+}
 
 .muted { color: var(--text-muted); }
 
