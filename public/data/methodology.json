@@ -1,0 +1,44 @@
+{
+  "mock": true,
+  "generated_at": "2026-05-24T14:26:40.208Z",
+  "ess": {
+    "source": "Synthetic mock — НЕ ESS",
+    "url": "https://www.europeansocialsurvey.org/",
+    "wave": "mock",
+    "file": "mock",
+    "n_respondents": 500,
+    "weight_var": "pspwght",
+    "fieldwork_year": null,
+    "variables_present": [
+      "gndr",
+      "agea",
+      "eisced",
+      "hinctnta",
+      "marsts",
+      "chldhm",
+      "smokes",
+      "alc",
+      "pspwght"
+    ],
+    "variables_missing": [],
+    "updated_at": "2026-05-24T14:26:40.208Z"
+  },
+  "height": {
+    "source": "NCD Risk Factor Collaboration (TODO заповнити)",
+    "url": "https://ncdrisc.org/",
+    "publication_year": null,
+    "license": "CC BY 4.0 (типово для NCD-RisC)"
+  },
+  "cohorts": {
+    "source": "Інститут демографії та досліджень якості життя ім. М.В. Птухи НАН України (TODO)",
+    "url": "https://www.demography.org.ua/",
+    "estimate_date": null,
+    "territory": "підконтрольна територія України"
+  },
+  "income": {
+    "source": "Держстат, Обстеження умов життя домогосподарств (ОУЖД) (TODO)",
+    "url": "https://www.ukrstat.gov.ua/",
+    "year": 2023,
+    "unit": "TODO підтвердити при заповненні: per capita чи на домогосподарство"
+  }
+}

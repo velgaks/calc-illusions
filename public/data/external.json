@@ -1,0 +1,180 @@
+{
+  "mock": true,
+  "_note": "Усі числа нижче — placeholder для розробки UI. Заміни вручну з першоджерел перед prod.",
+  "height": {
+    "_source_TODO": "ncdrisc.org → latest Lancet adult-height paper, Ukraine cohorts",
+    "male": [
+      {
+        "birth_year_min": 1940,
+        "birth_year_max": 1949,
+        "mu_cm": 173,
+        "sigma_cm": 7.1
+      },
+      {
+        "birth_year_min": 1950,
+        "birth_year_max": 1959,
+        "mu_cm": 174.5,
+        "sigma_cm": 7
+      },
+      {
+        "birth_year_min": 1960,
+        "birth_year_max": 1969,
+        "mu_cm": 175.5,
+        "sigma_cm": 7
+      },
+      {
+        "birth_year_min": 1970,
+        "birth_year_max": 1979,
+        "mu_cm": 176.5,
+        "sigma_cm": 6.9
+      },
+      {
+        "birth_year_min": 1980,
+        "birth_year_max": 1989,
+        "mu_cm": 177.3,
+        "sigma_cm": 6.9
+      },
+      {
+        "birth_year_min": 1990,
+        "birth_year_max": 1999,
+        "mu_cm": 178,
+        "sigma_cm": 6.8
+      },
+      {
+        "birth_year_min": 2000,
+        "birth_year_max": 2009,
+        "mu_cm": 178.4,
+        "sigma_cm": 6.8
+      }
+    ],
+    "female": [
+      {
+        "birth_year_min": 1940,
+        "birth_year_max": 1949,
+        "mu_cm": 160.5,
+        "sigma_cm": 6.4
+      },
+      {
+        "birth_year_min": 1950,
+        "birth_year_max": 1959,
+        "mu_cm": 161.3,
+        "sigma_cm": 6.3
+      },
+      {
+        "birth_year_min": 1960,
+        "birth_year_max": 1969,
+        "mu_cm": 162,
+        "sigma_cm": 6.3
+      },
+      {
+        "birth_year_min": 1970,
+        "birth_year_max": 1979,
+        "mu_cm": 163.2,
+        "sigma_cm": 6.3
+      },
+      {
+        "birth_year_min": 1980,
+        "birth_year_max": 1989,
+        "mu_cm": 164.4,
+        "sigma_cm": 6.2
+      },
+      {
+        "birth_year_min": 1990,
+        "birth_year_max": 1999,
+        "mu_cm": 165.3,
+        "sigma_cm": 6.2
+      },
+      {
+        "birth_year_min": 2000,
+        "birth_year_max": 2009,
+        "mu_cm": 165.8,
+        "sigma_cm": 6.2
+      }
+    ]
+  },
+  "cohorts": {
+    "_source_TODO": "demography.org.ua → найсвіжіша оцінка для підконтрольної території",
+    "_target_total": 30500000,
+    "male": [
+      {
+        "age_min": 18,
+        "age_max": 24,
+        "population": 720000
+      },
+      {
+        "age_min": 25,
+        "age_max": 34,
+        "population": 1700000
+      },
+      {
+        "age_min": 35,
+        "age_max": 44,
+        "population": 1900000
+      },
+      {
+        "age_min": 45,
+        "age_max": 54,
+        "population": 1750000
+      },
+      {
+        "age_min": 55,
+        "age_max": 64,
+        "population": 1600000
+      },
+      {
+        "age_min": 65,
+        "age_max": 100,
+        "population": 1450000
+      }
+    ],
+    "female": [
+      {
+        "age_min": 18,
+        "age_max": 24,
+        "population": 700000
+      },
+      {
+        "age_min": 25,
+        "age_max": 34,
+        "population": 1700000
+      },
+      {
+        "age_min": 35,
+        "age_max": 44,
+        "population": 2050000
+      },
+      {
+        "age_min": 45,
+        "age_max": 54,
+        "population": 2050000
+      },
+      {
+        "age_min": 55,
+        "age_max": 64,
+        "population": 2100000
+      },
+      {
+        "age_min": 65,
+        "age_max": 100,
+        "population": 2780000
+      }
+    ]
+  },
+  "income_deciles": {
+    "_source_TODO": "ukrstat.gov.ua → ОУЖД, остання публічна таблиця",
+    "_unit": "UAH/month per person (TODO: підтвердити одиницю при заповненні)",
+    "_year": 2023,
+    "bounds_uah": [
+      4200,
+      5800,
+      7200,
+      8800,
+      10500,
+      12500,
+      15000,
+      18500,
+      25000,
+      null
+    ]
+  }
+}

@@ -1,0 +1,85 @@
+export const uk = {
+  appName: 'Calculator of Illusions',
+  appTagline: 'Скільки таких, як я, в Україні',
+
+  nav: {
+    home: 'Калькулятор',
+    methodology: 'Методологія'
+  },
+
+  controls: {
+    sex: 'Стать',
+    male: 'Чоловік',
+    female: 'Жінка',
+    ageRange: 'Вік, років',
+    ageFrom: 'від',
+    ageTo: 'до',
+    heightMin: 'Зріст від, см',
+    heightDisable: 'не важливо',
+    incomeMin: 'Дохід від, грн/міс',
+    incomeDisable: 'не важливо',
+    educationMin: 'Освіта не нижче',
+    educationLevels: [
+      'не важливо',
+      'ISCED 1 — початкова',
+      'ISCED 2 — базова середня',
+      'ISCED 3 — повна середня',
+      'ISCED 4 — post-secondary non-tertiary',
+      'ISCED 5 — короткий цикл вищої',
+      'ISCED 6 — бакалавр',
+      'ISCED 7 — магістр і вище'
+    ],
+    flags: {
+      smokesNo: 'Не курить',
+      moderateAlc: 'П\'є помірно або взагалі',
+      noKidsHome: 'Без дітей у домогосподарстві',
+      married: 'У шлюбі або партнерстві'
+    },
+    choices: {
+      any: 'Не важливо',
+      politicsLabel: 'Політика',
+      politicsLeft: 'Лівий',
+      politicsRight: 'Правий',
+      sportyLabel: 'Спорт',
+      sportyYes: 'Спортивний',
+      sportyNo: 'Не спортивний',
+      religiousLabel: 'Релігійність',
+      religiousYes: 'Релігійний',
+      religiousNo: 'Не релігійний',
+      languageLabel: 'Мова вдома',
+      languageUkr: 'Українська',
+      languageRus: 'Російська',
+      languageOther: 'Інша'
+    }
+  },
+
+  result: {
+    pretitle: 'У підконтрольній території',
+    suffix: 'людей відповідають твоїм критеріям',
+    ofTotal: 'з',
+    ci: '95% CI',
+    formula: 'Формула',
+    formulaLabel: 'joint × зріст',
+    decomposition: 'Який критерій найбільше звужує',
+    decompositionHint: 'Якщо прибрати критерій — частка зросте до:',
+    copy: 'Скопіювати посилання',
+    copied: 'Скопійовано ✓',
+    lowN: 'У ESS у твоєму статево-віковому вікні всього {n} респондентів. CI дуже широкий — інтерпретуй з обережністю.',
+    zeroN: 'У ESS немає респондентів у твоєму статево-віковому вікні. Розшир діапазон віку.'
+  },
+
+  badge: {
+    label: 'Дані:',
+    essTpl: 'ESS {wave}, n={n}, {year}',
+    cohortTpl: 'Чисельність: Інст. демографії, {year}',
+    heightTpl: 'Зріст: NCD-RisC, {year}',
+    todoYear: '????'
+  },
+
+
+  mock: {
+    bannerTitle: 'DEMO DATA',
+    bannerBody: 'Дані синтетичні. Це макет для розробки UI. Замінюй через ',
+    bannerCode: 'Rscript prep/build.R'
+  }
+};

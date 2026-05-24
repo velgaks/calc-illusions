@@ -1,0 +1,190 @@
+@import './theme.css';
+@import './components.css';
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+a:hover { text-decoration: underline; }
+
+code, pre {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+}
+
+pre {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.9rem;
+  cursor: pointer;
+  transition: background 0.12s ease, border-color 0.12s ease;
+}
+button:hover {
+  background: var(--bg-card);
+  border-color: var(--border-strong);
+}
+
+/* ---- Layout --------------------------------------------------------------*/
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-card);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.app-header .logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.app-header .logo:hover { text-decoration: none; }
+
+.logo-mark {
+  display: inline-grid;
+  place-items: center;
+  width: 28px; height: 28px;
+  border-radius: 6px;
+  background: var(--accent);
+  color: var(--accent-on);
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.app-nav {
+  display: flex;
+  gap: 1rem;
+}
+.app-nav a {
+  color: var(--text-muted);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+}
+.app-nav a:hover { color: var(--text); text-decoration: none; background: var(--bg-elev); }
+.app-nav a.active { color: var(--text); background: var(--accent-light); }
+
+main {
+  flex: 1;
+  padding: 2rem 1.5rem 3rem;
+  max-width: 960px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.app-footer {
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+/* ---- Home page -----------------------------------------------------------*/
+
+.home-hero {
+  text-align: center;
+  margin: 0 auto 2rem;
+  max-width: 640px;
+}
+.home-hero h1 {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  line-height: 1.15;
+}
+.home-sub {
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.home-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(280px, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+@media (max-width: 720px) {
+  .home-grid { grid-template-columns: 1fr; }
+}
+
+/* ---- Error ---------------------------------------------------------------*/
+
+.error-box {
+  border: 1px solid var(--warn);
+  background: var(--warn-bg);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+.error-box h2 { margin-top: 0; color: var(--warn); }
+
+/* ---- Methodology page ----------------------------------------------------*/
+
+.methodology h1 { margin-top: 0; }
+.methodology h2 { margin-top: 2.5rem; }
+.methodology h3 { margin-top: 1.5rem; color: var(--text-muted); font-weight: 600; }
+.methodology pre.formula { font-size: 0.85rem; line-height: 1.5; }
+
+.source-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  margin-bottom: 0.75rem;
+}
+.source-card-row {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.15rem 0;
+}
+.source-card-row .k {
+  flex: 0 0 110px;
+  color: var(--text-muted);
+}
+.source-card-row .v { flex: 1; }
+.source-card-row.warn { color: var(--warn); }
+
+/* MockBanner, Controls, Result, Decomposition — стилі додаються разом з компонентами */

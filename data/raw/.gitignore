@@ -1,0 +1,14 @@
+# Микродані обстежень — НЕ комітимо у git.
+# ESS data portal вимагає реєстрацію; розповсюдження сирих файлів забороняє ліцензія.
+*.sav
+*.dta
+*.por
+*.zsav
+*.sas7bdat
+*.csv
+*.xlsx
+*.tsv
+
+# Sentinel — щоб папка була у git
+!.gitignore
+!README.md
