@@ -40,6 +40,11 @@ yarn-error.log*
 *.tmp
 *.bak
 
+# Source survey files (never publish raw microdata)
+data/raw/*.xlsx
+data/raw/*.xls
+data/raw/*.sav
+
 # Claude Code per-project state — комітимо лише launch.json,
 # решта (skills, settings, auto-installed prompts) — локальна.
 .claude/*

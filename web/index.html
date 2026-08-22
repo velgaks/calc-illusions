@@ -3,32 +3,80 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#3b5bdb" />
-
-    <title>Скільки таких українців?</title>
-    <meta name="description" content="Постав свої ознаки і дізнайся скільки таких людей живе на підконтрольній території. На основі 2581 інтерв'ю ESS Ukraine 2024." />
-
-    <!-- Open Graph -->
-    <meta property="og:title" content="Скільки таких українців?" />
-    <meta property="og:description" content="Постав свої ознаки і дізнайся скільки таких людей живе на підконтрольній території. На основі 2581 інтерв'ю ESS Ukraine 2024." />
+    <meta name="theme-color" content="#f5f1e8" />
+    <title>Україна у даних: доходи та умови життя українців</title>
+    <meta name="description" content="Скільки заробляють українці, де й ким працюють, у яких умовах живуть? Досліджуйте дані SESH 2023/24 про 18 837 людей і 8 023 домогосподарства." />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="https://velgaks.github.io/calc-illusions/" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <meta property="og:title" content="Україна у даних: доходи та умови життя українців" />
+    <meta property="og:description" content="Скільки заробляють українці, де й ким працюють, у яких умовах живуть? Дані SESH 2023/24 про 18 837 людей і 8 023 домогосподарства." />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="uk_UA" />
-    <meta property="og:image" content="og.png" />
-
-    <!-- Twitter -->
+    <meta property="og:site_name" content="Україна у даних" />
+    <meta property="og:url" content="https://velgaks.github.io/calc-illusions/" />
+    <meta property="og:image" content="https://velgaks.github.io/calc-illusions/og.png" />
+    <meta property="og:image:alt" content="Україна у даних, інтерактивний дашборд SESH 2023/24" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Скільки таких українців?" />
-    <meta name="twitter:description" content="2581 інтерв'ю ESS Ukraine 2024. Постав ознаки, побач скільки таких на території." />
-
-    <!-- TODO: створити /public/favicon.svg -->
+    <meta name="twitter:title" content="Україна у даних: доходи та умови життя українців" />
+    <meta name="twitter:description" content="Скільки заробляють українці, де й ким працюють, у яких умовах живуть? Дані SESH 2023/24." />
+    <meta name="twitter:image" content="https://velgaks.github.io/calc-illusions/og.png" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://velgaks.github.io/calc-illusions/#website",
+            "url": "https://velgaks.github.io/calc-illusions/",
+            "name": "Україна у даних",
+            "alternateName": "Ukraine in Data",
+            "description": "Інтерактивний дашборд про доходи, роботу, демографію та умови життя українців за даними SESH 2023/24.",
+            "inLanguage": ["uk", "en"]
+          },
+          {
+            "@type": "Dataset",
+            "@id": "https://velgaks.github.io/calc-illusions/#dataset",
+            "name": "Соціально-економічне обстеження домогосподарств України SESH 2023/24",
+            "alternateName": ["Household Socio-Economic Status Survey", "HSESS", "SESH 2023/24"],
+            "description": "Зважені дані про доходи, зайнятість, демографію, житлові умови та матеріальні депривації 18 837 людей і 8 023 домогосподарств на підконтрольній території України.",
+            "url": "https://velgaks.github.io/calc-illusions/",
+            "sameAs": "https://www.unicef.org/ukraine/en/documents/socio-economic-status-of-households",
+            "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+            "temporalCoverage": "2023-12/2024-02",
+            "spatialCoverage": {
+              "@type": "Place",
+              "name": "Підконтрольна територія України"
+            },
+            "inLanguage": ["uk", "en"],
+            "keywords": ["доходи українців", "умови життя", "зайнятість", "домогосподарства України", "SESH", "соціально-економічне обстеження"],
+            "creator": [
+              { "@type": "Organization", "name": "UNICEF" },
+              { "@type": "Organization", "name": "Institute of Demography and Quality of Life Problems of the NAS of Ukraine" },
+              { "@type": "Organization", "name": "Ukrainian Center for Social Reforms" }
+            ],
+            "distribution": [
+              {
+                "@type": "DataDownload",
+                "name": "Оглядові агрегати SESH 2023/24",
+                "encodingFormat": "application/json",
+                "contentUrl": "https://velgaks.github.io/calc-illusions/data/overview.json"
+              },
+              {
+                "@type": "DataDownload",
+                "name": "Метадані SESH 2023/24",
+                "encodingFormat": "application/json",
+                "contentUrl": "https://velgaks.github.io/calc-illusions/data/metadata.json"
+              }
+            ]
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
-    <noscript>
-      <p style="padding: 2rem; font-family: sans-serif;">
-        Цей калькулятор вимагає JavaScript. Усі обчислення відбуваються в браузері, без сервера.
-      </p>
-    </noscript>
+    <noscript><p style="padding:2rem;font-family:sans-serif">Тут можна дослідити доходи, роботу та умови життя українців за даними SESH 2023/24. Для роботи інтерактивного дашборду ввімкніть JavaScript.</p></noscript>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

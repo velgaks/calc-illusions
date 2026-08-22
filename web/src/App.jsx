@@ -1,75 +1,40 @@
-import { Routes, Route, Link, NavLink } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import HomePage from './pages/HomePage.jsx';
+import { Link, NavLink, Route, Routes } from 'react-router-dom';
+import { loadOverview } from './data/loader.js';
+import { t } from './i18n/strings.js';
+import ExplorerPage from './pages/ExplorerPage.jsx';
 import MethodologyPage from './pages/MethodologyPage.jsx';
-import MockBanner from './components/MockBanner.jsx';
-import { loadAllData, getMockLevel } from './data/loader.js';
-import { uk } from './i18n/uk.js';
+import OverviewPage from './pages/OverviewPage.jsx';
 
 export default function App() {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
+  const [locale, setLocale] = useState(() => window.location.hash.includes('lang=en') || window.location.search.includes('lang=en') ? 'en' : 'uk');
+  const copy = t(locale);
 
-  useEffect(() => {
-    loadAllData()
-      .then(setData)
-      .catch(e => {
-        console.error(e);
-        setError(e.message);
-      });
-  }, []);
+  useEffect(() => { loadOverview().then(setData).catch(error => setError(error.message)); }, []);
+  useEffect(() => { document.documentElement.lang = locale; document.title = locale === 'uk' ? 'Україна у даних: доходи та умови життя українців' : 'Ukraine in Data: Income and Living Conditions'; }, [locale]);
 
-  if (error) {
-    return (
-      <div className="app">
-        <main>
-          <div className="error-box">
-            <h2>Не вдалося завантажити дані</h2>
-            <p><code>{error}</code></p>
-            <p>Перевір, чи існують файли у <code>public/data/</code>. Запусти <code>node scripts/generate-mock-data.mjs</code> з кореня репо.</p>
-          </div>
-        </main>
-      </div>
-    );
-  }
-
-  if (!data) {
-    return (
-      <div className="app">
-        <main>
-          <p style={{ opacity: 0.6 }}>Завантаження...</p>
-        </main>
-      </div>
-    );
-  }
-
-  const mockLevel = getMockLevel(data);
-  return (
-    <div className="app">
-      {mockLevel && <MockBanner level={mockLevel} />}
-      <header className="app-header">
-        <Link to="/" className="logo">
-          <span className="logo-mark">∑</span>
-          <span className="logo-text">{uk.appName}</span>
-        </Link>
-        <nav className="app-nav">
-          <NavLink to="/" end>{uk.nav.home}</NavLink>
-          <NavLink to="/methodology">{uk.nav.methodology}</NavLink>
-        </nav>
-      </header>
-      <main>
-        <Routes>
-          <Route path="/" element={<HomePage data={data} />} />
-          <Route path="/methodology" element={<MethodologyPage data={data} />} />
-        </Routes>
-      </main>
-      <footer className="app-footer">
-        <small>
-          Дані: <a href="https://www.europeansocialsurvey.org/" target="_blank" rel="noreferrer">ESS</a> ·{' '}
-          <a href="https://www.demography.org.ua/" target="_blank" rel="noreferrer">Інст. демографії</a>
-          {' · '}Код: MIT
-        </small>
-      </footer>
-    </div>
-  );
+  const withLocale = path => locale === 'en' ? `${path}?lang=en` : path;
+  return <div className="app">
+    <header className="site-header">
+      <Link to={withLocale('/')} className="wordmark"><span className="flag-mark" aria-hidden="true" />{copy.title}</Link>
+      <nav aria-label={locale === 'uk' ? 'Головна навігація' : 'Main navigation'}>
+        <NavLink to={withLocale('/')} end>{copy.navOverview}</NavLink>
+        <NavLink to={withLocale('/explore')}>{copy.navExplorer}</NavLink>
+        <NavLink to={withLocale('/methodology')}>{copy.navMethodology}</NavLink>
+      </nav>
+      <button type="button" className="locale-button" onClick={() => setLocale(current => current === 'uk' ? 'en' : 'uk')} aria-label={copy.localeAction}>{locale === 'uk' ? 'EN' : 'УКР'}</button>
+    </header>
+    <main>
+      {error && <div className="error-box"><h2>{locale === 'uk' ? 'Не вдалося завантажити дані' : 'Could not load data'}</h2><p>{error}</p></div>}
+      {!data && !error && <p className="loading">{locale === 'uk' ? 'Завантажуємо SESH…' : 'Loading SESH…'}</p>}
+      {data && <Routes>
+        <Route path="/" element={<OverviewPage {...data} locale={locale} />} />
+        <Route path="/explore" element={<ExplorerPage locale={locale} onLocaleChange={setLocale} />} />
+        <Route path="/methodology" element={<MethodologyPage metadata={data.metadata} locale={locale} />} />
+      </Routes>}
+    </main>
+    <footer><span>SESH 2023/24 · {copy.dataLicense}</span><span>{copy.codeLicense} · github.com/velgaks/calc-illusions</span></footer>
+  </div>;
 }

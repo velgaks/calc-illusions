@@ -1,0 +1,2028 @@
+{
+  "schema_version": 1,
+  "title": {
+    "uk": "Україна у даних — SESH 2023/24",
+    "en": "Ukraine in Data — SESH 2023/24"
+  },
+  "fieldwork": "2023-12/2024-02",
+  "territory": {
+    "uk": "Підконтрольна територія України; без АР Крим і Луганської області, у Донецькій, Запорізькій та Херсонській областях — лише підконтрольні території.",
+    "en": "Government-controlled territory of Ukraine; excluding Crimea and Luhansk region, with only government-controlled areas in Donetsk, Zaporizhzhia and Kherson regions."
+  },
+  "source": {
+    "name": "Household Socio-Economic Status Survey (HSESS/SESH)",
+    "url": "https://www.unicef.org/ukraine/en/documents/socio-economic-status-of-households",
+    "license": "CC BY-NC-SA 4.0",
+    "credits": "Institute of Demography and Quality of Life Problems of the NAS of Ukraine; Ukrainian Center for Social Reforms; UNICEF; Ministry of Social Policy of Ukraine; BMZ/KfW"
+  },
+  "units": {
+    "people": {
+      "n": 18837,
+      "weight_total": 31143331.723728996,
+      "variables": [
+        {
+          "id": "age",
+          "type": "numeric",
+          "topic": "demography",
+          "labels": {
+            "uk": "Вік",
+            "en": "Age"
+          },
+          "universe": {
+            "uk": "Усі члени домогосподарств",
+            "en": "All household members"
+          }
+        },
+        {
+          "id": "sex",
+          "type": "categorical",
+          "topic": "demography",
+          "labels": {
+            "uk": "Стать",
+            "en": "Sex"
+          },
+          "universe": {
+            "uk": "Усі члени домогосподарств",
+            "en": "All household members"
+          }
+        },
+        {
+          "id": "region",
+          "type": "categorical",
+          "topic": "demography",
+          "labels": {
+            "uk": "Область проживання",
+            "en": "Region of residence"
+          },
+          "universe": {
+            "uk": "Усі члени домогосподарств",
+            "en": "All household members"
+          }
+        },
+        {
+          "id": "settlement",
+          "type": "categorical",
+          "topic": "demography",
+          "labels": {
+            "uk": "Тип поселення",
+            "en": "Settlement type"
+          },
+          "universe": {
+            "uk": "Усі члени домогосподарств",
+            "en": "All household members"
+          }
+        },
+        {
+          "id": "marital",
+          "type": "categorical",
+          "topic": "demography",
+          "labels": {
+            "uk": "Сімейний стан",
+            "en": "Marital status"
+          },
+          "universe": {
+            "uk": "Населення віком 15+",
+            "en": "People aged 15+"
+          }
+        },
+        {
+          "id": "education",
+          "type": "categorical",
+          "topic": "demography",
+          "labels": {
+            "uk": "Освіта",
+            "en": "Education"
+          },
+          "universe": {
+            "uk": "Населення віком 15+",
+            "en": "People aged 15+"
+          }
+        },
+        {
+          "id": "moved_since_2014",
+          "type": "categorical",
+          "topic": "demography",
+          "labels": {
+            "uk": "Переїзд після 2014 року",
+            "en": "Moved since 2014"
+          },
+          "universe": {
+            "uk": "Усі члени домогосподарств",
+            "en": "All household members"
+          }
+        },
+        {
+          "id": "idp",
+          "type": "categorical",
+          "topic": "demography",
+          "labels": {
+            "uk": "Статус ВПО",
+            "en": "IDP status"
+          },
+          "universe": {
+            "uk": "Усі члени домогосподарств",
+            "en": "All household members"
+          }
+        },
+        {
+          "id": "abroad_since_2022",
+          "type": "categorical",
+          "topic": "demography",
+          "labels": {
+            "uk": "Виїзд за кордон після 24.02.2022",
+            "en": "Stayed abroad since 24 Feb 2022"
+          },
+          "universe": {
+            "uk": "Усі члени домогосподарств",
+            "en": "All household members"
+          }
+        },
+        {
+          "id": "household_size",
+          "type": "numeric",
+          "topic": "demography",
+          "labels": {
+            "uk": "Розмір домогосподарства",
+            "en": "Household size"
+          },
+          "universe": {
+            "uk": "Усі члени домогосподарств",
+            "en": "All household members"
+          }
+        },
+        {
+          "id": "children_count",
+          "type": "numeric",
+          "topic": "demography",
+          "labels": {
+            "uk": "Дітей до 18 років у домогосподарстві",
+            "en": "Children under 18 in the household"
+          },
+          "universe": {
+            "uk": "Усі члени домогосподарств",
+            "en": "All household members"
+          }
+        },
+        {
+          "id": "work_status",
+          "type": "categorical",
+          "topic": "employment",
+          "labels": {
+            "uk": "Економічний статус",
+            "en": "Economic status"
+          },
+          "universe": {
+            "uk": "Населення віком 15+",
+            "en": "People aged 15+"
+          }
+        },
+        {
+          "id": "work_arrangement",
+          "type": "categorical",
+          "topic": "employment",
+          "labels": {
+            "uk": "Тип основної роботи",
+            "en": "Main work arrangement"
+          },
+          "universe": {
+            "uk": "Ті, хто працювали або тимчасово не працювали",
+            "en": "People working or temporarily absent"
+          }
+        },
+        {
+          "id": "sector",
+          "type": "categorical",
+          "topic": "employment",
+          "labels": {
+            "uk": "Сектор економіки",
+            "en": "Economic sector"
+          },
+          "universe": {
+            "uk": "Зайняте населення",
+            "en": "Employed people"
+          }
+        },
+        {
+          "id": "occupation_group",
+          "type": "categorical",
+          "topic": "employment",
+          "labels": {
+            "uk": "Професійна група",
+            "en": "Occupation group"
+          },
+          "universe": {
+            "uk": "Зайняте населення",
+            "en": "Employed people"
+          }
+        },
+        {
+          "id": "weekly_hours",
+          "type": "numeric",
+          "topic": "employment",
+          "labels": {
+            "uk": "Годин роботи на тиждень",
+            "en": "Weekly working hours"
+          },
+          "universe": {
+            "uk": "Зайняте населення",
+            "en": "Employed people"
+          }
+        },
+        {
+          "id": "job_search",
+          "type": "categorical",
+          "topic": "employment",
+          "labels": {
+            "uk": "Пошук роботи",
+            "en": "Looking for work"
+          },
+          "universe": {
+            "uk": "Непрацюючі, яким поставили запитання",
+            "en": "Non-working people asked the question"
+          }
+        },
+        {
+          "id": "income_source",
+          "type": "categorical",
+          "topic": "income",
+          "labels": {
+            "uk": "Основне джерело особистого доходу",
+            "en": "Main personal income source"
+          },
+          "universe": {
+            "uk": "Населення віком 15+",
+            "en": "People aged 15+"
+          }
+        },
+        {
+          "id": "personal_income",
+          "type": "numeric",
+          "topic": "income",
+          "labels": {
+            "uk": "Основний особистий дохід на місяць",
+            "en": "Main personal monthly income"
+          },
+          "universe": {
+            "uk": "Населення віком 15+",
+            "en": "People aged 15+"
+          }
+        }
+      ],
+      "dictionaries": {
+        "sex": [
+          {
+            "value": "жіноча",
+            "labels": {
+              "uk": "Жінки",
+              "en": "Women"
+            }
+          },
+          {
+            "value": "чоловіча",
+            "labels": {
+              "uk": "Чоловіки",
+              "en": "Men"
+            }
+          }
+        ],
+        "region": [
+          {
+            "value": "Донецька обл.",
+            "labels": {
+              "uk": "Донецька обл.",
+              "en": "Donetsk"
+            }
+          },
+          {
+            "value": "Закарпатська обл.",
+            "labels": {
+              "uk": "Закарпатська обл.",
+              "en": "Zakarpattia"
+            }
+          },
+          {
+            "value": "Івано-Франківська обл.",
+            "labels": {
+              "uk": "Івано-Франківська обл.",
+              "en": "Ivano-Frankivsk"
+            }
+          },
+          {
+            "value": "Кіровоградська обл.",
+            "labels": {
+              "uk": "Кіровоградська обл.",
+              "en": "Kirovohrad"
+            }
+          },
+          {
+            "value": "Одеська обл.",
+            "labels": {
+              "uk": "Одеська обл.",
+              "en": "Odesa"
+            }
+          },
+          {
+            "value": "Сумська обл.",
+            "labels": {
+              "uk": "Сумська обл.",
+              "en": "Sumy"
+            }
+          },
+          {
+            "value": "Тернопільська обл.",
+            "labels": {
+              "uk": "Тернопільська обл.",
+              "en": "Ternopil"
+            }
+          },
+          {
+            "value": "Харківська обл.",
+            "labels": {
+              "uk": "Харківська обл.",
+              "en": "Kharkiv"
+            }
+          },
+          {
+            "value": "Херсонська обл.",
+            "labels": {
+              "uk": "Херсонська обл.",
+              "en": "Kherson"
+            }
+          },
+          {
+            "value": "Хмельницька обл.",
+            "labels": {
+              "uk": "Хмельницька обл.",
+              "en": "Khmelnytskyi"
+            }
+          },
+          {
+            "value": "Черкаська обл.",
+            "labels": {
+              "uk": "Черкаська обл.",
+              "en": "Cherkasy"
+            }
+          },
+          {
+            "value": "Чернівецька обл.",
+            "labels": {
+              "uk": "Чернівецька обл.",
+              "en": "Chernivtsi"
+            }
+          },
+          {
+            "value": "Чернігівська обл.",
+            "labels": {
+              "uk": "Чернігівська обл.",
+              "en": "Chernihiv"
+            }
+          },
+          {
+            "value": "м.Київ",
+            "labels": {
+              "uk": "м.Київ",
+              "en": "Kyiv city"
+            }
+          },
+          {
+            "value": "Київська (без м.Києва) обл.",
+            "labels": {
+              "uk": "Київська (без м.Києва) обл.",
+              "en": "Kyiv region"
+            }
+          },
+          {
+            "value": "Полтавська обл.",
+            "labels": {
+              "uk": "Полтавська обл.",
+              "en": "Poltava"
+            }
+          },
+          {
+            "value": "Рівненська обл.",
+            "labels": {
+              "uk": "Рівненська обл.",
+              "en": "Rivne"
+            }
+          },
+          {
+            "value": "Дніпропетровська обл.",
+            "labels": {
+              "uk": "Дніпропетровська обл.",
+              "en": "Dnipropetrovsk"
+            }
+          },
+          {
+            "value": "Житомирська обл.",
+            "labels": {
+              "uk": "Житомирська обл.",
+              "en": "Zhytomyr"
+            }
+          },
+          {
+            "value": "Вінницька обл.",
+            "labels": {
+              "uk": "Вінницька обл.",
+              "en": "Vinnytsia"
+            }
+          },
+          {
+            "value": "Миколаївська обл.",
+            "labels": {
+              "uk": "Миколаївська обл.",
+              "en": "Mykolaiv"
+            }
+          },
+          {
+            "value": "Волинська обл.",
+            "labels": {
+              "uk": "Волинська обл.",
+              "en": "Volyn"
+            }
+          },
+          {
+            "value": "Львівська обл.",
+            "labels": {
+              "uk": "Львівська обл.",
+              "en": "Lviv"
+            }
+          },
+          {
+            "value": "Запорізька обл.",
+            "labels": {
+              "uk": "Запорізька обл.",
+              "en": "Zaporizhzhia"
+            }
+          }
+        ],
+        "settlement": [
+          {
+            "value": "urban",
+            "labels": {
+              "uk": "Міська місцевість",
+              "en": "Urban area"
+            }
+          },
+          {
+            "value": "rural",
+            "labels": {
+              "uk": "Сільська місцевість",
+              "en": "Rural area"
+            }
+          }
+        ],
+        "marital": [
+          {
+            "value": "Перебуваю в зареєстрованому шлюбі",
+            "labels": {
+              "uk": "Перебуваю в зареєстрованому шлюбі",
+              "en": "Married (registered)"
+            }
+          },
+          {
+            "value": "Розлучений(а) (зареєстроване розірвання шлюбу)",
+            "labels": {
+              "uk": "Розлучений(а) (зареєстроване розірвання шлюбу)",
+              "en": "Divorced"
+            }
+          },
+          {
+            "value": "Перебуваю в незареєстрованому шлюбі",
+            "labels": {
+              "uk": "Перебуваю в незареєстрованому шлюбі",
+              "en": "Living with a partner"
+            }
+          },
+          {
+            "value": "Удівець, удова",
+            "labels": {
+              "uk": "Удівець, удова",
+              "en": "Widowed"
+            }
+          },
+          {
+            "value": "Ніколи не перебував(ла) у шлюбі",
+            "labels": {
+              "uk": "Ніколи не перебував(ла) у шлюбі",
+              "en": "Never married"
+            }
+          },
+          {
+            "value": "Розійшовся(лася) (незареєстроване розірвання шлюбу)",
+            "labels": {
+              "uk": "Розійшовся(лася) (незареєстроване розірвання шлюбу)",
+              "en": "Separated"
+            }
+          }
+        ],
+        "education": [
+          {
+            "value": "Другий (магістерський) рівень вищої освіти",
+            "labels": {
+              "uk": "Другий (магістерський) рівень вищої освіти",
+              "en": "Master's degree"
+            }
+          },
+          {
+            "value": "Базова середня (базова загальна середня) освіта",
+            "labels": {
+              "uk": "Базова середня (базова загальна середня) освіта",
+              "en": "Lower secondary education"
+            }
+          },
+          {
+            "value": "Професійна (професійно-технічна) освіта",
+            "labels": {
+              "uk": "Професійна (професійно-технічна) освіта",
+              "en": "Vocational education"
+            }
+          },
+          {
+            "value": "Дошкільна освіта",
+            "labels": {
+              "uk": "Дошкільна освіта",
+              "en": "Pre-primary education"
+            }
+          },
+          {
+            "value": "Повна загальна середня (профільна середня) освіта",
+            "labels": {
+              "uk": "Повна загальна середня (профільна середня) освіта",
+              "en": "Upper secondary education"
+            }
+          },
+          {
+            "value": "Перший (бакалаврський) рівень вищої освіти (базова вища)",
+            "labels": {
+              "uk": "Перший (бакалаврський) рівень вищої освіти (базова вища)",
+              "en": "Bachelor's degree"
+            }
+          },
+          {
+            "value": "Початкова (початкова загальна) освіта",
+            "labels": {
+              "uk": "Початкова (початкова загальна) освіта",
+              "en": "Primary education"
+            }
+          },
+          {
+            "value": "Початковий рівень (короткий цикл) вищої освіти (неповна вища)",
+            "labels": {
+              "uk": "Початковий рівень (короткий цикл) вищої освіти (неповна вища)",
+              "en": "Short-cycle tertiary education"
+            }
+          },
+          {
+            "value": "Не має освіти, але вміє читати та писати",
+            "labels": {
+              "uk": "Не має освіти, але вміє читати та писати",
+              "en": "No formal education; literate"
+            }
+          },
+          {
+            "value": "Не має освіти та не вміє читати та писати",
+            "labels": {
+              "uk": "Не має освіти та не вміє читати та писати",
+              "en": "No formal education; not literate"
+            }
+          },
+          {
+            "value": "Науковий ступінь",
+            "labels": {
+              "uk": "Науковий ступінь",
+              "en": "Research degree"
+            }
+          }
+        ],
+        "moved_since_2014": [
+          {
+            "value": "Проживав ще до початку гібридної війни з рф на Сході України (до 20 лютого 2014 року)",
+            "labels": {
+              "uk": "Проживав ще до початку гібридної війни з рф на Сході України (до 20 лютого 2014 року)",
+              "en": "Lived here before 20 February 2014"
+            }
+          },
+          {
+            "value": "Переїхав після початку гібридної війни з рф на Сході України (після 20 лютого 2014 року)",
+            "labels": {
+              "uk": "Переїхав після початку гібридної війни з рф на Сході України (після 20 лютого 2014 року)",
+              "en": "Moved here after 20 February 2014"
+            }
+          },
+          {
+            "value": "Не знаю / не пам’ятаю",
+            "labels": {
+              "uk": "Не знаю / не пам’ятаю",
+              "en": "Don't know / don't remember"
+            }
+          }
+        ],
+        "idp": [
+          {
+            "value": "no",
+            "labels": {
+              "uk": "Ні",
+              "en": "No"
+            }
+          },
+          {
+            "value": "yes",
+            "labels": {
+              "uk": "Так",
+              "en": "Yes"
+            }
+          },
+          {
+            "value": "unknown",
+            "labels": {
+              "uk": "Не знаю",
+              "en": "Don't know"
+            }
+          }
+        ],
+        "abroad_since_2022": [
+          {
+            "value": "no",
+            "labels": {
+              "uk": "Ні",
+              "en": "No"
+            }
+          },
+          {
+            "value": "yes",
+            "labels": {
+              "uk": "Так",
+              "en": "Yes"
+            }
+          },
+          {
+            "value": "unknown",
+            "labels": {
+              "uk": "Не знаю",
+              "en": "Don't know"
+            }
+          }
+        ],
+        "work_status": [
+          {
+            "value": "Працював (в тому числі займалась/вся бізнесом, будь-чим, що приносить дохід)",
+            "labels": {
+              "uk": "Працював (в тому числі займалась/вся бізнесом, будь-чим, що приносить дохід)",
+              "en": "Worked for income"
+            }
+          },
+          {
+            "value": "Не працював",
+            "labels": {
+              "uk": "Не працював",
+              "en": "Did not work"
+            }
+          },
+          {
+            "value": "Не працював тимчасово (не більше місяця), хоча мав роботу або бізнес",
+            "labels": {
+              "uk": "Не працював тимчасово (не більше місяця), хоча мав роботу або бізнес",
+              "en": "Temporarily absent from work"
+            }
+          },
+          {
+            "value": "Працював вдома (на власній земельній ділянці) для задоволення потреб членів родини без оплати",
+            "labels": {
+              "uk": "Працював вдома (на власній земельній ділянці) для задоволення потреб членів родини без оплати",
+              "en": "Unpaid work for household needs"
+            }
+          }
+        ],
+        "work_arrangement": [
+          {
+            "value": "Робота, за яку платять заробітну плату, оформлена трудовим договором/ трудовою книжкою, контрактом чи іншим документом",
+            "labels": {
+              "uk": "Робота, за яку платять заробітну плату, оформлена трудовим договором/ трудовою книжкою, контрактом чи іншим документом",
+              "en": "Formal salaried work"
+            }
+          },
+          {
+            "value": "Робота за зарплату без оформлення документів, а на основі усної домовленості",
+            "labels": {
+              "uk": "Робота за зарплату без оформлення документів, а на основі усної домовленості",
+              "en": "Informal salaried work"
+            }
+          },
+          {
+            "value": "Працював індивідуально на себе заради отримання доходу без оформлення підприємства та без інших осіб (ремонти, консульта",
+            "labels": {
+              "uk": "Працював індивідуально на себе заради отримання доходу без оформлення підприємства та без інших осіб (ремонти, консульта",
+              "en": "Unregistered self-employment"
+            }
+          },
+          {
+            "value": "Власник або керівник бізнесу, приватний підприємець (оформлене підприємство, ФОП)",
+            "labels": {
+              "uk": "Власник або керівник бізнесу, приватний підприємець (оформлене підприємство, ФОП)",
+              "en": "Registered business / sole proprietor"
+            }
+          },
+          {
+            "value": "Інше",
+            "labels": {
+              "uk": "Інше",
+              "en": "Other"
+            }
+          },
+          {
+            "value": "Працював на сімейній земельній ділянці чи з худобою для вирощування на продаж",
+            "labels": {
+              "uk": "Працював на сімейній земельній ділянці чи з худобою для вирощування на продаж",
+              "en": "Family farming for sale"
+            }
+          }
+        ],
+        "sector": [
+          {
+            "value": "Охорона здоров'я та надання соціальної допомоги",
+            "labels": {
+              "uk": "Охорона здоров'я та надання соціальної допомоги",
+              "en": "Health and social work"
+            }
+          },
+          {
+            "value": "Транспорт, складське господарство, поштова та кур'єрська діяльність",
+            "labels": {
+              "uk": "Транспорт, складське господарство, поштова та кур'єрська діяльність",
+              "en": "Transport, warehousing and postal services"
+            }
+          },
+          {
+            "value": "Інші види економічної діяльності",
+            "labels": {
+              "uk": "Інші види економічної діяльності",
+              "en": "Other economic activities"
+            }
+          },
+          {
+            "value": "Освіта",
+            "labels": {
+              "uk": "Освіта",
+              "en": "Education"
+            }
+          },
+          {
+            "value": "Сільське, лісове та рибне господарство",
+            "labels": {
+              "uk": "Сільське, лісове та рибне господарство",
+              "en": "Agriculture, forestry and fishing"
+            }
+          },
+          {
+            "value": "Оптова та роздрібна торгівля; ремонт автотранспортних засобів і мотоциклів",
+            "labels": {
+              "uk": "Оптова та роздрібна торгівля; ремонт автотранспортних засобів і мотоциклів",
+              "en": "Wholesale, retail and vehicle repair"
+            }
+          },
+          {
+            "value": "Промисловість",
+            "labels": {
+              "uk": "Промисловість",
+              "en": "Industry"
+            }
+          },
+          {
+            "value": "Діяльність у сфері адміністративного та допоміжного обслуговування",
+            "labels": {
+              "uk": "Діяльність у сфері адміністративного та допоміжного обслуговування",
+              "en": "Administrative and support services"
+            }
+          },
+          {
+            "value": "Фінансова та страхова діяльність",
+            "labels": {
+              "uk": "Фінансова та страхова діяльність",
+              "en": "Finance and insurance"
+            }
+          },
+          {
+            "value": "Інформація та телекомунікації",
+            "labels": {
+              "uk": "Інформація та телекомунікації",
+              "en": "Information and communications"
+            }
+          },
+          {
+            "value": "Будівництво",
+            "labels": {
+              "uk": "Будівництво",
+              "en": "Construction"
+            }
+          },
+          {
+            "value": "Державне управління й оборона; обов'язкове соціальне страхування",
+            "labels": {
+              "uk": "Державне управління й оборона; обов'язкове соціальне страхування",
+              "en": "Public administration, defence and social security"
+            }
+          },
+          {
+            "value": "Мистецтво, спорт, розваги та відпочинок",
+            "labels": {
+              "uk": "Мистецтво, спорт, розваги та відпочинок",
+              "en": "Arts, sports and recreation"
+            }
+          },
+          {
+            "value": "Тимчасове розміщування й організація харчування",
+            "labels": {
+              "uk": "Тимчасове розміщування й організація харчування",
+              "en": "Accommodation and food services"
+            }
+          },
+          {
+            "value": "Професійна, наукова та технічна діяльність",
+            "labels": {
+              "uk": "Професійна, наукова та технічна діяльність",
+              "en": "Professional, scientific and technical activities"
+            }
+          },
+          {
+            "value": "Операції з нерухомим майном",
+            "labels": {
+              "uk": "Операції з нерухомим майном",
+              "en": "Real estate"
+            }
+          }
+        ],
+        "occupation_group": [
+          {
+            "value": "Інші професії",
+            "labels": {
+              "uk": "Інші професії",
+              "en": "Other occupations"
+            }
+          },
+          {
+            "value": "Робітники найпростіших професій",
+            "labels": {
+              "uk": "Робітники найпростіших професій",
+              "en": "Elementary occupations"
+            }
+          },
+          {
+            "value": "Працівники сфери торгівлі та послуг (продавці, касири та ін.)",
+            "labels": {
+              "uk": "Працівники сфери торгівлі та послуг (продавці, касири та ін.)",
+              "en": "Service and sales workers"
+            }
+          },
+          {
+            "value": "Професіонали (наукові співробітники, математики, фізики, експерти, лікарі, гідрологи, маркетологи, інженери, тощо)",
+            "labels": {
+              "uk": "Професіонали (наукові співробітники, математики, фізики, експерти, лікарі, гідрологи, маркетологи, інженери, тощо)",
+              "en": "Professionals"
+            }
+          },
+          {
+            "value": "Службовці, що виконують допоміжні функції (технічні службовці, клерки, секретарі)",
+            "labels": {
+              "uk": "Службовці, що виконують допоміжні функції (технічні службовці, клерки, секретарі)",
+              "en": "Clerical support workers"
+            }
+          },
+          {
+            "value": "Фахівці (техніки-будівельники, лаборанти, креслярі, диспетчери, інспектори, асистенти інженерів, брокери, агенти, тощо)",
+            "labels": {
+              "uk": "Фахівці (техніки-будівельники, лаборанти, креслярі, диспетчери, інспектори, асистенти інженерів, брокери, агенти, тощо)",
+              "en": "Technicians and associate professionals"
+            }
+          },
+          {
+            "value": "Кваліфіковані робітники сільського та лісового господарств, риборозведення та рибальства",
+            "labels": {
+              "uk": "Кваліфіковані робітники сільського та лісового господарств, риборозведення та рибальства",
+              "en": "Skilled agricultural, forestry and fishery workers"
+            }
+          },
+          {
+            "value": "Керівники (менеджери, управлінці) підприємств, установ, організацій та їх підрозділів",
+            "labels": {
+              "uk": "Керівники (менеджери, управлінці) підприємств, установ, організацій та їх підрозділів",
+              "en": "Managers"
+            }
+          },
+          {
+            "value": "Робітники з обслуговування, експлуатації та контролювання за роботою технологічного устаткування, складання устаткування",
+            "labels": {
+              "uk": "Робітники з обслуговування, експлуатації та контролювання за роботою технологічного устаткування, складання устаткування",
+              "en": "Plant and machine operators and assemblers"
+            }
+          },
+          {
+            "value": "Кваліфіковані робітники з інструментом",
+            "labels": {
+              "uk": "Кваліфіковані робітники з інструментом",
+              "en": "Craft and related trades workers"
+            }
+          }
+        ],
+        "job_search": [
+          {
+            "value": "Ні",
+            "labels": {
+              "uk": "Ні",
+              "en": "No"
+            }
+          },
+          {
+            "value": "Так",
+            "labels": {
+              "uk": "Так",
+              "en": "Yes"
+            }
+          },
+          {
+            "value": "Не знаю",
+            "labels": {
+              "uk": "Не знаю",
+              "en": "Don't know"
+            }
+          }
+        ],
+        "income_source": [
+          {
+            "value": "Заробітна плата (чистий дохід, без податків і аліментів)",
+            "labels": {
+              "uk": "Заробітна плата (чистий дохід, без податків і аліментів)",
+              "en": "Net salary"
+            }
+          },
+          {
+            "value": "Пенсія",
+            "labels": {
+              "uk": "Пенсія",
+              "en": "Pension"
+            }
+          },
+          {
+            "value": "Підприємницький доход",
+            "labels": {
+              "uk": "Підприємницький доход",
+              "en": "Business income"
+            }
+          },
+          {
+            "value": "Державна соціальна допомога",
+            "labels": {
+              "uk": "Державна соціальна допомога",
+              "en": "State social assistance"
+            }
+          },
+          {
+            "value": "Не маю індивідуального доходу",
+            "labels": {
+              "uk": "Не маю індивідуального доходу",
+              "en": "No personal income"
+            }
+          },
+          {
+            "value": "Інше",
+            "labels": {
+              "uk": "Інше",
+              "en": "Other"
+            }
+          },
+          {
+            "value": "Стипендія",
+            "labels": {
+              "uk": "Стипендія",
+              "en": "Scholarship"
+            }
+          },
+          {
+            "value": "Допомога по безробіттю",
+            "labels": {
+              "uk": "Допомога по безробіттю",
+              "en": "Unemployment benefit"
+            }
+          }
+        ]
+      }
+    },
+    "households": {
+      "n": 8023,
+      "weight_total": 13574519.408963906,
+      "variables": [
+        {
+          "id": "region",
+          "type": "categorical",
+          "topic": "demography",
+          "labels": {
+            "uk": "Область",
+            "en": "Region"
+          },
+          "universe": {
+            "uk": "Усі домогосподарства",
+            "en": "All households"
+          }
+        },
+        {
+          "id": "settlement",
+          "type": "categorical",
+          "topic": "demography",
+          "labels": {
+            "uk": "Тип поселення",
+            "en": "Settlement type"
+          },
+          "universe": {
+            "uk": "Усі домогосподарства",
+            "en": "All households"
+          }
+        },
+        {
+          "id": "household_size",
+          "type": "numeric",
+          "topic": "demography",
+          "labels": {
+            "uk": "Розмір домогосподарства",
+            "en": "Household size"
+          },
+          "universe": {
+            "uk": "Усі домогосподарства",
+            "en": "All households"
+          }
+        },
+        {
+          "id": "children_count",
+          "type": "numeric",
+          "topic": "demography",
+          "labels": {
+            "uk": "Кількість дітей до 18 років",
+            "en": "Children under 18"
+          },
+          "universe": {
+            "uk": "Усі домогосподарства",
+            "en": "All households"
+          }
+        },
+        {
+          "id": "hh_income_total",
+          "type": "numeric",
+          "topic": "income",
+          "labels": {
+            "uk": "Сукупний дохід домогосподарства на місяць",
+            "en": "Total household monthly income"
+          },
+          "universe": {
+            "uk": "Усі домогосподарства",
+            "en": "All households"
+          }
+        },
+        {
+          "id": "hh_income_per_capita",
+          "type": "numeric",
+          "topic": "income",
+          "labels": {
+            "uk": "Дохід домогосподарства на одну особу",
+            "en": "Household income per person"
+          },
+          "universe": {
+            "uk": "Усі домогосподарства",
+            "en": "All households"
+          }
+        },
+        {
+          "id": "income_change",
+          "type": "categorical",
+          "topic": "income",
+          "labels": {
+            "uk": "Дохід порівняно з 2021 роком",
+            "en": "Income compared with 2021"
+          },
+          "universe": {
+            "uk": "Усі домогосподарства",
+            "en": "All households"
+          }
+        },
+        {
+          "id": "income_adequacy",
+          "type": "categorical",
+          "topic": "income",
+          "labels": {
+            "uk": "Купівельна спроможність доходу",
+            "en": "Income purchasing power"
+          },
+          "universe": {
+            "uk": "Усі домогосподарства",
+            "en": "All households"
+          }
+        },
+        {
+          "id": "relative_wealth",
+          "type": "categorical",
+          "topic": "income",
+          "labels": {
+            "uk": "Достаток порівняно із середнім",
+            "en": "Wealth relative to average"
+          },
+          "universe": {
+            "uk": "Усі домогосподарства",
+            "en": "All households"
+          }
+        },
+        {
+          "id": "debt",
+          "type": "categorical",
+          "topic": "income",
+          "labels": {
+            "uk": "Борги або кредити",
+            "en": "Debt or loans"
+          },
+          "universe": {
+            "uk": "Усі домогосподарства",
+            "en": "All households"
+          }
+        },
+        {
+          "id": "used_savings",
+          "type": "categorical",
+          "topic": "income",
+          "labels": {
+            "uk": "Використовували заощадження",
+            "en": "Used savings"
+          },
+          "universe": {
+            "uk": "Усі домогосподарства",
+            "en": "All households"
+          }
+        },
+        {
+          "id": "uses_credit",
+          "type": "categorical",
+          "topic": "income",
+          "labels": {
+            "uk": "Користуються позиками",
+            "en": "Uses credit"
+          },
+          "universe": {
+            "uk": "Усі домогосподарства",
+            "en": "All households"
+          }
+        },
+        {
+          "id": "financial_stability",
+          "type": "categorical",
+          "topic": "income",
+          "labels": {
+            "uk": "Фінансова стабільність",
+            "en": "Financial stability"
+          },
+          "universe": {
+            "uk": "Усі домогосподарства",
+            "en": "All households"
+          }
+        },
+        {
+          "id": "housing_tenure",
+          "type": "categorical",
+          "topic": "living",
+          "labels": {
+            "uk": "Право користування житлом",
+            "en": "Housing tenure"
+          },
+          "universe": {
+            "uk": "Усі домогосподарства",
+            "en": "All households"
+          }
+        },
+        {
+          "id": "dwelling_type",
+          "type": "categorical",
+          "topic": "living",
+          "labels": {
+            "uk": "Тип житла",
+            "en": "Dwelling type"
+          },
+          "universe": {
+            "uk": "Усі домогосподарства",
+            "en": "All households"
+          }
+        },
+        {
+          "id": "area_total",
+          "type": "numeric",
+          "topic": "living",
+          "labels": {
+            "uk": "Загальна площа житла",
+            "en": "Total dwelling area"
+          },
+          "universe": {
+            "uk": "Домогосподарства, що назвали площу",
+            "en": "Households reporting dwelling area"
+          }
+        },
+        {
+          "id": "area_per_capita",
+          "type": "numeric",
+          "topic": "living",
+          "labels": {
+            "uk": "Площа житла на одну особу",
+            "en": "Dwelling area per person"
+          },
+          "universe": {
+            "uk": "Домогосподарства, що назвали площу",
+            "en": "Households reporting dwelling area"
+          }
+        },
+        {
+          "id": "rooms",
+          "type": "numeric",
+          "topic": "living",
+          "labels": {
+            "uk": "Кількість кімнат",
+            "en": "Number of rooms"
+          },
+          "universe": {
+            "uk": "Домогосподарства, що назвали кількість кімнат",
+            "en": "Households reporting rooms"
+          }
+        },
+        {
+          "id": "adequate_area",
+          "type": "categorical",
+          "topic": "living",
+          "labels": {
+            "uk": "Чи достатньо площі житла",
+            "en": "Whether dwelling area is sufficient"
+          },
+          "universe": {
+            "uk": "Усі домогосподарства",
+            "en": "All households"
+          }
+        },
+        {
+          "id": "winter_temperature",
+          "type": "categorical",
+          "topic": "living",
+          "labels": {
+            "uk": "Комфортна температура взимку",
+            "en": "Comfortable winter temperature"
+          },
+          "universe": {
+            "uk": "Усі домогосподарства",
+            "en": "All households"
+          }
+        },
+        {
+          "id": "internet",
+          "type": "categorical",
+          "topic": "living",
+          "labels": {
+            "uk": "Інтернет удома",
+            "en": "Internet at home"
+          },
+          "universe": {
+            "uk": "Усі домогосподарства",
+            "en": "All households"
+          }
+        },
+        {
+          "id": "car_count",
+          "type": "numeric",
+          "topic": "living",
+          "labels": {
+            "uk": "Кількість автомобілів",
+            "en": "Number of cars"
+          },
+          "universe": {
+            "uk": "Домогосподарства, яким поставили запитання",
+            "en": "Households asked the question"
+          }
+        },
+        {
+          "id": "public_transport",
+          "type": "categorical",
+          "topic": "living",
+          "labels": {
+            "uk": "Доступ до громадського транспорту",
+            "en": "Access to public transport"
+          },
+          "universe": {
+            "uk": "Усі домогосподарства",
+            "en": "All households"
+          }
+        },
+        {
+          "id": "unexpected_expense",
+          "type": "categorical",
+          "topic": "living",
+          "labels": {
+            "uk": "Можуть покрити несподівані витрати",
+            "en": "Can cover an unexpected expense"
+          },
+          "universe": {
+            "uk": "Усі домогосподарства",
+            "en": "All households"
+          }
+        },
+        {
+          "id": "annual_holiday",
+          "type": "categorical",
+          "topic": "living",
+          "labels": {
+            "uk": "Можуть оплатити тижневу відпустку",
+            "en": "Can afford a one-week holiday"
+          },
+          "universe": {
+            "uk": "Усі домогосподарства",
+            "en": "All households"
+          }
+        },
+        {
+          "id": "payment_arrears",
+          "type": "categorical",
+          "topic": "living",
+          "labels": {
+            "uk": "Можуть розрахуватися з простроченими платежами",
+            "en": "Can settle payment arrears"
+          },
+          "universe": {
+            "uk": "Усі домогосподарства",
+            "en": "All households"
+          }
+        },
+        {
+          "id": "protein_meal",
+          "type": "categorical",
+          "topic": "living",
+          "labels": {
+            "uk": "Можуть дозволити поживну їжу через день",
+            "en": "Can afford a protein-rich meal every other day"
+          },
+          "universe": {
+            "uk": "Усі домогосподарства",
+            "en": "All households"
+          }
+        },
+        {
+          "id": "warm_home",
+          "type": "categorical",
+          "topic": "living",
+          "labels": {
+            "uk": "Можуть підтримувати житло теплим",
+            "en": "Can keep the home adequately warm"
+          },
+          "universe": {
+            "uk": "Усі домогосподарства",
+            "en": "All households"
+          }
+        }
+      ],
+      "dictionaries": {
+        "region": [
+          {
+            "value": "Донецька обл.",
+            "labels": {
+              "uk": "Донецька обл.",
+              "en": "Donetsk"
+            }
+          },
+          {
+            "value": "Закарпатська обл.",
+            "labels": {
+              "uk": "Закарпатська обл.",
+              "en": "Zakarpattia"
+            }
+          },
+          {
+            "value": "Івано-Франківська обл.",
+            "labels": {
+              "uk": "Івано-Франківська обл.",
+              "en": "Ivano-Frankivsk"
+            }
+          },
+          {
+            "value": "Кіровоградська обл.",
+            "labels": {
+              "uk": "Кіровоградська обл.",
+              "en": "Kirovohrad"
+            }
+          },
+          {
+            "value": "Одеська обл.",
+            "labels": {
+              "uk": "Одеська обл.",
+              "en": "Odesa"
+            }
+          },
+          {
+            "value": "Сумська обл.",
+            "labels": {
+              "uk": "Сумська обл.",
+              "en": "Sumy"
+            }
+          },
+          {
+            "value": "Тернопільська обл.",
+            "labels": {
+              "uk": "Тернопільська обл.",
+              "en": "Ternopil"
+            }
+          },
+          {
+            "value": "Харківська обл.",
+            "labels": {
+              "uk": "Харківська обл.",
+              "en": "Kharkiv"
+            }
+          },
+          {
+            "value": "Херсонська обл.",
+            "labels": {
+              "uk": "Херсонська обл.",
+              "en": "Kherson"
+            }
+          },
+          {
+            "value": "Хмельницька обл.",
+            "labels": {
+              "uk": "Хмельницька обл.",
+              "en": "Khmelnytskyi"
+            }
+          },
+          {
+            "value": "Черкаська обл.",
+            "labels": {
+              "uk": "Черкаська обл.",
+              "en": "Cherkasy"
+            }
+          },
+          {
+            "value": "Чернівецька обл.",
+            "labels": {
+              "uk": "Чернівецька обл.",
+              "en": "Chernivtsi"
+            }
+          },
+          {
+            "value": "Чернігівська обл.",
+            "labels": {
+              "uk": "Чернігівська обл.",
+              "en": "Chernihiv"
+            }
+          },
+          {
+            "value": "м.Київ",
+            "labels": {
+              "uk": "м.Київ",
+              "en": "Kyiv city"
+            }
+          },
+          {
+            "value": "Київська (без м.Києва) обл.",
+            "labels": {
+              "uk": "Київська (без м.Києва) обл.",
+              "en": "Kyiv region"
+            }
+          },
+          {
+            "value": "Полтавська обл.",
+            "labels": {
+              "uk": "Полтавська обл.",
+              "en": "Poltava"
+            }
+          },
+          {
+            "value": "Рівненська обл.",
+            "labels": {
+              "uk": "Рівненська обл.",
+              "en": "Rivne"
+            }
+          },
+          {
+            "value": "Дніпропетровська обл.",
+            "labels": {
+              "uk": "Дніпропетровська обл.",
+              "en": "Dnipropetrovsk"
+            }
+          },
+          {
+            "value": "Житомирська обл.",
+            "labels": {
+              "uk": "Житомирська обл.",
+              "en": "Zhytomyr"
+            }
+          },
+          {
+            "value": "Вінницька обл.",
+            "labels": {
+              "uk": "Вінницька обл.",
+              "en": "Vinnytsia"
+            }
+          },
+          {
+            "value": "Миколаївська обл.",
+            "labels": {
+              "uk": "Миколаївська обл.",
+              "en": "Mykolaiv"
+            }
+          },
+          {
+            "value": "Волинська обл.",
+            "labels": {
+              "uk": "Волинська обл.",
+              "en": "Volyn"
+            }
+          },
+          {
+            "value": "Львівська обл.",
+            "labels": {
+              "uk": "Львівська обл.",
+              "en": "Lviv"
+            }
+          },
+          {
+            "value": "Запорізька обл.",
+            "labels": {
+              "uk": "Запорізька обл.",
+              "en": "Zaporizhzhia"
+            }
+          }
+        ],
+        "settlement": [
+          {
+            "value": "urban",
+            "labels": {
+              "uk": "Міська місцевість",
+              "en": "Urban area"
+            }
+          },
+          {
+            "value": "rural",
+            "labels": {
+              "uk": "Сільська місцевість",
+              "en": "Rural area"
+            }
+          }
+        ],
+        "income_change": [
+          {
+            "value": "Значно зменшилися",
+            "labels": {
+              "uk": "Значно зменшилися",
+              "en": "Decreased substantially"
+            }
+          },
+          {
+            "value": "Залишилися приблизно на одному рівні",
+            "labels": {
+              "uk": "Залишилися приблизно на одному рівні",
+              "en": "Stayed about the same"
+            }
+          },
+          {
+            "value": "Дещо зменшилися",
+            "labels": {
+              "uk": "Дещо зменшилися",
+              "en": "Decreased somewhat"
+            }
+          },
+          {
+            "value": "Дещо зросли",
+            "labels": {
+              "uk": "Дещо зросли",
+              "en": "Increased somewhat"
+            }
+          },
+          {
+            "value": "Значно зросли",
+            "labels": {
+              "uk": "Значно зросли",
+              "en": "Increased substantially"
+            }
+          },
+          {
+            "value": "Не знає відповіді/ важко відповісти",
+            "labels": {
+              "uk": "Не знає відповіді/ важко відповісти",
+              "en": "Don't know / difficult to answer"
+            }
+          }
+        ],
+        "income_adequacy": [
+          {
+            "value": "Постійно відмовляли собі в найнеобхіднішому, крім харчування",
+            "labels": {
+              "uk": "Постійно відмовляли собі в найнеобхіднішому, крім харчування",
+              "en": "Regularly went without essentials other than food"
+            }
+          },
+          {
+            "value": "Не вдалося забезпечити навіть достатнє харчування",
+            "labels": {
+              "uk": "Не вдалося забезпечити навіть достатнє харчування",
+              "en": "Could not afford adequate food"
+            }
+          },
+          {
+            "value": "Було достатньо, але заощаджень не робили",
+            "labels": {
+              "uk": "Було достатньо, але заощаджень не робили",
+              "en": "Enough for needs but no savings"
+            }
+          },
+          {
+            "value": "Було достатньо і робили заощадження",
+            "labels": {
+              "uk": "Було достатньо і робили заощадження",
+              "en": "Enough for needs and able to save"
+            }
+          },
+          {
+            "value": "Важко відповісти",
+            "labels": {
+              "uk": "Важко відповісти",
+              "en": "Difficult to answer"
+            }
+          }
+        ],
+        "relative_wealth": [
+          {
+            "value": "Середній",
+            "labels": {
+              "uk": "Середній",
+              "en": "Average"
+            }
+          },
+          {
+            "value": "Нижче середнього",
+            "labels": {
+              "uk": "Нижче середнього",
+              "en": "Below average"
+            }
+          },
+          {
+            "value": "Вище середнього",
+            "labels": {
+              "uk": "Вище середнього",
+              "en": "Above average"
+            }
+          },
+          {
+            "value": "Важко відповісти",
+            "labels": {
+              "uk": "Важко відповісти",
+              "en": "Difficult to answer"
+            }
+          }
+        ],
+        "debt": [
+          {
+            "value": "Ні",
+            "labels": {
+              "uk": "Ні",
+              "en": "No"
+            }
+          },
+          {
+            "value": "Так",
+            "labels": {
+              "uk": "Так",
+              "en": "Yes"
+            }
+          },
+          {
+            "value": "Не знаю",
+            "labels": {
+              "uk": "Не знаю",
+              "en": "Don't know"
+            }
+          }
+        ],
+        "used_savings": [
+          {
+            "value": "Ні",
+            "labels": {
+              "uk": "Ні",
+              "en": "No"
+            }
+          },
+          {
+            "value": "Заощаджень не маємо",
+            "labels": {
+              "uk": "Заощаджень не маємо",
+              "en": "No savings"
+            }
+          },
+          {
+            "value": "Так",
+            "labels": {
+              "uk": "Так",
+              "en": "Yes"
+            }
+          },
+          {
+            "value": "Не знаю",
+            "labels": {
+              "uk": "Не знаю",
+              "en": "Don't know"
+            }
+          }
+        ],
+        "uses_credit": [
+          {
+            "value": "Ні",
+            "labels": {
+              "uk": "Ні",
+              "en": "No"
+            }
+          },
+          {
+            "value": "Так",
+            "labels": {
+              "uk": "Так",
+              "en": "Yes"
+            }
+          },
+          {
+            "value": "Не знаю",
+            "labels": {
+              "uk": "Не знаю",
+              "en": "Don't know"
+            }
+          }
+        ],
+        "financial_stability": [
+          {
+            "value": "Маємо тривалі періоди фінансової стабільності",
+            "labels": {
+              "uk": "Маємо тривалі періоди фінансової стабільності",
+              "en": "Long periods of financial stability"
+            }
+          },
+          {
+            "value": "Не маємо фінансової стабільності",
+            "labels": {
+              "uk": "Не маємо фінансової стабільності",
+              "en": "No financial stability"
+            }
+          },
+          {
+            "value": "Маємо стабільні регулярні доходи",
+            "labels": {
+              "uk": "Маємо стабільні регулярні доходи",
+              "en": "Stable regular income"
+            }
+          }
+        ],
+        "housing_tenure": [
+          {
+            "value": "Є власністю Вашої родини",
+            "labels": {
+              "uk": "Є власністю Вашої родини",
+              "en": "Owned by the family"
+            }
+          },
+          {
+            "value": "Ваша родина орендує",
+            "labels": {
+              "uk": "Ваша родина орендує",
+              "en": "Rented by the family"
+            }
+          },
+          {
+            "value": "Соціальне житло, надане для переселенців",
+            "labels": {
+              "uk": "Соціальне житло, надане для переселенців",
+              "en": "Social housing for displaced people"
+            }
+          },
+          {
+            "value": "Інше",
+            "labels": {
+              "uk": "Інше",
+              "en": "Other"
+            }
+          }
+        ],
+        "dwelling_type": [
+          {
+            "value": "Окрема квартира у багатоквартирному будинку",
+            "labels": {
+              "uk": "Окрема квартира у багатоквартирному будинку",
+              "en": "Separate apartment in a multi-unit building"
+            }
+          },
+          {
+            "value": "Індивідуальний будинок (садиба)",
+            "labels": {
+              "uk": "Індивідуальний будинок (садиба)",
+              "en": "Detached house"
+            }
+          },
+          {
+            "value": "Частина індивідуального будинку",
+            "labels": {
+              "uk": "Частина індивідуального будинку",
+              "en": "Part of a detached house"
+            }
+          },
+          {
+            "value": "Комунальна квартира",
+            "labels": {
+              "uk": "Комунальна квартира",
+              "en": "Communal apartment"
+            }
+          },
+          {
+            "value": "Гуртожиток",
+            "labels": {
+              "uk": "Гуртожиток",
+              "en": "Dormitory"
+            }
+          },
+          {
+            "value": "Модульне містечко",
+            "labels": {
+              "uk": "Модульне містечко",
+              "en": "Modular settlement"
+            }
+          },
+          {
+            "value": "Інше",
+            "labels": {
+              "uk": "Інше",
+              "en": "Other"
+            }
+          }
+        ],
+        "adequate_area": [
+          {
+            "value": "Ні, потрібно більше площі",
+            "labels": {
+              "uk": "Ні, потрібно більше площі",
+              "en": "No, more space is needed"
+            }
+          },
+          {
+            "value": "Так, площі достатньо",
+            "labels": {
+              "uk": "Так, площі достатньо",
+              "en": "Yes, space is sufficient"
+            }
+          },
+          {
+            "value": "Площі більше, ніж потрібно",
+            "labels": {
+              "uk": "Площі більше, ніж потрібно",
+              "en": "More space than needed"
+            }
+          }
+        ],
+        "winter_temperature": [
+          {
+            "value": "Так",
+            "labels": {
+              "uk": "Так",
+              "en": "Yes"
+            }
+          },
+          {
+            "value": "Ні",
+            "labels": {
+              "uk": "Ні",
+              "en": "No"
+            }
+          }
+        ],
+        "internet": [
+          {
+            "value": "Так",
+            "labels": {
+              "uk": "Так",
+              "en": "Yes"
+            }
+          },
+          {
+            "value": "Ні",
+            "labels": {
+              "uk": "Ні",
+              "en": "No"
+            }
+          },
+          {
+            "value": "Не знаю",
+            "labels": {
+              "uk": "Не знаю",
+              "en": "Don't know"
+            }
+          }
+        ],
+        "public_transport": [
+          {
+            "value": "Так",
+            "labels": {
+              "uk": "Так",
+              "en": "Yes"
+            }
+          },
+          {
+            "value": "Ні",
+            "labels": {
+              "uk": "Ні",
+              "en": "No"
+            }
+          },
+          {
+            "value": "Не знаю",
+            "labels": {
+              "uk": "Не знаю",
+              "en": "Don't know"
+            }
+          }
+        ],
+        "unexpected_expense": [
+          {
+            "value": "Так",
+            "labels": {
+              "uk": "Так",
+              "en": "Yes"
+            }
+          },
+          {
+            "value": "Ні",
+            "labels": {
+              "uk": "Ні",
+              "en": "No"
+            }
+          }
+        ],
+        "annual_holiday": [
+          {
+            "value": "Ні",
+            "labels": {
+              "uk": "Ні",
+              "en": "No"
+            }
+          },
+          {
+            "value": "Так",
+            "labels": {
+              "uk": "Так",
+              "en": "Yes"
+            }
+          }
+        ],
+        "payment_arrears": [
+          {
+            "value": "Ні",
+            "labels": {
+              "uk": "Ні",
+              "en": "No"
+            }
+          },
+          {
+            "value": "Так",
+            "labels": {
+              "uk": "Так",
+              "en": "Yes"
+            }
+          }
+        ],
+        "protein_meal": [
+          {
+            "value": "Так",
+            "labels": {
+              "uk": "Так",
+              "en": "Yes"
+            }
+          },
+          {
+            "value": "Ні",
+            "labels": {
+              "uk": "Ні",
+              "en": "No"
+            }
+          }
+        ],
+        "warm_home": [
+          {
+            "value": "Так",
+            "labels": {
+              "uk": "Так",
+              "en": "Yes"
+            }
+          },
+          {
+            "value": "Ні",
+            "labels": {
+              "uk": "Ні",
+              "en": "No"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "reliability": {
+    "suppress_below": 10,
+    "warn_below": 30
+  }
+}
