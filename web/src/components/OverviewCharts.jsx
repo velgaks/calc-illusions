@@ -9,7 +9,7 @@ function Key({ locale, items }) {
   return <div className="chart-key" aria-hidden="true">{items.map((item, index) => <span key={item} className={`key-color-${index}`}>{item}</span>)}</div>;
 }
 
-export function AgeSexChart({ rows, locale }) {
+export function AgeSexChart({ rows, locale, definitions }) {
   const order = ['0–2', '3–6', '7–13', '14–15', '16–17', '18–29', '30–59', '60+'];
   const data = order.map(age => {
     const female = rows.find(row => row.age_band === age && row.sex === 'жіноча');
@@ -18,7 +18,7 @@ export function AgeSexChart({ rows, locale }) {
   });
   const labels = locale === 'uk' ? ['Жінки', 'Чоловіки'] : ['Women', 'Men'];
   const fmt = numberFormat(locale);
-  return <ChartFrame locale={locale} ariaLabel={locale === 'uk' ? 'Зважена чисельність населення за офіційними віковими групами SESH і статтю' : 'Weighted population by official SESH age band and sex'} table={
+  return <ChartFrame locale={locale} definitions={definitions} ariaLabel={locale === 'uk' ? 'Зважена чисельність населення за офіційними віковими групами SESH і статтю' : 'Weighted population by official SESH age band and sex'} table={
     <table><thead><tr><th>{locale === 'uk' ? 'Вік' : 'Age'}</th><th>{labels[0]}</th><th>{labels[1]}</th><th>n</th></tr></thead><tbody>{data.map(row => <tr key={row.age}><th>{row.age}</th><td>{fmt.format(row.women)}</td><td>{fmt.format(row.men)}</td><td>{fmt.format(row.womenN + row.menN)}</td></tr>)}</tbody></table>
   }>
     <Key locale={locale} items={labels} />
@@ -37,11 +37,11 @@ export function AgeSexChart({ rows, locale }) {
   </ChartFrame>;
 }
 
-export function IncomeChart({ income, locale }) {
+export function IncomeChart({ income, locale, definitions }) {
   const fmt = numberFormat(locale);
   const data = income.quantiles.map(row => ({ percentile: `p${Math.round(row.p * 100)}`, total: row.total, perCapita: Math.round(row.per_capita) }));
   const labels = locale === 'uk' ? ['Домогосподарство', 'На особу'] : ['Household', 'Per person'];
-  return <ChartFrame locale={locale} ariaLabel={locale === 'uk' ? 'Перцентилі сукупного і подушового місячного доходу домогосподарств у гривнях' : 'Percentiles of total and per-person monthly household income in hryvnias'} table={
+  return <ChartFrame locale={locale} definitions={definitions} ariaLabel={locale === 'uk' ? 'Перцентилі сукупного і подушового місячного доходу домогосподарств у гривнях' : 'Percentiles of total and per-person monthly household income in hryvnias'} table={
     <table><thead><tr><th>{locale === 'uk' ? 'Перцентиль' : 'Percentile'}</th><th>{labels[0]}</th><th>{labels[1]}</th></tr></thead><tbody>{data.map(row => <tr key={row.percentile}><th>{row.percentile}</th><td>{fmt.format(row.total)}</td><td>{fmt.format(row.perCapita)}</td></tr>)}</tbody></table>
   }>
     <Key locale={locale} items={labels} />
@@ -75,7 +75,7 @@ const OVERVIEW_CATEGORY_UK = {
 
 function overviewLabel(value, locale) { return locale === 'en' ? (OVERVIEW_CATEGORY_EN[value] || value) : (OVERVIEW_CATEGORY_UK[value] || value); }
 
-export function EmploymentChart({ employment, locale }) {
+export function EmploymentChart({ employment, locale, definitions }) {
   const fmt = numberFormat(locale);
   const pct = percentFormat(locale);
   const total = employment.status.reduce((sum, row) => sum + row.weighted, 0);
@@ -83,7 +83,7 @@ export function EmploymentChart({ employment, locale }) {
   const status = employment.status.map(row => ({ ...row, label: overviewLabel(row.category, locale), share: row.weighted / total })).sort((a, b) => b.share - a.share);
   const arrangement = employment.arrangement.map(row => ({ ...row, label: overviewLabel(row.category, locale), share: row.weighted / arrangementTotal })).sort((a, b) => b.share - a.share);
   const data = status.map(row => ({ ...row, group: locale === 'uk' ? 'Статус, 15+' : 'Status, 15+' }));
-  return <ChartFrame locale={locale} ariaLabel={locale === 'uk' ? 'Економічний статус населення віком 15 років і старше' : 'Economic status of people aged 15 and older'} table={
+  return <ChartFrame locale={locale} definitions={definitions} ariaLabel={locale === 'uk' ? 'Економічний статус населення віком 15 років і старше' : 'Economic status of people aged 15 and older'} table={
     <table><thead><tr><th>{locale === 'uk' ? 'Статус' : 'Status'}</th><th>{locale === 'uk' ? 'Частка' : 'Share'}</th><th>n</th></tr></thead><tbody>{[...status, ...arrangement].map((row, index) => <tr key={`${row.category}-${index}`}><th>{row.label}</th><td>{pct.format(row.share)}</td><td>{fmt.format(row.n)}</td></tr>)}</tbody></table>
   }>
     <ResponsiveContainer width="100%" height={230}>
@@ -106,7 +106,7 @@ export function EmploymentChart({ employment, locale }) {
   </ChartFrame>;
 }
 
-export function DeprivationChart({ deprivation, locale }) {
+export function DeprivationChart({ deprivation, locale, definitions }) {
   const pct = percentFormat(locale);
   const fmt = numberFormat(locale);
   const data = deprivation.map(row => ({
@@ -117,7 +117,7 @@ export function DeprivationChart({ deprivation, locale }) {
     withoutN: row.without_children.base_n,
   }));
   const labels = locale === 'uk' ? ['З дітьми', 'Без дітей'] : ['With children', 'Without children'];
-  return <ChartFrame locale={locale} ariaLabel={locale === 'uk' ? 'Частка домогосподарств, які не можуть дозволити собі окремі потреби, з дітьми і без дітей' : 'Share of households unable to afford selected needs, with and without children'} table={
+  return <ChartFrame locale={locale} definitions={definitions} ariaLabel={locale === 'uk' ? 'Частка домогосподарств, які не можуть дозволити собі окремі потреби, з дітьми і без дітей' : 'Share of households unable to afford selected needs, with and without children'} table={
     <table><thead><tr><th>{locale === 'uk' ? 'Пункт депривації' : 'Deprivation item'}</th><th>{labels[0]}</th><th>{labels[1]}</th><th>n</th></tr></thead><tbody>{data.map(row => <tr key={row.label}><th>{row.label}</th><td>{pct.format(row.withChildren)}</td><td>{pct.format(row.withoutChildren)}</td><td>{fmt.format(row.withN)} / {fmt.format(row.withoutN)}</td></tr>)}</tbody></table>
   }>
     <Key locale={locale} items={labels} />

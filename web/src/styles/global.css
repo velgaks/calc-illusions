@@ -31,6 +31,16 @@ h1 { margin: 0; font-size: clamp(62px, 10vw, 132px); line-height: .88; font-weig
 .chart-key { display: flex; gap: 22px; justify-content: flex-end; font-size: 13px; color: var(--ink-muted); }
 .chart-key span::before { content: ''; width: 18px; height: 3px; display: inline-block; vertical-align: middle; margin-right: 7px; background: var(--blue); }
 .chart-key .key-color-1::before { background: var(--orange); }
+.question-wording { border-left: 3px solid var(--orange); margin: 0 0 22px; padding: 2px 0 2px 16px; }
+.question-wording > p { color: var(--orange); font-size: 11px; font-weight: 800; letter-spacing: .09em; margin: 0 0 9px; text-transform: uppercase; }
+.question-wording dl { display: grid; gap: 12px; margin: 0; }
+.question-wording dl > div { display: grid; gap: 2px; }
+.question-wording dt { color: var(--ink); font-size: 12px; font-weight: 750; }
+.question-wording code { color: var(--ink-muted); font-size: 10px; font-weight: 500; margin-left: 5px; }
+.question-wording dd { color: var(--ink-muted); display: grid; font-size: 13px; line-height: 1.45; margin: 0; }
+.question-mode { color: var(--ink-muted); font-size: 10px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+.question-wording q { color: var(--ink); quotes: '«' '»'; }
+.question-derivation { color: var(--ink-muted); font-size: 12px; margin-top: 3px; }
 .chart-area { width: 100%; min-height: 310px; }
 .recharts-text { fill: var(--ink-muted); font-family: var(--font-sans); font-size: 12px; }
 details { margin-top: 10px; } summary { color: var(--blue); cursor: pointer; }

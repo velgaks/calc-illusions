@@ -23,6 +23,10 @@ export default function OverviewPage({ overview, metadata, locale }) {
   const arrangementTotal = overview.employment.arrangement.reduce((sum, row) => sum + row.weighted, 0);
   const formal = overview.employment.arrangement.find(row => row.category.startsWith('Робота, за яку платять'))?.weighted || 0;
   const pct = value => fmt(locale, { style: 'percent', maximumFractionDigits: 0 }).format(value);
+  const definitions = (unit, ids) => {
+    const variables = metadata.units[unit].variables;
+    return ids.map(id => variables.find(variable => variable.id === id)).filter(Boolean);
+  };
 
   const content = locale === 'uk' ? {
     ageTitle: `${pct(aged60)} населення — віком 60 років або старше`,
@@ -60,16 +64,16 @@ export default function OverviewPage({ overview, metadata, locale }) {
       <Link className="primary-link" to={`/explore?lang=${locale}`}>{content.explore} →</Link>
     </section>
     <Story number="01" eyebrow={locale === 'uk' ? 'Статево-вікова структура' : 'Age and sex structure'} title={content.ageTitle} text={content.ageText}>
-      <AgeSexChart rows={overview.age_sex} locale={locale} />
+      <AgeSexChart rows={overview.age_sex} locale={locale} definitions={definitions('people', ['age', 'sex'])} />
     </Story>
     <Story number="02" eyebrow={locale === 'uk' ? 'Доходи домогосподарств' : 'Household income'} title={content.incomeTitle} text={content.incomeText}>
-      <IncomeChart income={overview.income} locale={locale} />
+      <IncomeChart income={overview.income} locale={locale} definitions={definitions('households', ['hh_income_total', 'hh_income_per_capita'])} />
     </Story>
     <Story number="03" eyebrow={locale === 'uk' ? 'Зайнятість' : 'Employment'} title={content.workTitle} text={content.workText}>
-      <EmploymentChart employment={overview.employment} locale={locale} />
+      <EmploymentChart employment={overview.employment} locale={locale} definitions={definitions('people', ['work_status', 'work_arrangement'])} />
     </Story>
     <Story number="04" eyebrow={locale === 'uk' ? 'Матеріальні умови' : 'Material conditions'} title={content.depTitle} text={content.depText}>
-      <DeprivationChart deprivation={overview.deprivation} locale={locale} />
+      <DeprivationChart deprivation={overview.deprivation} locale={locale} definitions={definitions('households', ['unexpected_expense', 'annual_holiday', 'protein_meal', 'warm_home'])} />
     </Story>
   </div>;
 }

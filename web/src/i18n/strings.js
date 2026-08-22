@@ -15,7 +15,7 @@ export const UI = {
     chooseIndicator: 'Оберіть показник', allCategories: 'Усі категорії', methodologyTitle: 'Як читати ці дані',
     chartAlternative: 'Текстова альтернатива', p10: 'p10', p25: 'p25', p50: 'медіана', p75: 'p75', p90: 'p90', atOrBelow: 'на рівні або нижче порога',
     demography: 'Демографія', income: 'Доходи', employment: 'Зайнятість', living: 'Умови життя',
-    chartBy: 'Графік: Valentyn Hatsko, TG: @gorbach_squad.', dataCode: 'Дані, код і метод: github.com/velgaks/calc-illusions', retrieved: 'отримано у серпні 2026.',
+    authorCredit: 'Автор дашборду: Valentyn Hatsko, TG: @gorbach_squad.', retrieved: 'отримано у серпні 2026.',
   },
   en: {
     title: 'Ukraine in Data', navOverview: 'Overview', navExplorer: 'Explorer', navMethodology: 'Methodology',
@@ -33,7 +33,7 @@ export const UI = {
     chooseIndicator: 'Choose an indicator', allCategories: 'All categories', methodologyTitle: 'How to read these data',
     chartAlternative: 'Text alternative', p10: 'p10', p25: 'p25', p50: 'median', p75: 'p75', p90: 'p90', atOrBelow: 'at or below threshold',
     demography: 'Demography', income: 'Income', employment: 'Employment', living: 'Living conditions',
-    chartBy: 'Chart: Valentyn Hatsko, TG: @gorbach_squad.', dataCode: 'Data, code and method: github.com/velgaks/calc-illusions', retrieved: 'retrieved August 2026.',
+    authorCredit: 'Dashboard by Valentyn Hatsko, TG: @gorbach_squad.', retrieved: 'retrieved August 2026.',
   },
 };
 

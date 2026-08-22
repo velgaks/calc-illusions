@@ -102,7 +102,7 @@ export default function ExplorerPage({ locale, onLocaleChange }) {
         </div>
         <div className="query-actions"><button type="button" onClick={copyLink}>{copied ? copy.copied : copy.copyLink}</button><button type="button" onClick={downloadCsv}>{copy.downloadCsv}</button></div>
       </section>
-      <ExplorerResult result={result} dataset={readyPayload.dataset} query={{ ...query, indicator: indicator.id }} definition={indicator} locale={locale} />
+      <ExplorerResult result={result} dataset={readyPayload.dataset} variables={variables} query={{ ...query, indicator: indicator.id }} definition={indicator} locale={locale} />
     </>}
   </div>;
 }

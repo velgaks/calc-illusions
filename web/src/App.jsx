@@ -35,6 +35,6 @@ export default function App() {
         <Route path="/methodology" element={<MethodologyPage metadata={data.metadata} locale={locale} />} />
       </Routes>}
     </main>
-    <footer><span>SESH 2023/24 · {copy.dataLicense}</span><span>{copy.codeLicense} · github.com/velgaks/calc-illusions</span></footer>
+    <footer><span>{copy.authorCredit}</span><span>SESH 2023/24 · {copy.dataLicense}</span><span>{copy.codeLicense} · github.com/velgaks/ukraine-in-data</span></footer>
   </div>;
 }

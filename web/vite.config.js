@@ -2,7 +2,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
 // Base path для GitHub Pages. У dev — '/', у prod — '/<repo>/' через env.
-// При деплої: `cross-env VITE_BASE_PATH=/calc-illusions/ vite build`.
+// При деплої: `cross-env VITE_BASE_PATH=/ukraine-in-data/ vite build`.
 const base = process.env.VITE_BASE_PATH || '/';
 
 export default defineConfig({

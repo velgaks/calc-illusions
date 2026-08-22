@@ -22,6 +22,7 @@
       "variables": [
         {
           "id": "age",
+          "source": "IND_A2",
           "type": "numeric",
           "topic": "demography",
           "labels": {
@@ -31,10 +32,13 @@
           "universe": {
             "uk": "Усі члени домогосподарств",
             "en": "All household members"
-          }
+          },
+          "question_original_uk": "A2. Вік (повних років)",
+          "question_mode": "asked"
         },
         {
           "id": "sex",
+          "source": "IND_A3",
           "type": "categorical",
           "topic": "demography",
           "labels": {
@@ -44,10 +48,13 @@
           "universe": {
             "uk": "Усі члени домогосподарств",
             "en": "All household members"
-          }
+          },
+          "question_original_uk": "A3. Стать",
+          "question_mode": "asked"
         },
         {
           "id": "region",
+          "source": "OBLAST",
           "type": "categorical",
           "topic": "demography",
           "labels": {
@@ -57,10 +64,13 @@
           "universe": {
             "uk": "Усі члени домогосподарств",
             "en": "All household members"
-          }
+          },
+          "question_original_uk": "Область",
+          "question_mode": "recorded"
         },
         {
           "id": "settlement",
+          "source": "SETTL_TYPE",
           "type": "categorical",
           "topic": "demography",
           "labels": {
@@ -70,10 +80,13 @@
           "universe": {
             "uk": "Усі члени домогосподарств",
             "en": "All household members"
-          }
+          },
+          "question_original_uk": "Тип населеного пункту (місто/село, urban/rural)",
+          "question_mode": "recorded"
         },
         {
           "id": "marital",
+          "source": "IND_A6",
           "type": "categorical",
           "topic": "demography",
           "labels": {
@@ -83,10 +96,13 @@
           "universe": {
             "uk": "Населення віком 15+",
             "en": "People aged 15+"
-          }
+          },
+          "question_original_uk": "A6. Сімейний стан",
+          "question_mode": "asked"
         },
         {
           "id": "education",
+          "source": "IND_A7",
           "type": "categorical",
           "topic": "demography",
           "labels": {
@@ -96,10 +112,13 @@
           "universe": {
             "uk": "Населення віком 15+",
             "en": "People aged 15+"
-          }
+          },
+          "question_original_uk": "A7. Рівень освіти",
+          "question_mode": "asked"
         },
         {
           "id": "moved_since_2014",
+          "source": "IND_A15",
           "type": "categorical",
           "topic": "demography",
           "labels": {
@@ -109,10 +128,13 @@
           "universe": {
             "uk": "Усі члени домогосподарств",
             "en": "All household members"
-          }
+          },
+          "question_original_uk": "A15. Як давно проживає в даному населеному пункті?",
+          "question_mode": "asked"
         },
         {
           "id": "idp",
+          "source": "IND_A19",
           "type": "categorical",
           "topic": "demography",
           "labels": {
@@ -122,10 +144,17 @@
           "universe": {
             "uk": "Усі члени домогосподарств",
             "en": "All household members"
+          },
+          "question_original_uk": "A19. Чи має статус ВПО (внутрішньо переміщеної особи)?",
+          "question_mode": "asked",
+          "derivation": {
+            "uk": "Якщо A19 не поставили через маршрут анкети, «ні» визначено з A15 лише для тих, хто проживав у населеному пункті до 20.02.2014.",
+            "en": "If A19 was skipped by questionnaire routing, ‘no’ is inferred from A15 only for people who had lived in the settlement since before 20 February 2014."
           }
         },
         {
           "id": "abroad_since_2022",
+          "source": "IND_A21",
           "type": "categorical",
           "topic": "demography",
           "labels": {
@@ -135,10 +164,13 @@
           "universe": {
             "uk": "Усі члени домогосподарств",
             "en": "All household members"
-          }
+          },
+          "question_original_uk": "A21. Чи виїздив з України після 24 лютого 2022 р. терміном на місяць або більше через війну?",
+          "question_mode": "asked"
         },
         {
           "id": "household_size",
+          "source": "hh_size",
           "type": "numeric",
           "topic": "demography",
           "labels": {
@@ -148,10 +180,17 @@
           "universe": {
             "uk": "Усі члени домогосподарств",
             "en": "All household members"
+          },
+          "question_original_uk": "А.1. Скільки осіб проживає разом із Вами (включаючи Вас):",
+          "question_mode": "asked",
+          "derivation": {
+            "uk": "Відповідь домогосподарства приєднано до запису кожного його члена.",
+            "en": "The household-level response is attached to every household member's record."
           }
         },
         {
           "id": "children_count",
+          "source": "dity_n",
           "type": "numeric",
           "topic": "demography",
           "labels": {
@@ -161,10 +200,17 @@
           "universe": {
             "uk": "Усі члени домогосподарств",
             "en": "All household members"
+          },
+          "question_original_uk": "А.2. З них дітей віком до 18 років?",
+          "question_mode": "asked",
+          "derivation": {
+            "uk": "Відповідь домогосподарства приєднано до запису кожного його члена.",
+            "en": "The household-level response is attached to every household member's record."
           }
         },
         {
           "id": "work_status",
+          "source": "IND_B1",
           "type": "categorical",
           "topic": "employment",
           "labels": {
@@ -174,10 +220,13 @@
           "universe": {
             "uk": "Населення віком 15+",
             "en": "People aged 15+"
-          }
+          },
+          "question_original_uk": "Б1. Економічний статус на обстежуваному тижні?",
+          "question_mode": "asked"
         },
         {
           "id": "work_arrangement",
+          "source": "IND_B3_1",
           "type": "categorical",
           "topic": "employment",
           "labels": {
@@ -187,10 +236,13 @@
           "universe": {
             "uk": "Ті, хто працювали або тимчасово не працювали",
             "en": "People working or temporarily absent"
-          }
+          },
+          "question_original_uk": "Б3.1. Що представляє собою робота, бізнес чи інше оплачуване заняття? Тут йдеться про роботу, яку вважає ОСНОВНОЮ?",
+          "question_mode": "asked"
         },
         {
           "id": "sector",
+          "source": "IND_B5_2",
           "type": "categorical",
           "topic": "employment",
           "labels": {
@@ -200,10 +252,13 @@
           "universe": {
             "uk": "Зайняте населення",
             "en": "Employed people"
-          }
+          },
+          "question_original_uk": "Б5.2. Відповідно до того, які послуги надає, чи яку продукцію виготовляє (продає) підприємство, де працює або виготовляє сам цей член домогосподарства, уточнити до якого сектору економіки краще віднести його основну діяльність?",
+          "question_mode": "asked"
         },
         {
           "id": "occupation_group",
+          "source": "IND_B6_2",
           "type": "categorical",
           "topic": "employment",
           "labels": {
@@ -213,10 +268,13 @@
           "universe": {
             "uk": "Зайняте населення",
             "en": "Employed people"
-          }
+          },
+          "question_original_uk": "Б6.2. Якого кваліфікаційного рівня професійні обов’язки на основному робочому місці",
+          "question_mode": "asked"
         },
         {
           "id": "weekly_hours",
+          "source": "IND_B9_1",
           "type": "numeric",
           "topic": "employment",
           "labels": {
@@ -226,10 +284,13 @@
           "universe": {
             "uk": "Зайняте населення",
             "en": "Employed people"
-          }
+          },
+          "question_original_uk": "Б9.1. Скільки годин на тиждень зазвичай працює? — за основною роботою, заняттям",
+          "question_mode": "asked"
         },
         {
           "id": "job_search",
+          "source": "IND_B21",
           "type": "categorical",
           "topic": "employment",
           "labels": {
@@ -239,10 +300,13 @@
           "universe": {
             "uk": "Непрацюючі, яким поставили запитання",
             "en": "Non-working people asked the question"
-          }
+          },
+          "question_original_uk": "Б21.Чи наразі шукає роботу або оформлює власний бізнес?",
+          "question_mode": "asked"
         },
         {
           "id": "income_source",
+          "source": "IND_V1_1",
           "type": "categorical",
           "topic": "income",
           "labels": {
@@ -252,10 +316,13 @@
           "universe": {
             "uk": "Населення віком 15+",
             "en": "People aged 15+"
-          }
+          },
+          "question_original_uk": "В1.1. Основне джерело індивідуального доходу",
+          "question_mode": "asked"
         },
         {
           "id": "personal_income",
+          "source": "IND_V1_1_1",
           "type": "numeric",
           "topic": "income",
           "labels": {
@@ -265,6 +332,12 @@
           "universe": {
             "uk": "Населення віком 15+",
             "en": "People aged 15+"
+          },
+          "question_original_uk": "В1.1. Основне джерело індивідуального доходу В1.1.1. Назвіть суму за місяць:",
+          "question_mode": "asked",
+          "derivation": {
+            "uk": "Для відповіді «Не маю індивідуального доходу» значення дорівнює нулю; відмови лишаються пропусками.",
+            "en": "‘No personal income’ is coded as zero; refusals remain missing."
           }
         }
       ],
@@ -1012,6 +1085,7 @@
       "variables": [
         {
           "id": "region",
+          "source": "OBLAST",
           "type": "categorical",
           "topic": "demography",
           "labels": {
@@ -1021,10 +1095,13 @@
           "universe": {
             "uk": "Усі домогосподарства",
             "en": "All households"
-          }
+          },
+          "question_original_uk": "Область",
+          "question_mode": "recorded"
         },
         {
           "id": "settlement",
+          "source": "SETTL_TYPE",
           "type": "categorical",
           "topic": "demography",
           "labels": {
@@ -1034,10 +1111,13 @@
           "universe": {
             "uk": "Усі домогосподарства",
             "en": "All households"
-          }
+          },
+          "question_original_uk": "Тип населеного пункту (місто/село, urban/rural)",
+          "question_mode": "recorded"
         },
         {
           "id": "household_size",
+          "source": "hh_size",
           "type": "numeric",
           "topic": "demography",
           "labels": {
@@ -1047,10 +1127,13 @@
           "universe": {
             "uk": "Усі домогосподарства",
             "en": "All households"
-          }
+          },
+          "question_original_uk": "А.1. Скільки осіб проживає разом із Вами (включаючи Вас):",
+          "question_mode": "asked"
         },
         {
           "id": "children_count",
+          "source": "dity_n",
           "type": "numeric",
           "topic": "demography",
           "labels": {
@@ -1060,10 +1143,13 @@
           "universe": {
             "uk": "Усі домогосподарства",
             "en": "All households"
-          }
+          },
+          "question_original_uk": "А.2. З них дітей віком до 18 років?",
+          "question_mode": "asked"
         },
         {
           "id": "hh_income_total",
+          "source": "V1",
           "type": "numeric",
           "topic": "income",
           "labels": {
@@ -1073,10 +1159,13 @@
           "universe": {
             "uk": "Усі домогосподарства",
             "en": "All households"
-          }
+          },
+          "question_original_uk": "B1. Яким є загальний дохід Вашого домогосподарства в середньому на місяць, грн.?",
+          "question_mode": "asked"
         },
         {
           "id": "hh_income_per_capita",
+          "source": "V1",
           "type": "numeric",
           "topic": "income",
           "labels": {
@@ -1086,10 +1175,17 @@
           "universe": {
             "uk": "Усі домогосподарства",
             "en": "All households"
+          },
+          "question_original_uk": "B1. Яким є загальний дохід Вашого домогосподарства в середньому на місяць, грн.?",
+          "question_mode": "asked",
+          "derivation": {
+            "uk": "Похідний показник: V1 поділено на фактичний розмір домогосподарства. Це не еквівалентний дохід OECD.",
+            "en": "Derived indicator: V1 is divided by actual household size. This is not OECD-equivalised income."
           }
         },
         {
           "id": "income_change",
+          "source": "V2",
           "type": "categorical",
           "topic": "income",
           "labels": {
@@ -1099,10 +1195,13 @@
           "universe": {
             "uk": "Усі домогосподарства",
             "en": "All households"
-          }
+          },
+          "question_original_uk": "B2. Як Ви оцінюєте рівень доходів Вашого домогосподарства порівняно з 2021 довоєнним роком?",
+          "question_mode": "asked"
         },
         {
           "id": "income_adequacy",
+          "source": "V15",
           "type": "categorical",
           "topic": "income",
           "labels": {
@@ -1112,10 +1211,13 @@
           "universe": {
             "uk": "Усі домогосподарства",
             "en": "All households"
-          }
+          },
+          "question_original_uk": "В15. Як Ви оцінюєте дохід Вашого домогосподарства протягом останнього року?",
+          "question_mode": "asked"
         },
         {
           "id": "relative_wealth",
+          "source": "V16",
           "type": "categorical",
           "topic": "income",
           "labels": {
@@ -1125,10 +1227,13 @@
           "universe": {
             "uk": "Усі домогосподарства",
             "en": "All households"
-          }
+          },
+          "question_original_uk": "В16. Як би Ви оцінили достаток Вашого домогосподарства по відношенню до середнього рівня в країні?",
+          "question_mode": "asked"
         },
         {
           "id": "debt",
+          "source": "V5",
           "type": "categorical",
           "topic": "income",
           "labels": {
@@ -1138,10 +1243,13 @@
           "universe": {
             "uk": "Усі домогосподарства",
             "en": "All households"
-          }
+          },
+          "question_original_uk": "В5. Чи є у Вашого домогосподарства зараз борги або кредити, які Ви не повністю сплатили?",
+          "question_mode": "asked"
         },
         {
           "id": "used_savings",
+          "source": "V8",
           "type": "categorical",
           "topic": "income",
           "labels": {
@@ -1151,10 +1259,13 @@
           "universe": {
             "uk": "Усі домогосподарства",
             "en": "All households"
-          }
+          },
+          "question_original_uk": "В8. Чи доводилося Вашому домогосподарству протягом останніх трьох місяців використовувати заощаджені кошти?",
+          "question_mode": "asked"
         },
         {
           "id": "uses_credit",
+          "source": "V11",
           "type": "categorical",
           "topic": "income",
           "labels": {
@@ -1164,10 +1275,13 @@
           "universe": {
             "uk": "Усі домогосподарства",
             "en": "All households"
-          }
+          },
+          "question_original_uk": "В11. Чи користуєтеся Ви або члени Вашої родини позиками (наприклад кредитними коштами на картці)?",
+          "question_mode": "asked"
         },
         {
           "id": "financial_stability",
+          "source": "V13",
           "type": "categorical",
           "topic": "income",
           "labels": {
@@ -1177,10 +1291,13 @@
           "universe": {
             "uk": "Усі домогосподарства",
             "en": "All households"
-          }
+          },
+          "question_original_uk": "В13. Як Ви оцінюєте фінансову стабільність Вашого домогосподарства сьогодні?",
+          "question_mode": "asked"
         },
         {
           "id": "housing_tenure",
+          "source": "B2",
           "type": "categorical",
           "topic": "living",
           "labels": {
@@ -1190,10 +1307,13 @@
           "universe": {
             "uk": "Усі домогосподарства",
             "en": "All households"
-          }
+          },
+          "question_original_uk": "Б2. Це помешкання:",
+          "question_mode": "asked"
         },
         {
           "id": "dwelling_type",
+          "source": "B3",
           "type": "categorical",
           "topic": "living",
           "labels": {
@@ -1203,10 +1323,13 @@
           "universe": {
             "uk": "Усі домогосподарства",
             "en": "All households"
-          }
+          },
+          "question_original_uk": "Б3. Тип помешкання:",
+          "question_mode": "asked"
         },
         {
           "id": "area_total",
+          "source": "B4",
           "type": "numeric",
           "topic": "living",
           "labels": {
@@ -1216,10 +1339,13 @@
           "universe": {
             "uk": "Домогосподарства, що назвали площу",
             "en": "Households reporting dwelling area"
-          }
+          },
+          "question_original_uk": "Б4. Якою є загальна площа Вашого житла? (кв.м.)",
+          "question_mode": "asked"
         },
         {
           "id": "area_per_capita",
+          "source": "B4",
           "type": "numeric",
           "topic": "living",
           "labels": {
@@ -1229,10 +1355,17 @@
           "universe": {
             "uk": "Домогосподарства, що назвали площу",
             "en": "Households reporting dwelling area"
+          },
+          "question_original_uk": "Б4. Якою є загальна площа Вашого житла? (кв.м.)",
+          "question_mode": "asked",
+          "derivation": {
+            "uk": "Похідний показник: загальну площу житла B4 поділено на фактичний розмір домогосподарства.",
+            "en": "Derived indicator: total dwelling area B4 is divided by actual household size."
           }
         },
         {
           "id": "rooms",
+          "source": "B5",
           "type": "numeric",
           "topic": "living",
           "labels": {
@@ -1242,10 +1375,13 @@
           "universe": {
             "uk": "Домогосподарства, що назвали кількість кімнат",
             "en": "Households reporting rooms"
-          }
+          },
+          "question_original_uk": "Б5. Скільки кімнат у Вашому помешканні? (не враховуючи кухню, вбиральню та інші допоміжні приміщення)",
+          "question_mode": "asked"
         },
         {
           "id": "adequate_area",
+          "source": "B7",
           "type": "categorical",
           "topic": "living",
           "labels": {
@@ -1255,10 +1391,13 @@
           "universe": {
             "uk": "Усі домогосподарства",
             "en": "All households"
-          }
+          },
+          "question_original_uk": "Б7. Ви вважаєте, що площі житла достатньо для Вас та Вашої родини?",
+          "question_mode": "asked"
         },
         {
           "id": "winter_temperature",
+          "source": "B9_1",
           "type": "categorical",
           "topic": "living",
           "labels": {
@@ -1268,10 +1407,13 @@
           "universe": {
             "uk": "Усі домогосподарства",
             "en": "All households"
-          }
+          },
+          "question_original_uk": "Б9. Чи можете Ви підтримувати вдома достатню (комфортну) температуру взимку? — взимку",
+          "question_mode": "asked"
         },
         {
           "id": "internet",
+          "source": "B17",
           "type": "categorical",
           "topic": "living",
           "labels": {
@@ -1281,10 +1423,13 @@
           "universe": {
             "uk": "Усі домогосподарства",
             "en": "All households"
-          }
+          },
+          "question_original_uk": "Б17. Чи маєте Ви доступ до мережі інтернет вдома (включаючи мобільний інтернет)?",
+          "question_mode": "asked"
         },
         {
           "id": "car_count",
+          "source": "B18_4_1",
           "type": "numeric",
           "topic": "living",
           "labels": {
@@ -1294,10 +1439,13 @@
           "universe": {
             "uk": "Домогосподарства, яким поставили запитання",
             "en": "Households asked the question"
-          }
+          },
+          "question_original_uk": "Б18. Які з перелічених нижче засобів пересування та технічних засобів Ваше домогосподарство має у наявності? — Автомобіль, мікроавтобус — кількість",
+          "question_mode": "asked"
         },
         {
           "id": "public_transport",
+          "source": "B19",
           "type": "categorical",
           "topic": "living",
           "labels": {
@@ -1307,10 +1455,13 @@
           "universe": {
             "uk": "Усі домогосподарства",
             "en": "All households"
-          }
+          },
+          "question_original_uk": "Б19. Чи маєте Ви зручний доступ до громадського транспорту (на відстані не більше 500 м)?",
+          "question_mode": "asked"
         },
         {
           "id": "unexpected_expense",
+          "source": "E1_1",
           "type": "categorical",
           "topic": "living",
           "labels": {
@@ -1320,10 +1471,13 @@
           "universe": {
             "uk": "Усі домогосподарства",
             "en": "All households"
-          }
+          },
+          "question_original_uk": "Е1.1. Чи мало Ваше домогосподарство можливість: — Здійснити у разі необхідності несподівані витрати",
+          "question_mode": "asked"
         },
         {
           "id": "annual_holiday",
+          "source": "E1_2",
           "type": "categorical",
           "topic": "living",
           "labels": {
@@ -1333,10 +1487,13 @@
           "universe": {
             "uk": "Усі домогосподарства",
             "en": "All households"
-          }
+          },
+          "question_original_uk": "Е1.1. Чи мало Ваше домогосподарство можливість: — Оплатити однотижневу щорічну відпустку поза домом",
+          "question_mode": "asked"
         },
         {
           "id": "payment_arrears",
+          "source": "E1_3",
           "type": "categorical",
           "topic": "living",
           "labels": {
@@ -1346,10 +1503,13 @@
           "universe": {
             "uk": "Усі домогосподарства",
             "en": "All households"
-          }
+          },
+          "question_original_uk": "Е1.1. Чи мало Ваше домогосподарство можливість: — Розрахуватися з простроченими платежами (за іпотечними або орендними платежами, комунальними послугами, розстрочкою або іншими платежами по кредиту)",
+          "question_mode": "asked"
         },
         {
           "id": "protein_meal",
+          "source": "E1_4",
           "type": "categorical",
           "topic": "living",
           "labels": {
@@ -1359,10 +1519,13 @@
           "universe": {
             "uk": "Усі домогосподарства",
             "en": "All households"
-          }
+          },
+          "question_original_uk": "Е1.1. Чи мало Ваше домогосподарство можливість: — Дозволити собі їжу з м'ясом, куркою, рибою або вегетаріанським еквівалентом кожен другий день",
+          "question_mode": "asked"
         },
         {
           "id": "warm_home",
+          "source": "E1_5",
           "type": "categorical",
           "topic": "living",
           "labels": {
@@ -1372,7 +1535,9 @@
           "universe": {
             "uk": "Усі домогосподарства",
             "en": "All households"
-          }
+          },
+          "question_original_uk": "Е1.1. Чи мало Ваше домогосподарство можливість: — Підтримувати в домі належне тепло",
+          "question_mode": "asked"
         }
       ],
       "dictionaries": {

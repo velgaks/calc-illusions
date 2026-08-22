@@ -134,6 +134,47 @@ HOUSEHOLD_VARIABLES: dict[str, Variable] = {
 }
 
 
+QUESTION_SOURCE_OVERRIDES: dict[tuple[str, str], list[tuple[str, str]]] = {
+    ("people", "household_size"): [("households", "A1")],
+    ("people", "children_count"): [("households", "A2")],
+    ("people", "personal_income"): [("people", "IND_V1_1"), ("people", "IND_V1_1_1")],
+    ("households", "household_size"): [("households", "A1")],
+    ("households", "children_count"): [("households", "A2")],
+}
+
+RECORDED_FIELDS = {
+    ("people", "region"), ("people", "settlement"),
+    ("households", "region"), ("households", "settlement"),
+}
+
+DERIVATION_NOTES: dict[tuple[str, str], dict[str, str]] = {
+    ("people", "idp"): {
+        "uk": "Якщо A19 не поставили через маршрут анкети, «ні» визначено з A15 лише для тих, хто проживав у населеному пункті до 20.02.2014.",
+        "en": "If A19 was skipped by questionnaire routing, ‘no’ is inferred from A15 only for people who had lived in the settlement since before 20 February 2014.",
+    },
+    ("people", "household_size"): {
+        "uk": "Відповідь домогосподарства приєднано до запису кожного його члена.",
+        "en": "The household-level response is attached to every household member's record.",
+    },
+    ("people", "children_count"): {
+        "uk": "Відповідь домогосподарства приєднано до запису кожного його члена.",
+        "en": "The household-level response is attached to every household member's record.",
+    },
+    ("people", "personal_income"): {
+        "uk": "Для відповіді «Не маю індивідуального доходу» значення дорівнює нулю; відмови лишаються пропусками.",
+        "en": "‘No personal income’ is coded as zero; refusals remain missing.",
+    },
+    ("households", "hh_income_per_capita"): {
+        "uk": "Похідний показник: V1 поділено на фактичний розмір домогосподарства. Це не еквівалентний дохід OECD.",
+        "en": "Derived indicator: V1 is divided by actual household size. This is not OECD-equivalised income.",
+    },
+    ("households", "area_per_capita"): {
+        "uk": "Похідний показник: загальну площу житла B4 поділено на фактичний розмір домогосподарства.",
+        "en": "Derived indicator: total dwelling area B4 is divided by actual household size.",
+    },
+}
+
+
 COMMON_CATEGORY_LABELS: dict[str, tuple[str, str]] = {
     "yes": ("Так", "Yes"),
     "no": ("Ні", "No"),
@@ -422,14 +463,53 @@ def encode_dataset(records: list[dict[str, Any]], variables: dict[str, Variable]
     }
 
 
-def variable_metadata(variables: dict[str, Variable]) -> list[dict[str, Any]]:
+def read_question_wording(path: Path) -> dict[str, str]:
+    """Read exact Ukrainian wording from the workbook's variable register."""
+    workbook = load_workbook(path, read_only=True, data_only=True)
+    sheet = workbook["variables_ukr"]
+    questions: dict[str, str] = {}
+    for row in sheet.iter_rows(min_row=2, values_only=True):
+        if len(row) < 2 or row[0] is None or row[1] is None:
+            continue
+        parts = [str(value).strip() for value in row[1:] if value is not None and str(value).strip()]
+        questions[str(row[0])] = " — ".join(parts)
+    workbook.close()
+    return questions
+
+
+def variable_question(
+    unit: str,
+    name: str,
+    definition: Variable,
+    people_questions: dict[str, str],
+    household_questions: dict[str, str],
+) -> str:
+    lookups = {"people": people_questions, "households": household_questions}
+    references = QUESTION_SOURCE_OVERRIDES.get((unit, name), [(unit, definition.source)])
+    parts = [lookups[source_unit].get(source_field) for source_unit, source_field in references]
+    wording = [part for part in parts if part]
+    if not wording:
+        raise RuntimeError(f"Missing questionnaire wording for {unit}.{name} ({definition.source})")
+    return " ".join(wording)
+
+
+def variable_metadata(
+    unit: str,
+    variables: dict[str, Variable],
+    people_questions: dict[str, str],
+    household_questions: dict[str, str],
+) -> list[dict[str, Any]]:
     return [
         {
             "id": name,
+            "source": definition.source,
             "type": definition.kind,
             "topic": definition.topic,
             "labels": {"uk": definition.label_uk, "en": definition.label_en},
             "universe": {"uk": definition.universe_uk, "en": definition.universe_en},
+            "question_original_uk": variable_question(unit, name, definition, people_questions, household_questions),
+            "question_mode": "recorded" if (unit, name) in RECORDED_FIELDS else "asked",
+            **({"derivation": DERIVATION_NOTES[(unit, name)]} if (unit, name) in DERIVATION_NOTES else {}),
         }
         for name, definition in variables.items()
     ]
@@ -552,6 +632,8 @@ def main() -> None:
 
     people_path = find_one(PEOPLE_GLOB)
     household_path = find_one(HOUSEHOLD_GLOB)
+    people_questions = read_question_wording(people_path)
+    household_questions = read_question_wording(household_path)
 
     households, cluster_ids = extract(household_path, 5, HOUSEHOLD_VARIABLES)
     people, _ = extract(people_path, 4, PEOPLE_VARIABLES, cluster_ids)
@@ -575,8 +657,8 @@ def main() -> None:
             "credits": "Institute of Demography and Quality of Life Problems of the NAS of Ukraine; Ukrainian Center for Social Reforms; UNICEF; Ministry of Social Policy of Ukraine; BMZ/KfW",
         },
         "units": {
-            "people": {"n": len(people), "weight_total": sum(row["weight"] for row in people), "variables": variable_metadata(PEOPLE_VARIABLES), "dictionaries": encoded_people["dictionaries"]},
-            "households": {"n": len(households), "weight_total": sum(row["weight"] for row in households), "variables": variable_metadata(HOUSEHOLD_VARIABLES), "dictionaries": encoded_households["dictionaries"]},
+            "people": {"n": len(people), "weight_total": sum(row["weight"] for row in people), "variables": variable_metadata("people", PEOPLE_VARIABLES, people_questions, household_questions), "dictionaries": encoded_people["dictionaries"]},
+            "households": {"n": len(households), "weight_total": sum(row["weight"] for row in households), "variables": variable_metadata("households", HOUSEHOLD_VARIABLES, people_questions, household_questions), "dictionaries": encoded_households["dictionaries"]},
         },
         "reliability": {"suppress_below": 10, "warn_below": 30},
     }

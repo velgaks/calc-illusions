@@ -7,7 +7,7 @@
 - Дві окремі одиниці аналізу: 18 837 людей і 8 023 домогосподарства. Ваги та знаменники не змішуються.
 - Український та англійський інтерфейс.
 
-Live: https://velgaks.github.io/calc-illusions/
+Live: https://velgaks.github.io/ukraine-in-data/
 
 ## Швидкий старт
 
@@ -47,7 +47,7 @@ npm run build
 npm run build:gh
 ```
 
-`build:gh` зберігає чинний GitHub Pages base path `/calc-illusions/`.
+`build:gh` використовує GitHub Pages base path `/ukraine-in-data/`.
 
 ## Методологія та ліцензії
 

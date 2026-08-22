@@ -5,6 +5,13 @@ import { t } from '../i18n/strings.js';
 
 const nf = (locale, options = {}) => new Intl.NumberFormat(locale === 'uk' ? 'uk-UA' : 'en-US', options);
 
+function chartDefinitions(variables, query) {
+  return [query.indicator, query.breakdown]
+    .filter(Boolean)
+    .map(id => variables.find(variable => variable.id === id))
+    .filter(Boolean);
+}
+
 function displayValue(value, locale) {
   return value == null ? '—' : nf(locale, { maximumFractionDigits: 1 }).format(value);
 }
@@ -14,7 +21,7 @@ function Reliability({ level, locale }) {
   return <span className={`reliability reliability-${level}`}>{copy[level]}</span>;
 }
 
-function CategoricalChart({ result, dataset, query, locale }) {
+function CategoricalChart({ result, dataset, variables, query, locale }) {
   const pct = nf(locale, { style: 'percent', maximumFractionDigits: 1 });
   const rows = result.rows.map(row => {
     const category = categoryLabel(dataset, query.indicator, row.category, locale);
@@ -22,7 +29,7 @@ function CategoricalChart({ result, dataset, query, locale }) {
     return { ...row, label: breakdown ? `${breakdown} — ${category}` : category };
   });
   const visible = rows.slice(0, 40);
-  return <ChartFrame locale={locale} ariaLabel={locale === 'uk' ? 'Зважені частки категорій для вибраного запиту' : 'Weighted category shares for the selected query'} table={
+  return <ChartFrame locale={locale} definitions={chartDefinitions(variables, query)} ariaLabel={locale === 'uk' ? 'Зважені частки категорій для вибраного запиту' : 'Weighted category shares for the selected query'} table={
     <table><thead><tr><th>{t(locale).value}</th><th>{t(locale).share}</th><th>{t(locale).count}</th><th>n</th><th>{locale === 'uk' ? 'Надійність' : 'Reliability'}</th></tr></thead><tbody>
       {rows.map(row => <tr key={row.label}><th>{row.label}</th><td>{row.weightedShare == null ? '—' : pct.format(row.weightedShare)}</td><td>{row.weightedCount == null ? '—' : nf(locale, { maximumFractionDigits: 0 }).format(row.weightedCount)}</td><td>{row.n}</td><td><Reliability level={row.reliability} locale={locale} /></td></tr>)}
     </tbody></table>
@@ -40,7 +47,7 @@ function CategoricalChart({ result, dataset, query, locale }) {
   </ChartFrame>;
 }
 
-function NumericChart({ result, dataset, query, locale }) {
+function NumericChart({ result, dataset, variables, query, locale }) {
   const pct = nf(locale, { style: 'percent', maximumFractionDigits: 0 });
   const number = nf(locale, { maximumFractionDigits: 1 });
   const quantileRows = result.rows;
@@ -51,7 +58,7 @@ function NumericChart({ result, dataset, query, locale }) {
       n: group.n,
       reliability: group.reliability,
     })).sort((a, b) => (b.median ?? -Infinity) - (a.median ?? -Infinity));
-    return <ChartFrame locale={locale} ariaLabel={locale === 'uk' ? 'Зважена медіана числового показника за вибраним розрізом' : 'Weighted median of the numeric indicator by selected breakdown'} table={
+    return <ChartFrame locale={locale} definitions={chartDefinitions(variables, query)} ariaLabel={locale === 'uk' ? 'Зважена медіана числового показника за вибраним розрізом' : 'Weighted median of the numeric indicator by selected breakdown'} table={
       <table><thead><tr><th>{t(locale).breakdown}</th><th>{t(locale).median}</th><th>n</th><th>{locale === 'uk' ? 'Надійність' : 'Reliability'}</th></tr></thead><tbody>{data.map(row => <tr key={row.label}><th>{row.label}</th><td>{row.reliability === 'suppressed' ? '—' : number.format(row.median)}</td><td>{row.n}</td><td><Reliability level={row.reliability} locale={locale} /></td></tr>)}</tbody></table>
     }>
       <ResponsiveContainer width="100%" height={Math.max(260, data.length * 42)}>
@@ -65,7 +72,7 @@ function NumericChart({ result, dataset, query, locale }) {
       </ResponsiveContainer>
     </ChartFrame>;
   }
-  return <ChartFrame locale={locale} ariaLabel={locale === 'uk' ? 'Зважена кумулятивна крива числового показника' : 'Weighted cumulative distribution curve for the numeric indicator'} table={
+  return <ChartFrame locale={locale} definitions={chartDefinitions(variables, query)} ariaLabel={locale === 'uk' ? 'Зважена кумулятивна крива числового показника' : 'Weighted cumulative distribution curve for the numeric indicator'} table={
     <table><thead><tr><th>{t(locale).percentile}</th><th>{t(locale).value}</th></tr></thead><tbody>{quantileRows.map(row => <tr key={row.p}><th>p{Math.round(row.p * 100)}</th><td>{row.value == null ? '—' : number.format(row.value)}</td></tr>)}</tbody></table>
   }>
     <ResponsiveContainer width="100%" height={360}>
@@ -96,7 +103,7 @@ export function aggregateCsv(result, dataset, query, locale) {
   return rows.map(row => row.map(quote).join(',')).join('\n');
 }
 
-export default function ExplorerResult({ result, dataset, query, definition, locale }) {
+export default function ExplorerResult({ result, dataset, variables, query, definition, locale }) {
   const copy = t(locale);
   const integer = nf(locale, { maximumFractionDigits: 0 });
   const pct = nf(locale, { style: 'percent', maximumFractionDigits: 1 });
@@ -112,7 +119,7 @@ export default function ExplorerResult({ result, dataset, query, definition, loc
     </div>
     <p className="universe"><strong>{copy.universe}:</strong> {result.universe[locale]}. {query.threshold != null ? `${copy.weightedCount}: ${copy.atOrBelow} ${integer.format(query.threshold)}. ` : ''}{integer.format(result.exclusions.missing)} {copy.excluded}.</p>
     {result.type === 'categorical'
-      ? <CategoricalChart result={result} dataset={dataset} query={query} locale={locale} />
-      : <NumericChart result={result} dataset={dataset} query={query} locale={locale} />}
+      ? <CategoricalChart result={result} dataset={dataset} variables={variables} query={query} locale={locale} />
+      : <NumericChart result={result} dataset={dataset} variables={variables} query={query} locale={locale} />}
   </section>;
 }
