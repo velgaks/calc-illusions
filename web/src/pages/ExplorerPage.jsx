@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import ExplorerResult, { aggregateCsv } from '../components/ExplorerResult.jsx';
 import { loadDataset } from '../data/loader.js';
 import { t } from '../i18n/strings.js';
-import { parseQuery, serializeQuery } from '../lib/queryUrl.js';
+import { MAX_FILTERS, parseQuery, serializeQuery } from '../lib/queryUrl.js';
 import { runQuery, variableDefinitions } from '../lib/stats.js';
 
 const DEFAULT_INDICATOR = { people: 'sex', households: 'hh_income_total' };
@@ -64,7 +64,7 @@ export default function ExplorerPage({ locale, onLocaleChange }) {
   const changeUnit = unit => setQuery({ unit, indicator: DEFAULT_INDICATOR[unit], breakdown: null, filters: [], threshold: null, locale });
   const updateFilter = (index, filter) => setQuery(current => ({ ...current, filters: current.filters.map((item, itemIndex) => itemIndex === index ? filter : item) }));
   const addFilter = () => {
-    if (!readyPayload || !variables.length) return;
+    if (!readyPayload || !variables.length || query.filters.length >= MAX_FILTERS) return;
     const variable = variables.find(item => item.id === 'region') || variables[0];
     const filter = variable.type === 'categorical'
       ? { id: variable.id, op: 'eq', value: readyPayload.dataset.dictionaries[variable.id]?.[0]?.value || '' }
@@ -97,7 +97,7 @@ export default function ExplorerPage({ locale, onLocaleChange }) {
           </select></label>
           {indicator.type === 'numeric' && <label><span>{copy.threshold}</span><input type="number" value={query.threshold ?? ''} placeholder={locale === 'uk' ? 'необов’язково' : 'optional'} onChange={event => setQuery(current => ({ ...current, threshold: event.target.value === '' ? null : Number(event.target.value) }))} /></label>}
         </div>
-        <div className="filters"><div className="filters-heading"><h2>{copy.filters}</h2><button type="button" onClick={addFilter}>+ {copy.addFilter}</button></div>
+        <div className="filters"><div className="filters-heading"><h2>{copy.filters}</h2><button type="button" onClick={addFilter} disabled={query.filters.length >= MAX_FILTERS}>{query.filters.length >= MAX_FILTERS ? copy.filterLimit : `+ ${copy.addFilter}`}</button></div>
           {query.filters.map((filter, index) => <FilterEditor key={`${index}-${filter.id}`} filter={filter} index={index} variables={variables} dataset={readyPayload.dataset} locale={locale} onChange={updateFilter} onRemove={removeIndex => setQuery(current => ({ ...current, filters: current.filters.filter((_, index) => index !== removeIndex) }))} />)}
         </div>
         <div className="query-actions"><button type="button" onClick={copyLink}>{copied ? copy.copied : copy.copyLink}</button><button type="button" onClick={downloadCsv}>{copy.downloadCsv}</button></div>

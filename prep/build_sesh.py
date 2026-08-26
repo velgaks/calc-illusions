@@ -368,6 +368,39 @@ def weighted_share(records: list[dict[str, Any]], predicate: Callable[[dict[str,
     }
 
 
+def weighted_distribution(
+    records: list[dict[str, Any]],
+    value_for: Callable[[dict[str, Any]], Any],
+) -> dict[str, Any]:
+    """Return a compact weighted distribution while preserving first-seen order."""
+    grouped: dict[str, dict[str, Any]] = {}
+    eligible_weight = 0.0
+    eligible_n = 0
+    missing_n = 0
+    for row in records:
+        value = value_for(row)
+        if value is None:
+            missing_n += 1
+            continue
+        category = str(value)
+        if category not in grouped:
+            grouped[category] = {"category": category, "weighted": 0.0, "n": 0}
+        grouped[category]["weighted"] += row["weight"]
+        grouped[category]["n"] += 1
+        eligible_weight += row["weight"]
+        eligible_n += 1
+
+    return {
+        "rows": [
+            {**values, "share": values["weighted"] / eligible_weight if eligible_weight else None}
+            for values in grouped.values()
+        ],
+        "base_weighted": eligible_weight,
+        "base_n": eligible_n,
+        "missing_n": missing_n,
+    }
+
+
 def age_band(age: float | None) -> str | None:
     if age is None:
         return None
@@ -549,6 +582,24 @@ def build_overview(people: list[dict[str, Any]], households: list[dict[str, Any]
             groups[key] = weighted_share(subset, lambda row, v=variable: row[v] == no_value)
         deprivation.append({"variable": variable, **groups})
 
+    def household_size_group(row: dict[str, Any]) -> str | None:
+        size = row["household_size"]
+        if size is None:
+            return None
+        return "5+" if size >= 5 else str(int(size))
+
+    quick_answers = {
+        "household_size": weighted_distribution(households, household_size_group),
+        "income_adequacy": weighted_distribution(households, lambda row: row["income_adequacy"]),
+        "unexpected_expense": weighted_distribution(households, lambda row: row["unexpected_expense"]),
+        "housing_tenure": weighted_distribution(households, lambda row: row["housing_tenure"]),
+        "internet": weighted_distribution(households, lambda row: row["internet"]),
+        "public_transport": weighted_distribution(households, lambda row: row["public_transport"]),
+        "moved_since_2014": weighted_distribution(people, lambda row: row["moved_since_2014"]),
+        "idp": weighted_distribution(people, lambda row: row["idp"]),
+        "abroad_since_2022": weighted_distribution(people, lambda row: row["abroad_since_2022"]),
+    }
+
     return {
         "schema_version": 1,
         "generated_at": datetime.now(timezone.utc).isoformat(),
@@ -580,6 +631,7 @@ def build_overview(people: list[dict[str, Any]], households: list[dict[str, Any]
             "arrangement": [{"category": category, **values} for category, values in arrangement.items()],
         },
         "deprivation": deprivation,
+        "quick_answers": quick_answers,
     }
 
 
@@ -660,7 +712,7 @@ def main() -> None:
             "people": {"n": len(people), "weight_total": sum(row["weight"] for row in people), "variables": variable_metadata("people", PEOPLE_VARIABLES, people_questions, household_questions), "dictionaries": encoded_people["dictionaries"]},
             "households": {"n": len(households), "weight_total": sum(row["weight"] for row in households), "variables": variable_metadata("households", HOUSEHOLD_VARIABLES, people_questions, household_questions), "dictionaries": encoded_households["dictionaries"]},
         },
-        "reliability": {"suppress_below": 10, "warn_below": 30},
+        "reliability": {"values_hidden": False, "very_low_below": 10, "warn_below": 30},
     }
 
     if args.check:

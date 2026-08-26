@@ -5,6 +5,12 @@ import { t } from '../i18n/strings.js';
 
 const nf = (locale, options = {}) => new Intl.NumberFormat(locale === 'uk' ? 'uk-UA' : 'en-US', options);
 
+const BREAKDOWN_COLORS = [
+  '#2a78d6', '#eb6834', '#236c49', '#7b8794', '#8b5fbf', '#c4901f', '#168b8b', '#d6336c',
+  '#5598e7', '#d95926', '#5c7a35', '#55636f', '#1c5cab', '#f18a5d', '#4d8c68', '#9ca6b0',
+  '#6e4aa8', '#ad7b16', '#0f6c70', '#b04a73', '#86b6ef', '#f2aa82', '#78a487', '#b3c2d1',
+];
+
 function chartDefinitions(variables, query) {
   return [query.indicator, query.breakdown]
     .filter(Boolean)
@@ -21,19 +27,88 @@ function Reliability({ level, locale }) {
   return <span className={`reliability reliability-${level}`}>{copy[level]}</span>;
 }
 
+function SmallGroupNote({ rows, locale }) {
+  const veryLow = rows.filter(row => row.reliability === 'veryLow').length;
+  const caution = rows.filter(row => row.reliability === 'caution').length;
+  if (!veryLow && !caution) return null;
+  return <p className="small-group-note" role="note">
+    {locale === 'uk'
+      ? `Мала вибірка: n < 10 — ${veryLow}; n = 10–29 — ${caution}. Усі значення показано, але вони можуть бути нестабільними.`
+      : `Small samples: n < 10 — ${veryLow}; n = 10–29 — ${caution}. All values are shown, but they may be unstable.`}
+  </p>;
+}
+
+function BreakdownKey({ items }) {
+  return <div className="chart-key breakdown-key" aria-hidden="true">
+    {items.map(item => <span key={item.value} style={{ '--key-color': item.color }}>{item.label}</span>)}
+  </div>;
+}
+
+function dictionaryOrder(dataset, id, presentValues) {
+  const present = new Set(presentValues);
+  const ordered = (dataset.dictionaries[id] || []).map(entry => entry.value).filter(value => present.has(value));
+  for (const value of presentValues) if (!ordered.includes(value)) ordered.push(value);
+  return ordered;
+}
+
 function CategoricalChart({ result, dataset, variables, query, locale }) {
   const pct = nf(locale, { style: 'percent', maximumFractionDigits: 1 });
   const rows = result.rows.map(row => {
     const category = categoryLabel(dataset, query.indicator, row.category, locale);
     const breakdown = row.breakdown == null ? null : categoryLabel(dataset, query.breakdown, row.breakdown, locale);
-    return { ...row, label: breakdown ? `${breakdown} — ${category}` : category };
+    return { ...row, categoryLabel: category, breakdownLabel: breakdown, label: breakdown ? `${breakdown} — ${category}` : category };
   });
+  const hasBreakdown = Boolean(query.breakdown);
   const visible = rows.slice(0, 40);
+  const table = <table><thead><tr><th>{t(locale).value}</th>{hasBreakdown && <th>{t(locale).breakdown}</th>}<th>{t(locale).share}</th><th>{t(locale).count}</th><th>n</th><th>{locale === 'uk' ? 'Надійність' : 'Reliability'}</th></tr></thead><tbody>
+    {rows.map(row => <tr key={`${row.breakdown ?? 'all'}-${row.category}`}><th>{row.categoryLabel}</th>{hasBreakdown && <td>{row.breakdownLabel}</td>}<td>{row.weightedShare == null ? '—' : pct.format(row.weightedShare)}</td><td>{row.weightedCount == null ? '—' : nf(locale, { maximumFractionDigits: 0 }).format(row.weightedCount)}</td><td>{row.n}</td><td><Reliability level={row.reliability} locale={locale} /></td></tr>)}
+  </tbody></table>;
+
+  if (hasBreakdown) {
+    const categoryValues = dictionaryOrder(dataset, query.indicator, rows.map(row => row.category));
+    const breakdownValues = dictionaryOrder(dataset, query.breakdown, rows.map(row => row.breakdown));
+    const series = breakdownValues.map((value, index) => ({
+      value,
+      key: `breakdown_${index}`,
+      label: categoryLabel(dataset, query.breakdown, value, locale),
+      color: BREAKDOWN_COLORS[index % BREAKDOWN_COLORS.length],
+    }));
+    const data = categoryValues.slice(0, 40).map(category => {
+      const point = { category, label: categoryLabel(dataset, query.indicator, category, locale) };
+      for (const item of series) {
+        point[item.key] = rows.find(row => row.category === category && row.breakdown === item.value)?.weightedShare ?? null;
+      }
+      return point;
+    });
+    const chartHeight = Math.max(300, data.length * Math.max(54, series.length * 22 + 16));
+    const breakdownDefinition = variables.find(variable => variable.id === query.breakdown);
+    return <ChartFrame locale={locale} definitions={chartDefinitions(variables, query)} ariaLabel={locale === 'uk' ? 'Зважені частки відповідей; кольори показують групи вибраного розрізу' : 'Weighted response shares; colours identify the selected breakdown groups'} table={table}>
+      <p className="chart-series-title"><strong>{t(locale).breakdown}:</strong> {breakdownDefinition?.labels[locale]}</p>
+      <BreakdownKey items={series} />
+      <SmallGroupNote rows={rows} locale={locale} />
+      <div className="grouped-bar-scroll">
+        <div className="grouped-bar-canvas" style={{ height: chartHeight }}>
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={data} layout="vertical" margin={{ top: 8, right: 72, left: 4, bottom: 4 }} barGap={2} barCategoryGap="18%">
+              <CartesianGrid horizontal={false} stroke="var(--grid)" />
+              <XAxis type="number" domain={[0, dataMax => Math.min(1, Math.max(0.1, Math.ceil(dataMax * 10) / 10))]} axisLine={false} tickLine={false} tickFormatter={value => pct.format(value)} />
+              <YAxis type="category" dataKey="label" axisLine={false} tickLine={false} width={190} tick={{ fontSize: 10 }} />
+              <Tooltip formatter={(value, name) => [pct.format(value), series.find(item => item.key === name)?.label || name]} />
+              {series.map(item => <Bar key={item.value} dataKey={item.key} name={item.label} fill={item.color} radius={[0, 2, 2, 0]} maxBarSize={18} isAnimationActive={false}>
+                <LabelList dataKey={item.key} position="right" formatter={value => value == null ? '' : pct.format(value)} />
+              </Bar>)}
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+      {categoryValues.length > 40 && <p className="chart-note">{locale === 'uk' ? 'Графік показує перші 40 відповідей; усі значення є в таблиці.' : 'The chart shows the first 40 responses; the table contains all values.'}</p>}
+    </ChartFrame>;
+  }
+
   return <ChartFrame locale={locale} definitions={chartDefinitions(variables, query)} ariaLabel={locale === 'uk' ? 'Зважені частки категорій для вибраного запиту' : 'Weighted category shares for the selected query'} table={
-    <table><thead><tr><th>{t(locale).value}</th><th>{t(locale).share}</th><th>{t(locale).count}</th><th>n</th><th>{locale === 'uk' ? 'Надійність' : 'Reliability'}</th></tr></thead><tbody>
-      {rows.map(row => <tr key={row.label}><th>{row.label}</th><td>{row.weightedShare == null ? '—' : pct.format(row.weightedShare)}</td><td>{row.weightedCount == null ? '—' : nf(locale, { maximumFractionDigits: 0 }).format(row.weightedCount)}</td><td>{row.n}</td><td><Reliability level={row.reliability} locale={locale} /></td></tr>)}
-    </tbody></table>
+    table
   }>
+    <SmallGroupNote rows={rows} locale={locale} />
     <ResponsiveContainer width="100%" height={Math.max(260, visible.length * 42)}>
       <BarChart data={visible} layout="vertical" margin={{ top: 6, right: 62, left: 4, bottom: 0 }}>
         <CartesianGrid horizontal={false} stroke="var(--grid)" />
@@ -59,10 +134,11 @@ function NumericChart({ result, dataset, variables, query, locale }) {
       reliability: group.reliability,
     })).sort((a, b) => (b.median ?? -Infinity) - (a.median ?? -Infinity));
     return <ChartFrame locale={locale} definitions={chartDefinitions(variables, query)} ariaLabel={locale === 'uk' ? 'Зважена медіана числового показника за вибраним розрізом' : 'Weighted median of the numeric indicator by selected breakdown'} table={
-      <table><thead><tr><th>{t(locale).breakdown}</th><th>{t(locale).median}</th><th>n</th><th>{locale === 'uk' ? 'Надійність' : 'Reliability'}</th></tr></thead><tbody>{data.map(row => <tr key={row.label}><th>{row.label}</th><td>{row.reliability === 'suppressed' ? '—' : number.format(row.median)}</td><td>{row.n}</td><td><Reliability level={row.reliability} locale={locale} /></td></tr>)}</tbody></table>
+      <table><thead><tr><th>{t(locale).breakdown}</th><th>{t(locale).median}</th><th>n</th><th>{locale === 'uk' ? 'Надійність' : 'Reliability'}</th></tr></thead><tbody>{data.map(row => <tr key={row.label}><th>{row.label}</th><td>{row.median == null ? '—' : number.format(row.median)}</td><td>{row.n}</td><td><Reliability level={row.reliability} locale={locale} /></td></tr>)}</tbody></table>
     }>
+      <SmallGroupNote rows={data} locale={locale} />
       <ResponsiveContainer width="100%" height={Math.max(260, data.length * 42)}>
-        <BarChart data={data.map(row => ({ ...row, median: row.reliability === 'suppressed' ? null : row.median }))} layout="vertical" margin={{ top: 6, right: 62, left: 4, bottom: 0 }}>
+        <BarChart data={data} layout="vertical" margin={{ top: 6, right: 62, left: 4, bottom: 0 }}>
           <CartesianGrid horizontal={false} stroke="var(--grid)" />
           <XAxis type="number" axisLine={false} tickLine={false} tickFormatter={value => number.format(value)} />
           <YAxis type="category" dataKey="label" axisLine={false} tickLine={false} width={180} tick={{ fontSize: 10 }} />

@@ -2187,7 +2187,8 @@
     }
   },
   "reliability": {
-    "suppress_below": 10,
+    "values_hidden": false,
+    "very_low_below": 10,
     "warn_below": 30
   }
 }

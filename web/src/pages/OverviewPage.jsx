@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { AgeSexChart, DeprivationChart, EmploymentChart, IncomeChart } from '../components/OverviewCharts.jsx';
+import QuickAnswers from '../components/QuickAnswers.jsx';
 import { t } from '../i18n/strings.js';
 
 const fmt = (locale, options = {}) => new Intl.NumberFormat(locale === 'uk' ? 'uk-UA' : 'en-US', options);
@@ -66,6 +67,7 @@ export default function OverviewPage({ overview, metadata, locale }) {
     <Story number="01" eyebrow={locale === 'uk' ? 'Статево-вікова структура' : 'Age and sex structure'} title={content.ageTitle} text={content.ageText}>
       <AgeSexChart rows={overview.age_sex} locale={locale} definitions={definitions('people', ['age', 'sex'])} />
     </Story>
+    <QuickAnswers overview={overview} metadata={metadata} locale={locale} />
     <Story number="02" eyebrow={locale === 'uk' ? 'Доходи домогосподарств' : 'Household income'} title={content.incomeTitle} text={content.incomeText}>
       <IncomeChart income={overview.income} locale={locale} definitions={definitions('households', ['hh_income_total', 'hh_income_per_capita'])} />
     </Story>

@@ -30,7 +30,7 @@ function dataset(n, overrides = {}) {
 }
 
 test('reliability boundaries are exact', () => {
-  assert.equal(reliabilityForN(9), 'suppressed');
+  assert.equal(reliabilityForN(9), 'veryLow');
   assert.equal(reliabilityForN(10), 'caution');
   assert.equal(reliabilityForN(29), 'caution');
   assert.equal(reliabilityForN(30), 'reliable');
@@ -46,8 +46,9 @@ test('missing values are excluded rather than treated as a category', () => {
   const result = runQuery(data, metadata(4), { unit: 'people', indicator: 'group', breakdown: null, filters: [], locale: 'uk', threshold: null });
   assert.equal(result.sampleN, 3);
   assert.equal(result.exclusions.missing, 1);
-  assert.equal(result.weightedTotal, null, 'overall result is suppressed at n<10');
-  assert.equal(result.rows.every(row => row.weightedCount === null), true);
+  assert.equal(result.weightedTotal, 7, 'small-sample values remain visible');
+  assert.deepEqual(result.rows.map(row => row.weightedCount).sort((a, b) => a - b), [2, 5]);
+  assert.equal(result.reliability, 'veryLow');
 });
 
 test('filters and breakdown use their own denominators', () => {
@@ -59,15 +60,24 @@ test('filters and breakdown use their own denominators', () => {
   assert.equal(result.rows.every(row => row.weightedShare === 1), true);
 });
 
-test('numeric thresholds suppress only small qualifying counts', () => {
+test('numeric thresholds keep small qualifying counts visible with a warning', () => {
   const data = dataset(30);
   const small = runQuery(data, metadata(30), { unit: 'people', indicator: 'value', breakdown: null, filters: [], locale: 'uk', threshold: 9 });
   assert.equal(small.thresholdN, 9);
-  assert.equal(small.weightedTotal, null);
+  assert.equal(small.weightedTotal, 9);
+  assert.equal(small.reliability, 'veryLow');
   assert.equal(small.cdf.length, 21, 'base distribution remains available at base n=30');
   const caution = runQuery(data, metadata(30), { unit: 'people', indicator: 'value', breakdown: null, filters: [], locale: 'uk', threshold: 10 });
   assert.equal(caution.reliability, 'caution');
   assert.equal(caution.weightedTotal, 10);
+});
+
+test('numeric distributions remain visible below ten observations', () => {
+  const result = runQuery(dataset(4), metadata(4), { unit: 'people', indicator: 'value', breakdown: null, filters: [], locale: 'uk', threshold: null });
+  assert.equal(result.reliability, 'veryLow');
+  assert.equal(result.weightedTotal, 4);
+  assert.equal(result.cdf.length, 21);
+  assert.deepEqual(result.rows.map(row => row.value), [1, 1, 2, 3, 4]);
 });
 
 test('income regression anchors stay fixed', async () => {
@@ -81,4 +91,26 @@ test('income regression anchors stay fixed', async () => {
   assert.ok(Math.abs(overview.age_sex.reduce((sum, row) => sum + row.weighted, 0) - overview.totals.people) < 0.01);
   const aged60 = overview.age_sex.filter(row => row.age_band === '60+').reduce((sum, row) => sum + row.weighted, 0) / overview.totals.people;
   assert.ok(Math.abs(aged60 - 0.25492) < 0.0001);
+});
+
+test('overview quick-answer anchors stay fixed', async () => {
+  const overview = JSON.parse(await readFile(new URL('../../public/data/overview.json', import.meta.url), 'utf8'));
+  const quick = overview.quick_answers;
+  const share = (distribution, category) => quick[distribution].rows.find(row => row.category === category).share;
+  const closeTo = (actual, expected) => assert.ok(Math.abs(actual - expected) < 0.00001, `${actual} should be close to ${expected}`);
+
+  closeTo(share('household_size', '1'), 0.291104);
+  closeTo(
+    share('income_adequacy', 'Постійно відмовляли собі в найнеобхіднішому, крім харчування')
+      + share('income_adequacy', 'Не вдалося забезпечити навіть достатнє харчування'),
+    0.430617,
+  );
+  closeTo(share('unexpected_expense', 'Ні'), 0.53877);
+  closeTo(share('housing_tenure', 'Є власністю Вашої родини'), 0.890375);
+  closeTo(share('internet', 'Так'), 0.853326);
+  closeTo(share('public_transport', 'Так'), 0.798722);
+  closeTo(share('idp', 'yes'), 0.031291);
+  closeTo(share('abroad_since_2022', 'yes'), 0.039333);
+  assert.equal(quick.idp.base_n, 16958);
+  assert.equal(quick.idp.missing_n, 1879);
 });

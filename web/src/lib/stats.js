@@ -38,12 +38,12 @@
  * @property {number} sampleN
  * @property {number} clusterN
  * @property {{filteredOut:number, missing:number}} exclusions
- * @property {'suppressed'|'caution'|'reliable'} reliability
+ * @property {'veryLow'|'caution'|'reliable'} reliability
  * @property {Record<'uk'|'en', string>} universe
  */
 
 export function reliabilityForN(n) {
-  if (n < 10) return 'suppressed';
+  if (n < 10) return 'veryLow';
   if (n < 30) return 'caution';
   return 'reliable';
 }
@@ -121,10 +121,6 @@ function groupIndices(dataset, indices, id) {
   return groups;
 }
 
-function resultCount(n, value) {
-  return reliabilityForN(n) === 'suppressed' ? null : value;
-}
-
 function categoricalResult(dataset, query, indices, definition, exclusions) {
   const totalWeight = sumWeights(dataset, indices);
   const breakdownGroups = query.breakdown ? groupIndices(dataset, indices, query.breakdown) : new Map([[null, indices]]);
@@ -137,8 +133,8 @@ function categoricalResult(dataset, query, indices, definition, exclusions) {
       rows.push({
         category,
         breakdown,
-        weightedCount: resultCount(n, weighted),
-        weightedShare: resultCount(n, denominator ? weighted / denominator : 0),
+        weightedCount: weighted,
+        weightedShare: denominator ? weighted / denominator : 0,
         n,
         clusterN: new Set(categoryIndices.map(index => dataset.columns.cluster[index])).size,
         reliability: reliabilityForN(n),
@@ -147,7 +143,7 @@ function categoricalResult(dataset, query, indices, definition, exclusions) {
   }
   rows.sort((a, b) => (String(a.breakdown).localeCompare(String(b.breakdown), 'uk') || (b.weightedShare ?? -1) - (a.weightedShare ?? -1)));
   return {
-    type: 'categorical', weightedTotal: resultCount(indices.length, totalWeight), weightedShare: resultCount(indices.length, 1),
+    type: 'categorical', weightedTotal: totalWeight, weightedShare: indices.length ? 1 : null,
     rows, sampleN: indices.length, clusterN: new Set(indices.map(index => dataset.columns.cluster[index])).size,
     exclusions, reliability: reliabilityForN(indices.length), universe: definition.universe,
   };
@@ -174,13 +170,12 @@ function numericResult(dataset, query, indices, definition, exclusions) {
     ...numericSummary(dataset, group, query.indicator),
   })) : [];
   const baseSummary = numericSummary(dataset, indices, query.indicator);
-  const baseSuppressed = indices.length < 10;
   return {
     type: 'numeric',
-    weightedTotal: resultCount(reliabilityN, query.threshold == null ? totalWeight : selectedWeight),
-    weightedShare: resultCount(reliabilityN, query.threshold == null ? 1 : (totalWeight ? selectedWeight / totalWeight : 0)),
-    rows: baseSummary.quantiles.map(row => ({ ...row, value: baseSuppressed ? null : row.value })),
-    cdf: baseSuppressed ? [] : baseSummary.cdf,
+    weightedTotal: query.threshold == null ? totalWeight : selectedWeight,
+    weightedShare: query.threshold == null ? (indices.length ? 1 : null) : (totalWeight ? selectedWeight / totalWeight : null),
+    rows: baseSummary.quantiles,
+    cdf: baseSummary.cdf,
     groups,
     sampleN: indices.length,
     thresholdN: atOrBelow.length,

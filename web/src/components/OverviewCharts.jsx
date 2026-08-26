@@ -31,7 +31,9 @@ export function AgeSexChart({ rows, locale, definitions }) {
         <Bar dataKey="women" name={labels[0]} fill="var(--blue)" radius={[0, 2, 2, 0]}>
           <LabelList dataKey="women" position="right" formatter={value => `${(value / 1e6).toFixed(1)}${locale === 'uk' ? ' млн' : 'm'}`} />
         </Bar>
-        <Bar dataKey="men" name={labels[1]} fill="var(--orange)" radius={[0, 2, 2, 0]} />
+        <Bar dataKey="men" name={labels[1]} fill="var(--orange)" radius={[0, 2, 2, 0]}>
+          <LabelList dataKey="men" position="right" formatter={value => `${(value / 1e6).toFixed(1)}${locale === 'uk' ? ' млн' : 'm'}`} />
+        </Bar>
       </BarChart>
     </ResponsiveContainer>
   </ChartFrame>;
@@ -55,7 +57,9 @@ export function IncomeChart({ income, locale, definitions }) {
         <Line dataKey="total" name={labels[0]} stroke="var(--blue)" strokeWidth={3} dot={{ r: 4, fill: 'var(--blue)' }}>
           <LabelList dataKey="total" position="top" formatter={value => `${Math.round(value / 100) / 10}k`} />
         </Line>
-        <Line dataKey="perCapita" name={labels[1]} stroke="var(--orange)" strokeWidth={3} dot={{ r: 4, fill: 'var(--orange)' }} />
+        <Line dataKey="perCapita" name={labels[1]} stroke="var(--orange)" strokeWidth={3} dot={{ r: 4, fill: 'var(--orange)' }}>
+          <LabelList dataKey="perCapita" position="bottom" formatter={value => `${Math.round(value / 100) / 10}k`} />
+        </Line>
       </LineChart>
     </ResponsiveContainer>
   </ChartFrame>;
@@ -128,7 +132,7 @@ export function DeprivationChart({ deprivation, locale, definitions }) {
         <YAxis type="category" dataKey="label" axisLine={false} tickLine={false} width={145} tick={{ fontSize: 11 }} />
         <Tooltip formatter={value => pct.format(value)} />
         <Bar dataKey="withChildren" name={labels[0]} fill="var(--blue)" radius={[0, 2, 2, 0]}><LabelList dataKey="withChildren" position="right" formatter={value => pct.format(value)} /></Bar>
-        <Bar dataKey="withoutChildren" name={labels[1]} fill="var(--orange)" radius={[0, 2, 2, 0]} />
+        <Bar dataKey="withoutChildren" name={labels[1]} fill="var(--orange)" radius={[0, 2, 2, 0]}><LabelList dataKey="withoutChildren" position="right" formatter={value => pct.format(value)} /></Bar>
       </BarChart>
     </ResponsiveContainer>
   </ChartFrame>;
