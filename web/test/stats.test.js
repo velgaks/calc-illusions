@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { reliabilityForN, runQuery, weightedQuantile } from '../src/lib/stats.js';
+import { orderedCategoryValues, reliabilityForN, runQuery, weightedQuantile } from '../src/lib/stats.js';
 
 function metadata(n) {
   return { units: { people: { n, weight_total: n, variables: [
@@ -60,6 +60,17 @@ test('filters and breakdown use their own denominators', () => {
   assert.equal(result.rows.every(row => row.weightedShare === 1), true);
 });
 
+test('ordinal categories keep their declared order', () => {
+  const data = dataset(4);
+  const meta = metadata(4);
+  meta.units.people.variables[0].category_order = ['b', 'a'];
+  const definition = meta.units.people.variables[0];
+  const result = runQuery(data, meta, { unit: 'people', indicator: 'group', breakdown: null, filters: [], locale: 'uk', threshold: null });
+
+  assert.deepEqual(result.rows.map(row => row.category), ['b', 'a']);
+  assert.deepEqual(orderedCategoryValues(data, definition), ['b', 'a']);
+});
+
 test('numeric thresholds keep small qualifying counts visible with a warning', () => {
   const data = dataset(30);
   const small = runQuery(data, metadata(30), { unit: 'people', indicator: 'value', breakdown: null, filters: [], locale: 'uk', threshold: 9 });
@@ -91,6 +102,30 @@ test('income regression anchors stay fixed', async () => {
   assert.ok(Math.abs(overview.age_sex.reduce((sum, row) => sum + row.weighted, 0) - overview.totals.people) < 0.01);
   const aged60 = overview.age_sex.filter(row => row.age_band === '60+').reduce((sum, row) => sum + row.weighted, 0) / overview.totals.people;
   assert.ok(Math.abs(aged60 - 0.25492) < 0.0001);
+});
+
+test('overview contains compact summaries for every published variable', async () => {
+  const overview = JSON.parse(await readFile(new URL('../../public/data/overview.json', import.meta.url), 'utf8'));
+  const metadataFile = JSON.parse(await readFile(new URL('../../public/data/metadata.json', import.meta.url), 'utf8'));
+  const peopleIds = metadataFile.units.people.variables.map(variable => variable.id);
+  const householdIds = metadataFile.units.households.variables.map(variable => variable.id);
+
+  assert.equal(peopleIds.length, 19);
+  assert.equal(householdIds.length, 28);
+  assert.deepEqual(Object.keys(overview.variable_summaries.people), peopleIds);
+  assert.deepEqual(Object.keys(overview.variable_summaries.households), householdIds);
+  assert.equal(overview.variable_summaries.people.age.base_n, 18837);
+  assert.equal(overview.variable_summaries.people.marital.missing_n, 3321);
+  assert.equal(overview.variable_summaries.households.area_total.base_n, 7735);
+  assert.equal(overview.variable_summaries.households.area_total.missing_n, 288);
+  assert.equal(overview.deprivation.length, 5, 'the E1.1–E1.5 battery stays together');
+  assert.deepEqual(metadataFile.units.households.variables.find(variable => variable.id === 'income_adequacy').category_order, [
+    'Не вдалося забезпечити навіть достатнє харчування',
+    'Постійно відмовляли собі в найнеобхіднішому, крім харчування',
+    'Було достатньо, але заощаджень не робили',
+    'Було достатньо і робили заощадження',
+    'Важко відповісти',
+  ]);
 });
 
 test('overview quick-answer anchors stay fixed', async () => {

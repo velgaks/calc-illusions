@@ -1,6 +1,6 @@
 import { Bar, BarChart, CartesianGrid, LabelList, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import ChartFrame from './ChartFrame.jsx';
-import { categoryLabel } from '../lib/stats.js';
+import { categoryLabel, orderedCategoryValues } from '../lib/stats.js';
 import { t } from '../i18n/strings.js';
 
 const nf = (locale, options = {}) => new Intl.NumberFormat(locale === 'uk' ? 'uk-UA' : 'en-US', options);
@@ -44,11 +44,9 @@ function BreakdownKey({ items }) {
   </div>;
 }
 
-function dictionaryOrder(dataset, id, presentValues) {
-  const present = new Set(presentValues);
-  const ordered = (dataset.dictionaries[id] || []).map(entry => entry.value).filter(value => present.has(value));
-  for (const value of presentValues) if (!ordered.includes(value)) ordered.push(value);
-  return ordered;
+function categoryOrder(dataset, variables, id, presentValues) {
+  const definition = variables.find(variable => variable.id === id) || { id };
+  return orderedCategoryValues(dataset, definition, presentValues);
 }
 
 function CategoricalChart({ result, dataset, variables, query, locale }) {
@@ -65,8 +63,8 @@ function CategoricalChart({ result, dataset, variables, query, locale }) {
   </tbody></table>;
 
   if (hasBreakdown) {
-    const categoryValues = dictionaryOrder(dataset, query.indicator, rows.map(row => row.category));
-    const breakdownValues = dictionaryOrder(dataset, query.breakdown, rows.map(row => row.breakdown));
+    const categoryValues = categoryOrder(dataset, variables, query.indicator, rows.map(row => row.category));
+    const breakdownValues = categoryOrder(dataset, variables, query.breakdown, rows.map(row => row.breakdown));
     const series = breakdownValues.map((value, index) => ({
       value,
       key: `breakdown_${index}`,
@@ -127,12 +125,17 @@ function NumericChart({ result, dataset, variables, query, locale }) {
   const number = nf(locale, { maximumFractionDigits: 1 });
   const quantileRows = result.rows;
   if (result.groups?.length) {
+    const breakdownDefinition = variables.find(variable => variable.id === query.breakdown);
+    const order = new Map((breakdownDefinition?.category_order || []).map((value, index) => [value, index]));
     const data = result.groups.map(group => ({
+      breakdown: group.breakdown,
       label: categoryLabel(dataset, query.breakdown, group.breakdown, locale),
       median: group.quantiles.find(row => row.p === 0.5)?.value,
       n: group.n,
       reliability: group.reliability,
-    })).sort((a, b) => (b.median ?? -Infinity) - (a.median ?? -Infinity));
+    })).sort((a, b) => order.size
+      ? (order.get(a.breakdown) ?? Number.MAX_SAFE_INTEGER) - (order.get(b.breakdown) ?? Number.MAX_SAFE_INTEGER)
+      : (b.median ?? -Infinity) - (a.median ?? -Infinity));
     return <ChartFrame locale={locale} definitions={chartDefinitions(variables, query)} ariaLabel={locale === 'uk' ? 'Зважена медіана числового показника за вибраним розрізом' : 'Weighted median of the numeric indicator by selected breakdown'} table={
       <table><thead><tr><th>{t(locale).breakdown}</th><th>{t(locale).median}</th><th>n</th><th>{locale === 'uk' ? 'Надійність' : 'Reliability'}</th></tr></thead><tbody>{data.map(row => <tr key={row.label}><th>{row.label}</th><td>{row.median == null ? '—' : number.format(row.median)}</td><td>{row.n}</td><td><Reliability level={row.reliability} locale={locale} /></td></tr>)}</tbody></table>
     }>

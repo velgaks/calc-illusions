@@ -4,7 +4,7 @@ import ExplorerResult, { aggregateCsv } from '../components/ExplorerResult.jsx';
 import { loadDataset } from '../data/loader.js';
 import { t } from '../i18n/strings.js';
 import { MAX_FILTERS, parseQuery, serializeQuery } from '../lib/queryUrl.js';
-import { runQuery, variableDefinitions } from '../lib/stats.js';
+import { orderedCategoryValues, runQuery, variableDefinitions } from '../lib/stats.js';
 
 const DEFAULT_INDICATOR = { people: 'sex', households: 'hh_income_total' };
 
@@ -12,8 +12,16 @@ function groupedVariables(variables) {
   return ['demography', 'income', 'employment', 'living'].map(topic => ({ topic, items: variables.filter(variable => variable.topic === topic) })).filter(group => group.items.length);
 }
 
-function CategoryOptions({ dataset, id, locale }) {
-  return dataset.dictionaries[id]?.map((entry, index) => <option key={entry.value} value={entry.value}>{entry.labels[locale] || entry.labels.uk || entry.value}</option>);
+function firstCategory(dataset, definition) {
+  return orderedCategoryValues(dataset, definition)[0] || '';
+}
+
+function CategoryOptions({ dataset, definition, locale }) {
+  const dictionary = dataset.dictionaries[definition.id] || [];
+  return orderedCategoryValues(dataset, definition).map(value => {
+    const entry = dictionary.find(item => item.value === value);
+    return <option key={value} value={value}>{entry?.labels?.[locale] || entry?.labels?.uk || value}</option>;
+  });
 }
 
 function FilterEditor({ filter, index, variables, dataset, locale, onChange, onRemove }) {
@@ -21,12 +29,12 @@ function FilterEditor({ filter, index, variables, dataset, locale, onChange, onR
   const definition = variables.find(variable => variable.id === filter.id) || variables[0];
   const changeVariable = id => {
     const next = variables.find(variable => variable.id === id);
-    if (next.type === 'categorical') onChange(index, { id, op: 'eq', value: dataset.dictionaries[id]?.[0]?.value || '' });
+    if (next.type === 'categorical') onChange(index, { id, op: 'eq', value: firstCategory(dataset, next) });
     else onChange(index, { id, op: 'range', min: null, max: null });
   };
   return <div className="filter-row">
     <label><span>{copy.variable}</span><select value={definition.id} onChange={event => changeVariable(event.target.value)}>{variables.map(variable => <option key={variable.id} value={variable.id}>{variable.labels[locale]}</option>)}</select></label>
-    {definition.type === 'categorical' ? <label><span>{copy.category}</span><select value={filter.value ?? ''} onChange={event => onChange(index, { ...filter, value: event.target.value })}><CategoryOptions dataset={dataset} id={definition.id} locale={locale} /></select></label> : <>
+    {definition.type === 'categorical' ? <label><span>{copy.category}</span><select value={filter.value ?? ''} onChange={event => onChange(index, { ...filter, value: event.target.value })}><CategoryOptions dataset={dataset} definition={definition} locale={locale} /></select></label> : <>
       <label><span>{copy.from}</span><input type="number" value={filter.min ?? ''} onChange={event => onChange(index, { ...filter, min: event.target.value === '' ? null : Number(event.target.value) })} /></label>
       <label><span>{copy.to}</span><input type="number" value={filter.max ?? ''} onChange={event => onChange(index, { ...filter, max: event.target.value === '' ? null : Number(event.target.value) })} /></label>
     </>}
@@ -67,7 +75,7 @@ export default function ExplorerPage({ locale, onLocaleChange }) {
     if (!readyPayload || !variables.length || query.filters.length >= MAX_FILTERS) return;
     const variable = variables.find(item => item.id === 'region') || variables[0];
     const filter = variable.type === 'categorical'
-      ? { id: variable.id, op: 'eq', value: readyPayload.dataset.dictionaries[variable.id]?.[0]?.value || '' }
+      ? { id: variable.id, op: 'eq', value: firstCategory(readyPayload.dataset, variable) }
       : { id: variable.id, op: 'range', min: null, max: null };
     setQuery(current => ({ ...current, filters: [...current.filters, filter] }));
   };

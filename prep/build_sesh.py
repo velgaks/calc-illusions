@@ -175,6 +175,56 @@ DERIVATION_NOTES: dict[tuple[str, str], dict[str, str]] = {
 }
 
 
+# Category order is analytical metadata: ordinal scales must never be re-ranked
+# by prevalence in charts, tables, filters or breakdowns.
+ORDINAL_CATEGORY_ORDERS: dict[tuple[str, str], list[str]] = {
+    ("people", "education"): [
+        "Не має освіти та не вміє читати та писати",
+        "Не має освіти, але вміє читати та писати",
+        "Дошкільна освіта",
+        "Початкова (початкова загальна) освіта",
+        "Базова середня (базова загальна середня) освіта",
+        "Повна загальна середня (профільна середня) освіта",
+        "Професійна (професійно-технічна) освіта",
+        "Початковий рівень (короткий цикл) вищої освіти (неповна вища)",
+        "Перший (бакалаврський) рівень вищої освіти (базова вища)",
+        "Другий (магістерський) рівень вищої освіти",
+        "Науковий ступінь",
+    ],
+    ("households", "income_change"): [
+        "Значно зменшилися",
+        "Дещо зменшилися",
+        "Залишилися приблизно на одному рівні",
+        "Дещо зросли",
+        "Значно зросли",
+        "Не знає відповіді/ важко відповісти",
+    ],
+    ("households", "income_adequacy"): [
+        "Не вдалося забезпечити навіть достатнє харчування",
+        "Постійно відмовляли собі в найнеобхіднішому, крім харчування",
+        "Було достатньо, але заощаджень не робили",
+        "Було достатньо і робили заощадження",
+        "Важко відповісти",
+    ],
+    ("households", "relative_wealth"): [
+        "Нижче середнього",
+        "Середній",
+        "Вище середнього",
+        "Важко відповісти",
+    ],
+    ("households", "financial_stability"): [
+        "Не маємо фінансової стабільності",
+        "Маємо тривалі періоди фінансової стабільності",
+        "Маємо стабільні регулярні доходи",
+    ],
+    ("households", "adequate_area"): [
+        "Ні, потрібно більше площі",
+        "Так, площі достатньо",
+        "Площі більше, ніж потрібно",
+    ],
+}
+
+
 COMMON_CATEGORY_LABELS: dict[str, tuple[str, str]] = {
     "yes": ("Так", "Yes"),
     "no": ("Ні", "No"),
@@ -401,6 +451,60 @@ def weighted_distribution(
     }
 
 
+def numeric_summary(records: list[dict[str, Any]], name: str) -> dict[str, Any]:
+    """Return weighted quantiles and, for short scales, an exact distribution."""
+    values = [
+        (float(row[name]), row["weight"])
+        for row in records
+        if row[name] is not None
+    ]
+    total_weight = sum(weight for _, weight in values)
+    result: dict[str, Any] = {
+        "quantiles": [
+            {"p": q, "value": weighted_quantile(values, q)}
+            for q in (0.1, 0.25, 0.5, 0.75, 0.9)
+        ],
+        "mean": (
+            sum(value * weight for value, weight in values) / total_weight
+            if total_weight else None
+        ),
+        "min": min((value for value, _ in values), default=None),
+        "max": max((value for value, _ in values), default=None),
+        "base_weighted": total_weight,
+        "base_n": len(values),
+        "missing_n": len(records) - len(values),
+    }
+
+    distinct_values = sorted({value for value, _ in values})
+    if len(distinct_values) <= 20:
+        grouped = {value: {"category": value, "weighted": 0.0, "n": 0} for value in distinct_values}
+        for value, weight in values:
+            grouped[value]["weighted"] += weight
+            grouped[value]["n"] += 1
+        result["rows"] = [
+            {**row, "share": row["weighted"] / total_weight if total_weight else None}
+            for row in grouped.values()
+        ]
+    return result
+
+
+def build_variable_summaries(
+    records: list[dict[str, Any]],
+    variables: dict[str, Variable],
+) -> dict[str, Any]:
+    """Build overview-ready summaries without shipping respondent-level records."""
+    summaries: dict[str, Any] = {}
+    for name, definition in variables.items():
+        if definition.kind == "numeric":
+            summaries[name] = {"type": "numeric", **numeric_summary(records, name)}
+        else:
+            summaries[name] = {
+                "type": "categorical",
+                **weighted_distribution(records, lambda row, variable=name: row[variable]),
+            }
+    return summaries
+
+
 def age_band(age: float | None) -> str | None:
     if age is None:
         return None
@@ -542,6 +646,7 @@ def variable_metadata(
             "universe": {"uk": definition.universe_uk, "en": definition.universe_en},
             "question_original_uk": variable_question(unit, name, definition, people_questions, household_questions),
             "question_mode": "recorded" if (unit, name) in RECORDED_FIELDS else "asked",
+            **({"category_order": ORDINAL_CATEGORY_ORDERS[(unit, name)]} if (unit, name) in ORDINAL_CATEGORY_ORDERS else {}),
             **({"derivation": DERIVATION_NOTES[(unit, name)]} if (unit, name) in DERIVATION_NOTES else {}),
         }
         for name, definition in variables.items()
@@ -572,7 +677,7 @@ def build_overview(people: list[dict[str, Any]], households: list[dict[str, Any]
             arrangement[row["work_arrangement"]]["weighted"] += row["weight"]
             arrangement[row["work_arrangement"]]["n"] += 1
 
-    deprivation_variables = ["unexpected_expense", "annual_holiday", "protein_meal", "warm_home"]
+    deprivation_variables = ["unexpected_expense", "annual_holiday", "payment_arrears", "protein_meal", "warm_home"]
     deprivation = []
     for variable in deprivation_variables:
         groups = {}
@@ -632,6 +737,10 @@ def build_overview(people: list[dict[str, Any]], households: list[dict[str, Any]
         },
         "deprivation": deprivation,
         "quick_answers": quick_answers,
+        "variable_summaries": {
+            "people": build_variable_summaries(people, PEOPLE_VARIABLES),
+            "households": build_variable_summaries(households, HOUSEHOLD_VARIABLES),
+        },
     }
 
 

@@ -14,6 +14,7 @@
  * @property {'demography'|'income'|'employment'|'living'} topic
  * @property {Record<'uk'|'en', string>} labels
  * @property {Record<'uk'|'en', string>} universe
+ * @property {string[]=} category_order Logical order for ordinal categories
  * @property {string[]} operations
  * @property {string} eligibility
  * @property {'exclude'} missingPolicy
@@ -79,6 +80,18 @@ export function categoryLabel(dataset, id, value, locale = 'uk') {
   return entry?.labels?.[locale] || entry?.labels?.uk || String(value);
 }
 
+export function orderedCategoryValues(dataset, definition, presentValues = null) {
+  const present = presentValues ? new Set(presentValues.map(String)) : null;
+  const dictionaryValues = (dataset.dictionaries[definition?.id] || []).map(entry => entry.value);
+  const preferred = definition?.category_order || dictionaryValues;
+  const ordered = [];
+  for (const value of [...preferred, ...dictionaryValues, ...(presentValues || [])]) {
+    const text = String(value);
+    if ((!present || present.has(text)) && !ordered.includes(text)) ordered.push(text);
+  }
+  return ordered;
+}
+
 export function weightedQuantile(values, weights, probability) {
   if (!values.length) return null;
   const order = values.map((value, index) => ({ value, weight: weights[index] }))
@@ -121,7 +134,7 @@ function groupIndices(dataset, indices, id) {
   return groups;
 }
 
-function categoricalResult(dataset, query, indices, definition, exclusions) {
+function categoricalResult(dataset, query, indices, definition, breakdownDefinition, exclusions) {
   const totalWeight = sumWeights(dataset, indices);
   const breakdownGroups = query.breakdown ? groupIndices(dataset, indices, query.breakdown) : new Map([[null, indices]]);
   const rows = [];
@@ -141,7 +154,17 @@ function categoricalResult(dataset, query, indices, definition, exclusions) {
       });
     }
   }
-  rows.sort((a, b) => (String(a.breakdown).localeCompare(String(b.breakdown), 'uk') || (b.weightedShare ?? -1) - (a.weightedShare ?? -1)));
+  const categoryOrder = new Map((definition.category_order || []).map((value, index) => [value, index]));
+  const breakdownOrder = new Map((breakdownDefinition?.category_order || []).map((value, index) => [value, index]));
+  const orderValue = (order, value) => order.has(value) ? order.get(value) : Number.MAX_SAFE_INTEGER;
+  rows.sort((a, b) => {
+    const breakdownComparison = breakdownOrder.size
+      ? orderValue(breakdownOrder, a.breakdown) - orderValue(breakdownOrder, b.breakdown)
+      : String(a.breakdown).localeCompare(String(b.breakdown), 'uk');
+    if (breakdownComparison) return breakdownComparison;
+    if (categoryOrder.size) return orderValue(categoryOrder, a.category) - orderValue(categoryOrder, b.category);
+    return (b.weightedShare ?? -1) - (a.weightedShare ?? -1);
+  });
   return {
     type: 'categorical', weightedTotal: totalWeight, weightedShare: indices.length ? 1 : null,
     rows, sampleN: indices.length, clusterN: new Set(indices.map(index => dataset.columns.cluster[index])).size,
@@ -190,6 +213,7 @@ function numericResult(dataset, query, indices, definition, exclusions) {
 export function runQuery(dataset, metadata, query) {
   const definitions = variableDefinitions(metadata, dataset.unit);
   const definition = definitions.find(variable => variable.id === query.indicator);
+  const breakdownDefinition = definitions.find(variable => variable.id === query.breakdown);
   if (!definition) throw new Error(`Unknown indicator: ${query.indicator}`);
   const filtered = [];
   for (let index = 0; index < dataset.n; index += 1) {
@@ -198,6 +222,6 @@ export function runQuery(dataset, metadata, query) {
   const valid = filtered.filter(index => rawValue(dataset, query.indicator, index) != null && (!query.breakdown || rawValue(dataset, query.breakdown, index) != null));
   const exclusions = { filteredOut: dataset.n - filtered.length, missing: filtered.length - valid.length };
   return definition.type === 'categorical'
-    ? categoricalResult(dataset, query, valid, definition, exclusions)
+    ? categoricalResult(dataset, query, valid, definition, breakdownDefinition, exclusions)
     : numericResult(dataset, query, valid, definition, exclusions);
 }
